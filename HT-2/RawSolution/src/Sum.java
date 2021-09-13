@@ -1,25 +1,25 @@
 public class Sum {
     public static void main(String[] args) {
-        int sum = 0;
+        int totalSum = 0;
 
         for (String arg: args) {
-            boolean in_number = false;
-            int number_start_index = 0;
+            boolean inNumber = false;
+            int numberStartIndex = 0;
 
-            for (int i = 0; i <= arg.length(); i++) {
-                if (in_number && (i == arg.length() || Character.isWhitespace(arg.charAt(i)))) {
+            for (int char_index = 0; char_index <= arg.length(); char_index++) {
+                if (inNumber && (char_index == arg.length() || Character.isWhitespace(arg.charAt(char_index)))) {
                     // Handle number end:
-                    sum += Integer.parseInt(arg.substring(number_start_index, i));
+                    totalSum += Integer.parseInt(arg.substring(numberStartIndex, char_index));
 
-                    in_number = false;
-                } else if (!in_number && i != arg.length() && !Character.isWhitespace(arg.charAt(i))) {
+                    inNumber = false;
+                } else if (!inNumber && char_index != arg.length() && !Character.isWhitespace(arg.charAt(char_index))) {
                     // Handle number start:
-                    in_number = true;
-                    number_start_index = i;
+                    inNumber = true;
+                    numberStartIndex = char_index;
                 }
             }
         }
 
-        System.out.println(sum);
+        System.out.println(totalSum);
     }
 }
