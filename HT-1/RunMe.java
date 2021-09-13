@@ -28,7 +28,7 @@ public class RunMe {
         // key2(password);
         // key3(password);
         key4(password);
-        key5(password);
+        // key5(password);
         key6(password);
         key7(password);
         key8(password);
@@ -126,7 +126,7 @@ public class RunMe {
          \u002b\u0070\u0061\u0073\u0073\u0077\u006f\u0072\u0064\u005b\u0035\u005d
          \u003b\u002f\u002a
          ***/
-        print(6, result, password);
+        print(6, 24857045234L + password[5], password);
     }
 
 
