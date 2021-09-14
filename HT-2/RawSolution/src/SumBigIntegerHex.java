@@ -1,8 +1,7 @@
-import javax.swing.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
 public class SumBigIntegerHex {
@@ -26,10 +25,54 @@ public class SumBigIntegerHex {
 
         System.out.println(totalSum);
     }
+    private static List<String> splitBy(String stringToSplit, IntPredicate isSpace) {
+        List<String> result = new ArrayList<String>();
+
+        int n = stringToSplit.length();
+        int index = 0;
+        while (index < n) {
+            while (index < n && isSpace.test(stringToSplit.charAt(index))) {    // Looking for a word start:
+                index++;
+            }
+            if (index == n) {
+                break;
+            }
+            int wordStart = index;
+            while (index < n && !isSpace.test(stringToSplit.charAt(index))) {     // Looking for a work end:
+                index++;
+            }
+            result.add(stringToSplit.substring(wordStart, index));
+        }
+
+        return result;
+    }
 
 
-    private static ArrayList<String> splitBy(String stringToSplit, Predicate<Character> isSpace) {
-        ArrayList<String> result = new ArrayList<String>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private static List<String> dummySplitBy(String stringToSplit, Predicate<Character> isSpace) {
+        List<String> result = new ArrayList<String>();
 
         boolean inNumber = false;
         int numberStartIndex = 0;
@@ -53,6 +96,6 @@ public class SumBigIntegerHex {
     }
 
     private static boolean startsWithIgnoreCase(String targetString, String prefix) {
-        return prefix.length() <= targetString.length() && targetString.substring(0, prefix.length()).equalsIgnoreCase(prefix);
+        return targetString.toLowerCase().startsWith(prefix.toLowerCase());
     }
 }
