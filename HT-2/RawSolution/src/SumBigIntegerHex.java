@@ -10,6 +10,7 @@ public class SumBigIntegerHex {
 
         for (String arg : args) {
             List<String> numberStrings = splitBy(arg, Character::isWhitespace);
+            System.err.println(numberStrings);
 
             for (String numberString : numberStrings) {
                 int radix;
@@ -25,7 +26,26 @@ public class SumBigIntegerHex {
 
         System.out.println(totalSum);
     }
+
     private static List<String> splitBy(String stringToSplit, IntPredicate isSpace) {
+        List<String> result = new ArrayList<String>();
+
+        int n = stringToSplit.length();
+        for (int wordStart = 0, wordEnd = 0; wordEnd <= n; wordEnd++) {
+            if (wordEnd == n || isSpace.test(stringToSplit.charAt(wordEnd))) {
+                if (wordEnd > wordStart) {
+                    result.add(stringToSplit.substring(wordStart, wordEnd));
+                }
+                wordStart = wordEnd + 1;
+            }
+
+        }
+
+        return result;
+    }
+
+
+    private static List<String> middle_splitBy(String stringToSplit, IntPredicate isSpace) {
         List<String> result = new ArrayList<String>();
 
         int n = stringToSplit.length();
@@ -46,30 +66,6 @@ public class SumBigIntegerHex {
 
         return result;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private static List<String> dummySplitBy(String stringToSplit, Predicate<Character> isSpace) {
         List<String> result = new ArrayList<String>();
