@@ -3,36 +3,28 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Scanner;
 
-
 public class Reverse {
     public static void main(String[] args) {
         Scanner inputReader = new Scanner(System.in);
 
-        // Input lines:
-        List<List<Integer>> inputData = new ArrayList<List<Integer>>();
+        List<String> inputData = new ArrayList<String>();
         while(inputReader.hasNextLine()) {
-            String thisLine = inputReader.nextLine();
-            Scanner lineParser = new Scanner(thisLine);
-            inputData.add(new ArrayList<Integer>());
-            while (lineParser.hasNext()) {
-                inputData.get(inputData.size() - 1).add(lineParser.nextInt());
-            }
+            inputData.add(inputReader.nextLine());
         }
 
-        // Output reversed:
         Collections.reverse(inputData);
-        for (List<Integer> line: inputData) {
-            Collections.reverse(line);
+        for (String line: inputData) {
+            Scanner lineParser = new Scanner(line);
+            List<Integer> thisNumbers = new ArrayList<Integer>();
+            while (lineParser.hasNext()) {
+                thisNumbers.add(lineParser.nextInt());
+            }
+            Collections.reverse(thisNumbers);
             ArrayList<String> stringifiedNumbers = new ArrayList<String>();
-            for (Integer integer : line) {
+            for (Integer integer : thisNumbers) {
                 stringifiedNumbers.add(integer.toString());
             }
             System.out.println(String.join(" ", stringifiedNumbers));
         }
-
-//        Functional programming isn't beautiful in java…
-//        for (ListIterator line = inputData.listIterator(inputData.size()); line.hasPrevious();) {
-//            System.out.println(String.join(" ", line.previous()));
-//        }
     }
 }
