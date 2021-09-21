@@ -28,7 +28,7 @@ public class SumBigIntegerHex {
     }
 
     private static List<String> splitBy(String stringToSplit, IntPredicate isSpace) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         int n = stringToSplit.length();
         for (int wordStart = 0, wordEnd = 0; wordEnd <= n; wordEnd++) {
@@ -44,6 +44,9 @@ public class SumBigIntegerHex {
         return result;
     }
 
+    private static boolean startsWithIgnoreCase(String targetString, String prefix) {
+        return targetString.toLowerCase().startsWith(prefix.toLowerCase());
+    }
 
     private static List<String> middle_splitBy(String stringToSplit, IntPredicate isSpace) {
         List<String> result = new ArrayList<String>();
@@ -91,7 +94,5 @@ public class SumBigIntegerHex {
         return result;
     }
 
-    private static boolean startsWithIgnoreCase(String targetString, String prefix) {
-        return targetString.toLowerCase().startsWith(prefix.toLowerCase());
-    }
+
 }
