@@ -70,7 +70,7 @@ class WordByWordReader {
 }
 
 
-public class WordStat {
+public class WordStatInput {
 
     private static LinkedHashMap<String, Integer> getCounter(BufferedReader buffReader) throws IOException {
         LinkedHashMap<String, Integer> counter = new LinkedHashMap<>();
@@ -78,7 +78,6 @@ public class WordStat {
 
         while(splitter.hasNextWord()) {
             String thisWord = splitter.nextWord().toLowerCase();
-            // System.out.println(thisWord);
             counter.put(thisWord, counter.getOrDefault(thisWord, 0) + 1);
         }
 
