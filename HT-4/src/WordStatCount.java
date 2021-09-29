@@ -1,13 +1,20 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.IntPredicate;
 
+
+/*
+Fix:
+- double try;
+- killing JVM (exit)
+- errors to System.err
+- double memory in some cases => call two variants: fast and without memory overhead
+ */
 
 class WordByWordReader {
     private BufferedReader buffReader;
@@ -69,10 +76,18 @@ class WordByWordReader {
     }
 }
 
+class WordWithCount {
+    String word;
+    int count;
 
-public class WordStatInput {
+    WordWithCount(String word, int count) {
+        this.word = word;
+        this.count = count;
+    }
+}
 
-    private static LinkedHashMap<String, Integer> getCounter(BufferedReader buffReader) throws IOException {
+public class WordStatCount {
+    private static LinkedHashMap<String, Integer> constructCounter(BufferedReader buffReader) throws IOException {
         LinkedHashMap<String, Integer> counter = new LinkedHashMap<>();
         WordByWordReader splitter = new WordByWordReader(buffReader);
 
@@ -84,19 +99,29 @@ public class WordStatInput {
         return counter;
     }
 
-    private static void writeCounter(LinkedHashMap<String, Integer> counter,
-        BufferedWriter writer) throws IOException {
-
-
-        counter.forEach((key, value) -> {
-            try {
-                writer.write(key + (" " + value.toString() + "\n"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    private static void writeWordsWithCounts(List<WordWithCount> wordStat, BufferedWriter writer) throws IOException {
+        for (WordWithCount wordWithCount: wordStat) {
+            writer.write(wordWithCount.word + (" " + wordWithCount.count + "\n"));
+        }
     }
 
+    private static List<WordWithCount> dumpCounterToListFast(LinkedHashMap<String, Integer> counter) {
+        List<WordWithCount> wordStat = new ArrayList<>();
+        counter.forEach((key, value) -> wordStat.add(new WordWithCount(key, value)));
+        return wordStat;
+    }
+
+    private static List<WordWithCount> dumpCounterToListMemoryEfficient(LinkedHashMap<String, Integer> counter) {
+        List<WordWithCount> wordStat = new ArrayList<>();
+
+        while (!counter.isEmpty()) {
+            var head = counter.entrySet().iterator();
+            var thisEntry = head.next();
+            wordStat.add(new WordWithCount(thisEntry.getKey(), thisEntry.getValue()));
+            head.remove();
+        }
+        return wordStat;
+    }
 
     public static void main(String[] args) {
         String inputFilename = args[0];
@@ -105,48 +130,39 @@ public class WordStatInput {
         LinkedHashMap<String, Integer> counter = new LinkedHashMap<>(); // accessOrder = false by default
 
         // Read input file with try-resource idiom:
-        try {
-            BufferedReader buffReader = new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream(inputFilename),
-                            StandardCharsets.UTF_8
-                    )
-            );
 
-            try {
-                counter = getCounter(buffReader);
-            } finally {
-                buffReader.close();
-            }
+        try (BufferedReader buffReader = new BufferedReader(
+            new InputStreamReader(
+                new FileInputStream(inputFilename),
+                StandardCharsets.UTF_8
+            ))
+        ) {
+            counter = constructCounter(buffReader);
         } catch (FileNotFoundException e) {
-            System.out.println("No such file (provided as input): " + inputFilename);
-            System.exit(1);
+            System.err.println("No such file (provided as input): " + inputFilename);
+            return;
         } catch (IOException e) {
-            System.out.println("There were some errors while working with input file");
-            System.exit(2);
+            System.err.println("There were some errors while working with input file");
         }
 
+        List<WordWithCount> wordStat =
+//            dumpCounterToListFast(counter)
+            dumpCounterToListMemoryEfficient(counter)
+            ;
+        // This is stable and O(n log n) in worst case
+        Collections.sort(wordStat, Comparator.comparingInt(c -> c.count));
+
         // Write on output file with try-resource idiom:
-        try {
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(outputFilename),
-                            StandardCharsets.UTF_8
-                    )
-            );
-
-            try {
-                writeCounter(counter, writer);
-            } finally {
-                writer.close();
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("No such file (provided as input): " + inputFilename);
-            System.exit(3);
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(
+                new FileOutputStream(outputFilename),
+                StandardCharsets.UTF_8
+            )
+        )) {
+            writeWordsWithCounts(wordStat, writer);
         } catch (IOException e) {
-            System.out.println("There were some errors while working with output file");
-            System.exit(4);
+            System.err.println("There were some errors while working with output file");
+            return;
         }
     }
 }
