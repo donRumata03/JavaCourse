@@ -6,7 +6,9 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import jdk.jfr.StackTrace;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +18,9 @@ public class Main {
         ;
         System.out.println(rootPath);
         Path sample_filename = rootPath.resolve("sample_input_words.txt");
+
+//        Scanner s = new Scanner("");
+//        int i = s.nextInt();
 
 
 
@@ -29,8 +34,10 @@ public class Main {
 
         BufferedScanner scanner = new BufferedScanner(reader);
 
-        while (scanner.hasNextWord()) {
-            System.out.println(scanner.nextWord());
-        }
+        String nextWord;
+        do {
+            nextWord = scanner.nextWord();
+            System.out.println(nextWord);
+        } while (nextWord != null);
     }
 }
