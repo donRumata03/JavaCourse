@@ -1,14 +1,11 @@
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 
 public class Main {
@@ -19,13 +16,21 @@ public class Main {
         ;
         // System.out.println(rootPath);
 //        Path sampleFilename = rootPath.resolve("simplest_input.txt");
-          Path sampleFilename = rootPath.resolve("sample_input_words.txt");
+//          Path sampleFilename = rootPath.resolve("sample_input_words.txt");
+          Path sampleFilename = rootPath.resolve("sample_ints.txt");
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
 
-         testScanner(sampleFilename);
+        char[] ca = System.getProperty("line.separator").toCharArray();
+        for (char c : ca) {
+            System.out.println((int) c);
+        }
+
+        testScanner(sampleFilename);
 //        testBufferizer(sampleFilename);
+
+
     }
 
     static void testBufferizer(Path path) {
@@ -56,14 +61,9 @@ public class Main {
             )
         )) {
             System.out.println("Initialized;");
-            String nextWord;
-            while(true) {
-                nextWord = scanner.nextWord();
-                if (nextWord == null) {
-                    break;
-                }
-                System.out.println("\"" + nextWord + "\"");
-            }
+
+            // testScanningWords(scanner);
+            testScanningInts(scanner);
 
         } catch (FileNotFoundException e) {
             System.err.println("File doesn't exist: " + path);
@@ -71,6 +71,38 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Error while reading file!");
             return;
+        }
+    }
+
+    static void testScanningWords(BufferedScanner scanner) throws IOException {
+        String nextWord;
+        while(true) {
+            nextWord = scanner.nextWord();
+            if (nextWord == null) {
+                break;
+            }
+            System.out.println("\"" + nextWord + "\"");
+        }
+    }
+
+    static void testScanningInts(BufferedScanner scanner) throws IOException {
+        while(true) {
+            try {
+                System.out.println("\"" + scanner.nextInt() + "\"");
+            } catch (NoSuchElementException e) {
+                break;
+            }
+        }
+    }
+
+    static void testScanningLines(BufferedScanner scanner) throws IOException {
+        String nextLine;
+        while(true) {
+            nextLine = scanner.nextLine();
+            if (nextLine == null) {
+                break;
+            }
+            System.out.println("\"" + nextLine + "\"");
         }
     }
 }

@@ -58,6 +58,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     }
 
     public String nextLine() {
+        // String result = nextSequence()
         return null;
     }
 
