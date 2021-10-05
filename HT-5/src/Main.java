@@ -18,7 +18,8 @@ public class Main {
             Paths.get(System.getProperty("user.dir"))
         ;
         System.out.println(rootPath);
-        Path sampleFilename = rootPath.resolve("sample_input_words.txt");
+//        Path sampleFilename = rootPath.resolve("simplest_input.txt");
+          Path sampleFilename = rootPath.resolve("sample_input_words.txt");
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
@@ -31,12 +32,13 @@ public class Main {
         try (ReaderBufferizer buff = new ReaderBufferizer(
             new InputStreamReader(
                 new FileInputStream(path.toString()), StandardCharsets.UTF_8
-            )
+            ), 50
         )) {
 
             while (buff.hasNextChar()) {
                 char c = buff.nextChar();
-                // System.out.println((int)c + " '" + c + "'");
+                System.out.println((int)c);
+//                System.out.println(" '" + c + "'");
             }
 
         } catch (FileNotFoundException e) {

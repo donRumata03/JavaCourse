@@ -10,6 +10,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     private char[] charBuffer;
     private int lastBufferSizeIfAny;
     private int charBufferPtr;
+    private boolean hasBuffer;
 
 
     public ReaderBufferizer(Reader reader, int bufferSize) {
@@ -17,19 +18,22 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         charBuffer = new char[bufferSize];
         charBufferPtr = 0;
         lastBufferSizeIfAny = -1;
+        hasBuffer = false;
     }
 
     public ReaderBufferizer(Reader reader) { this(reader, defaultCharBufferSize); }
 
     private void tryReadNewChunk() throws IOException {
-        if (charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) {
+        if ((charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) || !hasBuffer) {
             int charactersRead = in.read(charBuffer);
-            System.out.println(charactersRead);
+            // System.out.println(charactersRead);
             if (charactersRead != charBuffer.length) {
                 // This is the last buffer that might be not full
                 // It can even have length «0»
-                lastBufferSizeIfAny = charactersRead;
+                lastBufferSizeIfAny = (charactersRead == -1) ? 0 : charactersRead;
             }
+            charBufferPtr = 0;
+            hasBuffer = true;
         }
     }
 
@@ -47,7 +51,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
             throw new NoSuchElementException("EndOfStream: There are no symbols to read");
         }
 
-        return charBuffer[charBufferPtr];
+        return charBuffer[charBufferPtr++];
     }
 
     @Override
