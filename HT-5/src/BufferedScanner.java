@@ -9,8 +9,19 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || (char)c == '\'';
     }
 
+    private static final char LF = 0x000A;
+    private static final char CR = 0x000D;
+    private static final char[] lineSeparators = { LF, 0x000B, 0x000C, CR, 0x0085, 0x2028, 0x2029 };
 
-    private static final char[] lineSeparators = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085, 0x2028, 0x2029 };
+    private static boolean isLineSeparator(int c) {
+        for (char sep : lineSeparators) {
+            if (sep == c) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     ReaderBufferizer in;
     int read = -1;
@@ -26,7 +37,8 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
     public String nextSequence(IntPredicate isDelimiter) throws IOException {
         if (!in.hasNextChar()) {
-            throw new NoSuchElementException("EndOfStream: There are no sequences to read");
+            // throw new NoSuchElementException("EndOfStream: There are no sequences to read");
+            return null;
         }
 
         StringBuilder builder = new StringBuilder();
@@ -56,13 +68,23 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
 
 
-    public Integer nextInt() throws IOException, NoSuchElementException {
-        return Integer.parseInt(nextSequenceIgnoreEmpty(Character::isWhitespace));
+    public Integer nextInt() throws IOException, NoSuchElementException, NumberFormatException {
+        String token = nextSequenceIgnoreEmpty(Character::isWhitespace);
+        if (token == null) {
+             throw new NoSuchElementException("EndOfStream: There are no integers to read");
+        }
+        return Integer.parseInt(token);
     }
 
-    public String nextLine() {
-        // String result = nextSequence()
-        return null;
+    public String nextLine() throws IOException {
+        String lineAttempt = nextSequence(BufferedScanner::isLineSeparator);
+
+        if (lineAttempt != null) {
+            if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
+                in.nextChar();
+            }
+        }
+        return lineAttempt;
     }
 
 

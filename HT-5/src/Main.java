@@ -17,7 +17,8 @@ public class Main {
         // System.out.println(rootPath);
 //        Path sampleFilename = rootPath.resolve("simplest_input.txt");
 //          Path sampleFilename = rootPath.resolve("sample_input_words.txt");
-          Path sampleFilename = rootPath.resolve("sample_ints.txt");
+//          Path sampleFilename = rootPath.resolve("sample_ints.txt");
+          Path sampleFilename = rootPath.resolve("sample_lines.txt");
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
@@ -35,6 +36,10 @@ public class Main {
         for (char c : ca) {
             System.out.println((int) c);
         }
+
+        int i = 0x000A;
+
+        char[] c = Character.toChars(i);
     }
 
     static void testBufferizer(Path path) {
@@ -67,7 +72,8 @@ public class Main {
             System.out.println("Initialized;");
 
             // testScanningWords(scanner);
-            testScanningInts(scanner);
+//            testScanningInts(scanner);
+            testScanningLines(scanner);
 
         } catch (FileNotFoundException e) {
             System.err.println("File doesn't exist: " + path);
