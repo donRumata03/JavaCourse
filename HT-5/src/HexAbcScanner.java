@@ -46,7 +46,7 @@ public class HexAbcScanner implements Closeable, AutoCloseable {
         StringBuilder resultBuilder = new StringBuilder();
 
         for (char c: abcString.toCharArray()) {
-            resultBuilder.append((char)(c + '0' - 'a'));
+            resultBuilder.append(Character.isLetter(c) ? (char)(c + '0' - 'a') : c);
         }
 
         return resultBuilder.toString();

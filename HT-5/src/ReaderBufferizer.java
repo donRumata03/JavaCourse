@@ -26,7 +26,11 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
 
     private void tryReadNewChunk() throws IOException {
         if ((charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) || !hasBuffer) {
-            int charactersRead = in.read(charBuffer);
+            int charactersRead;
+            do {
+                charactersRead = in.read(charBuffer);
+                // System.err.println(charactersRead);
+            } while(charactersRead == 0);
             // System.out.println(charactersRead);
             if (charactersRead != charBuffer.length) {
                 // This is the last buffer that might be not full
