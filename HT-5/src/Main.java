@@ -22,15 +22,19 @@ public class Main {
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
 
-        char[] ca = System.getProperty("line.separator").toCharArray();
-        for (char c : ca) {
-            System.out.println((int) c);
-        }
 
         testScanner(sampleFilename);
 //        testBufferizer(sampleFilename);
 
 
+
+    }
+
+    static void testLineSeparators() {
+        char[] ca = System.getProperty("line.separator").toCharArray();
+        for (char c : ca) {
+            System.out.println((int) c);
+        }
     }
 
     static void testBufferizer(Path path) {

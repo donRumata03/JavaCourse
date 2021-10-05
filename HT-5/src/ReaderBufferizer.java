@@ -7,8 +7,8 @@ import java.util.function.IntPredicate;
 public class ReaderBufferizer implements Closeable, AutoCloseable {
     private static final int defaultCharBufferSize = 8192;
 
-    private Reader in;
-    private char[] charBuffer;
+    private final Reader in;
+    private final char[] charBuffer;
     private int lastBufferSizeIfAny;
     private int charBufferPtr;
     private boolean hasBuffer;

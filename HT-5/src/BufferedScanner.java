@@ -9,6 +9,21 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || (char)c == '\'';
     }
 
+    private static char[] getLineSeparators() {
+        int[] intSeps = {
+            0x000A, 0x000B, 0x000C, 0x000D, 0x0085, 0x2028, 0x2029
+        };
+
+        char[] seps = new char[intSeps.length];
+        for (int i = 0; i < intSeps.length; i++) {
+            seps[i] = Character.toChars(intSeps[i])[0]; // We're sure that there's only one char
+        }
+
+        return seps;
+    }
+
+    private static final char[] lineSeparators = { 0x000A, 0x000B, 0x000C, 0x000D, 0x0085, 0x2028, 0x2029 };
+
     ReaderBufferizer in;
     int read = -1;
 
