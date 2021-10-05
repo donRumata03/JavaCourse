@@ -33,7 +33,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
             if (isDelimiter.test(read)) {
                 break;
             }
-            builder.append(read);
+            builder.append((char)read);
         }
         return builder.toString();
     }
@@ -42,11 +42,8 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         // Skip delimiters
         // (may be drastically faster than calling nextSequence every time while it doesn't become empty
         // for files with a lot of spaces)
-        while (in.hasNextChar()) {
+        while (in.hasNextChar() && in.testNext(isDelimiter)) {
             read = in.nextChar();
-            if (!isDelimiter.test(read)) {
-                break;
-            }
         }
 
         // Read is now first character in sequence or EOS
@@ -67,7 +64,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
     public String nextWord() throws IOException {
         try {
-            return nextSequenceIgnoreEmpty(BufferedScanner::isFromWord);
+            return nextSequenceIgnoreEmpty((int ch) -> !BufferedScanner.isFromWord(ch));
         } catch (NoSuchElementException e) {
             return null;
         }

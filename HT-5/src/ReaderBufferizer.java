@@ -2,6 +2,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.NoSuchElementException;
+import java.util.function.IntPredicate;
 
 public class ReaderBufferizer implements Closeable, AutoCloseable {
     private static final int defaultCharBufferSize = 8192;
@@ -46,6 +47,15 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
 
         return charBufferPtr < currentBufferLength();
     }
+
+    public boolean testNext(IntPredicate predicate) throws IOException {
+        if (!hasNextChar()) {
+            throw new NoSuchElementException("EndOfStream: There are no symbols to test");
+        }
+
+        return predicate.test(charBuffer[charBufferPtr]);
+    }
+
     public char nextChar() throws IOException {
         if (!hasNextChar()) {
             throw new NoSuchElementException("EndOfStream: There are no symbols to read");

@@ -17,15 +17,15 @@ public class Main {
             // Main.class.getResource("").toString()
             Paths.get(System.getProperty("user.dir"))
         ;
-        System.out.println(rootPath);
+        // System.out.println(rootPath);
 //        Path sampleFilename = rootPath.resolve("simplest_input.txt");
           Path sampleFilename = rootPath.resolve("sample_input_words.txt");
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
 
-        // testScanner(sampleFilename);
-        testBufferizer(sampleFilename);
+         testScanner(sampleFilename);
+//        testBufferizer(sampleFilename);
     }
 
     static void testBufferizer(Path path) {
@@ -55,13 +55,14 @@ public class Main {
                 new FileInputStream(path.toString()), StandardCharsets.UTF_8
             )
         )) {
+            System.out.println("Initialized;");
             String nextWord;
             while(true) {
                 nextWord = scanner.nextWord();
                 if (nextWord == null) {
                     break;
                 }
-                System.out.println(nextWord);
+                System.out.println("\"" + nextWord + "\"");
             }
 
         } catch (FileNotFoundException e) {
