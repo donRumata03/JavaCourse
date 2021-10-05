@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 
-public class Main {
+public class ScanTester {
     public static void main(String[] args) {
         Path rootPath =
             // Main.class.getResource("").toString()
