@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -17,27 +18,56 @@ public class Main {
             Paths.get(System.getProperty("user.dir"))
         ;
         System.out.println(rootPath);
-        Path sample_filename = rootPath.resolve("sample_input_words.txt");
+        Path sampleFilename = rootPath.resolve("sample_input_words.txt");
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
 
+        // testScanner(sampleFilename);
+        testBufferizer(sampleFilename);
+    }
 
+    static void testBufferizer(Path path) {
+        try (ReaderBufferizer buff = new ReaderBufferizer(
+            new InputStreamReader(
+                new FileInputStream(path.toString()), StandardCharsets.UTF_8
+            )
+        )) {
 
-        Reader reader;
-        try {
-            reader = new InputStreamReader(new FileInputStream(sample_filename.toString()), StandardCharsets.UTF_8);
+            while (buff.hasNextChar()) {
+                char c = buff.nextChar();
+                // System.out.println((int)c + " '" + c + "'");
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    static void testScanner(Path path) {
+        try (BufferedScanner scanner = new BufferedScanner(
+            new InputStreamReader(
+                new FileInputStream(path.toString()), StandardCharsets.UTF_8
+            )
+        )) {
+            String nextWord;
+            while(true) {
+                nextWord = scanner.nextWord();
+                if (nextWord == null) {
+                    break;
+                }
+                System.out.println(nextWord);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File doesn't exist: " + path);
+            return;
+        } catch (IOException e) {
+            System.err.println("Error while reading file!");
             return;
         }
-
-        BufferedScanner scanner = new BufferedScanner(reader);
-
-        String nextWord;
-        do {
-            nextWord = scanner.nextWord();
-            System.out.println(nextWord);
-        } while (nextWord != null);
     }
 }
