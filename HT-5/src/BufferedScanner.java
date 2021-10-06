@@ -25,7 +25,6 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
     ReaderBufferizer in;
     int read = -1;
-    boolean hasReadLastBlankLine = true;
 
     public BufferedScanner (Reader reader) {
         in = new ReaderBufferizer(reader);
@@ -85,9 +84,6 @@ public class BufferedScanner implements Closeable, AutoCloseable {
                 in.nextChar();
             }
             return lineAttempt;
-        } else if (isLineSeparator(read) && !hasReadLastBlankLine) {
-            hasReadLastBlankLine = true;
-            return "";
         }
         return null;
     }
