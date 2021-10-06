@@ -22,8 +22,9 @@ public class HexAbcScanner implements Closeable, AutoCloseable {
             // Hex number:
             stringToParse = token.substring(2);
             radix = 16;
+            return Integer.parseUnsignedInt(stringToParse, radix);
 
-        } else if (Character.isDigit(token.charAt(0))) {
+        } else if (Character.isDigit(token.charAt(token.length() - 1))) {
             // Regular number:
             stringToParse = token;
             radix = 10;

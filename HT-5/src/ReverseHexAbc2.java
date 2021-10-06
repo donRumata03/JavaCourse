@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +12,7 @@ public class ReverseHexAbc2 {
     public static void main(String[] args) throws IOException {
 //        test();
 
-        var b = new BigInteger("fffffffe", 16);
+        // var b = Integer.parseInt("-4", 16);
 
         BufferedScanner inputReader = new BufferedScanner(new InputStreamReader(
 //            new FileInputStream("sample_test.txt")
@@ -30,7 +29,7 @@ public class ReverseHexAbc2 {
         // Output reversed:
         Collections.reverse(inputData);
         for (IntVector line : inputData) {
-            System.err.println("line");
+//            System.err.println("line");
             if (line != null) {
                 for (int i = 0; i < line.size(); i++) {
                     if (i != 0) {
