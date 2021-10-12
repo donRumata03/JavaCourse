@@ -29,14 +29,15 @@ public class WordStatCount {
         try (InputStreamReader inputFileReader = new InputStreamReader(
             new FileInputStream(inputFilename),
             StandardCharsets.UTF_8
-        )
+            )
         ) {
             counter = constructCounter(inputFileReader);
         } catch (FileNotFoundException e) {
             System.err.println("No such file (provided as input): " + inputFilename);
             return;
         } catch (IOException e) {
-            System.err.println("There were some errors while working with input file");
+            System.err.println("There were some errors with filesystem exception");
+            return;
         }
 
         List<WordWithCount> wordStat =
@@ -60,10 +61,8 @@ public class WordStatCount {
             System.err.println("FileNotFoundException appeared => the file exists but is a directory"
                 +"rather than a regular file, does not exist but cannot"
                 +"be created, or cannot be opened for any other reason");
-            return;
         } catch (IOException e) {
             System.err.println("There were some errors while working with output file");
-            return;
         }
     }
 
