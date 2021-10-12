@@ -37,7 +37,6 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
     public String nextSequence(IntPredicate isDelimiter) throws IOException {
         if (!in.hasNextChar()) {
-            // throw new NoSuchElementException("EndOfStream: There are no sequences to read");
             return null;
         }
 
@@ -64,10 +63,12 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         // Read is now first character in sequence or EOS
         return nextSequence(isDelimiter);
     }
-//    public String nextSequence(IntPredicate isDelimiter) { return nextSequence(isDelimiter, false); }
 
 
-
+    /**
+     * @return next int in stream
+     * @throws NoSuchElementException is EOS reached
+     */
     public Integer nextInt() throws IOException, NoSuchElementException, NumberFormatException {
         String token = nextSequenceIgnoreEmpty(Character::isWhitespace);
         if (token == null) {
@@ -76,6 +77,11 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return Integer.parseInt(token);
     }
 
+    /**
+     * @return next line of stream; «line» definition is just like in the Unicode standard:
+     *         https://en.wikipedia.org/wiki/Newline#Unicode; Empty lines are not ignored;
+     *         If there are no lines left, null is returned
+     */
     public String nextLine() throws IOException {
         String lineAttempt = nextSequence(BufferedScanner::isLineSeparator);
 
@@ -89,6 +95,9 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     }
 
 
+    /**
+     * @return next word in the stream or null (word delimiters are <code>!BufferedScanner::isFromWord()</code>)
+    */
     public String nextWord() throws IOException {
         try {
             return nextSequenceIgnoreEmpty((int ch) -> !BufferedScanner.isFromWord(ch));

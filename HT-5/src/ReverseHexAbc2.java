@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,11 +8,7 @@ import java.util.NoSuchElementException;
 
 
 public class ReverseHexAbc2 {
-    public static void main(String[] args) throws IOException {
-//        test();
-
-        // var b = Integer.parseInt("-4", 16);
-
+    public static void main(String[] args) {
         BufferedScanner inputReader = new BufferedScanner(new InputStreamReader(
 //            new FileInputStream("sample_test.txt")
             System.in
@@ -29,14 +24,12 @@ public class ReverseHexAbc2 {
         // Output reversed:
         Collections.reverse(inputData);
         for (IntVector line : inputData) {
-//            System.err.println("line");
             if (line != null) {
                 for (int i = 0; i < line.size(); i++) {
                     if (i != 0) {
                         System.out.print(" ");
                     }
                     System.out.print(intToAbcString(line.get(line.size() - i - 1)));
-//                System.out.print(line.get(line.size() - i - 1));
                 }
             }
             System.out.println();
@@ -49,7 +42,6 @@ public class ReverseHexAbc2 {
         while (true) {
             String thisLine = scanner.nextLine();
             if (thisLine == null) {
-                // System.err.println("input ended…");
                 break;
             }
             HexAbcScanner lineParser = new HexAbcScanner(new BufferedScanner(new StringReader(thisLine)));
@@ -81,19 +73,5 @@ public class ReverseHexAbc2 {
         }
 
         return resultBuilder.toString();
-    }
-
-    static void test() {
-        Reader r = new InputStreamReader(System.in);
-        char[] b = {0, 0};
-        int read = 0;
-        do {
-            try {
-                read = r.read(b);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println(read);
-        } while(read == 0);
     }
 }
