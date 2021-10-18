@@ -21,7 +21,7 @@ public class ReverseHexAbc2 {
             System.in
         ));
 
-        List<IntVector> inputData;
+        List<IntList> inputData;
         try {
             inputData = inputNumberStrings(inputReader);
         } catch (IOException e) {
@@ -30,7 +30,7 @@ public class ReverseHexAbc2 {
 
         // Output reversed:
         Collections.reverse(inputData);
-        for (IntVector line : inputData) {
+        for (IntList line : inputData) {
             if (line != null) {
                 for (int i = 0; i < line.size(); i++) {
                     if (i != 0) {
@@ -43,9 +43,9 @@ public class ReverseHexAbc2 {
         }
     }
 
-    static List<IntVector> inputNumberStrings(BufferedScanner scanner) throws IOException {
+    static List<IntList> inputNumberStrings(BufferedScanner scanner) throws IOException {
         // Input lines:
-        List<IntVector> inputData = new ArrayList<>();
+        List<IntList> inputData = new ArrayList<>();
         while (true) {
             String thisLine = scanner.nextLine();
             if (thisLine == null) {
@@ -53,7 +53,7 @@ public class ReverseHexAbc2 {
             }
             HexAbcScanner lineParser = new HexAbcScanner(new BufferedScanner(new StringReader(thisLine)));
 
-            inputData.add(new IntVector());
+            inputData.add(new IntList());
             var currentVector = inputData.get(inputData.size() - 1);
             while (true) {
                 try {
