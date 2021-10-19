@@ -1,6 +1,7 @@
 package HT_5;
 
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -111,10 +112,25 @@ public class ScanTester {
         }
     }
 
+    static void compareLineReading() {
+
+    }
+
     static void testScanningLines(BufferedScanner scanner) throws IOException {
         String nextLine;
         while(true) {
             nextLine = scanner.nextLine();
+            if (nextLine == null) {
+                break;
+            }
+            System.out.println("\"" + nextLine + "\"");
+        }
+    }
+
+    static void testBRScanningLines(BufferedReader reader) throws IOException {
+        String nextLine;
+        while(true) {
+            nextLine = reader.readLine();
             if (nextLine == null) {
                 break;
             }

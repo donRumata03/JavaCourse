@@ -1,7 +1,3 @@
-package HT_4;
-
-import HT_5.BufferedScanner;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,7 +18,7 @@ class WordWithCount {
     }
 }
 
-public class WordStatCount {
+public class WsppSortedSecondG {
     public static void main(String[] args) {
         String inputFilename = args[0];
         String outputFilename = args[1];
@@ -33,7 +29,7 @@ public class WordStatCount {
         try (InputStreamReader inputFileReader = new InputStreamReader(
             new FileInputStream(inputFilename),
             StandardCharsets.UTF_8
-            )
+        )
         ) {
             counter = constructCounter(inputFileReader);
         } catch (FileNotFoundException e) {
@@ -60,7 +56,7 @@ public class WordStatCount {
                 StandardCharsets.UTF_8
             )
         )) {
-            writeWordsWithCounts(wordStat, writer);
+            writeWordStat(wordStat, writer);
         } catch (FileNotFoundException e) {
             System.err.println("FileNotFoundException appeared => the file exists but is a directory"
                 +"rather than a regular file, does not exist but cannot"
@@ -87,7 +83,7 @@ public class WordStatCount {
         return counter;
     }
 
-    private static void writeWordsWithCounts(List<WordWithCount> wordStat, BufferedWriter writer) throws IOException {
+    private static void writeWordStat(List<WordWithCount> wordStat, BufferedWriter writer) throws IOException {
         for (WordWithCount wordWithCount: wordStat) {
             writer.write(wordWithCount.word + (" " + wordWithCount.count + "\n"));
         }
