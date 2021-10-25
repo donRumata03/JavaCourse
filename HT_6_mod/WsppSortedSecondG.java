@@ -1,3 +1,7 @@
+package HT_6_mod;
+
+import HT_5.BufferedScanner;
+import HT_5.IntList;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -8,16 +12,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.IntPredicate;
 
+
+
 class SingleWordInfo {
+    int count = 0;
+    IntList indexes = new IntList();
 
-    int count;
-    IntList indexes;
-    SingleWordInfo(int count, IntList indexes) {
-        this.count = count;
-        this.indexes = indexes;
-    }
-
+    SingleWordInfo() {}
 }
+
 class WordWithInfo {
     String word;
     SingleWordInfo info;
@@ -50,10 +53,7 @@ public class WsppSortedSecondG {
             return;
         }
 
-        List<WordWithInfo> wordStat =
-//            dumpCounterToListFast(counter)
-            dumpCounterToListMemoryEfficient(counter)
-            ;
+        List<WordWithInfo> wordStat = dumpCounterToListMemoryEfficient(counter);
 
         // This is stable and O(n log n) in worst case
         Collections.sort(wordStat, Comparator.comparing(c -> c.word));
@@ -81,10 +81,9 @@ public class WsppSortedSecondG {
         LinkedHashMap<String, SingleWordInfo> counter = new LinkedHashMap<>();
         BufferedScanner scanner = new BufferedScanner(reader);
 
-        HashMap<String, Integer> totalWordIndexes = new HashMap<>();
         int totalIndex = 0;
 
-        for (int lineIndex = 0; ; lineIndex++) {
+        while(true) {
             String thisLine = scanner.nextLine();
             if (thisLine == null) {
                 break;
@@ -93,7 +92,7 @@ public class WsppSortedSecondG {
             BufferedScanner lineSplitter = new BufferedScanner(new StringReader(thisLine));
             HashMap<String, Integer> wordCountInThisLine = new HashMap<>();
 
-            for (int wordIndex = 0; ; wordIndex++) {
+            while(true) {
                 String thisWord = lineSplitter.nextWord();
                 if (thisWord == null) {
                     break;
@@ -105,13 +104,9 @@ public class WsppSortedSecondG {
                 );
                 Integer indexInThisLine = wordCountInThisLine.get(thisWord);
 
-                totalWordIndexes.put(
-                    thisWord, totalWordIndexes.getOrDefault(thisWord, 0) + 1
-                );
-                Integer indexInAll = totalWordIndexes.get(thisWord);
 
                 SingleWordInfo thisWordData = counter.computeIfAbsent(thisWord,
-                    (String key) -> new SingleWordInfo(0, new IntList())
+                    (String key) -> new SingleWordInfo()
                 );
                 thisWordData.count++;
 
@@ -126,9 +121,20 @@ public class WsppSortedSecondG {
         return counter;
     }
 
-    private static void writeWordStat(List<WordWithInfo> wordStat, BufferedWriter writer)
-        throws IOException {
+    private static List<WordWithInfo> dumpCounterToListMemoryEfficient(LinkedHashMap<String, SingleWordInfo> counter) {
+        List<WordWithInfo> wordStat = new ArrayList<>();
 
+        while (!counter.isEmpty()) {
+            var head = counter.entrySet().iterator();
+            var thisEntry = head.next();
+            wordStat.add(new WordWithInfo(thisEntry.getKey(), thisEntry.getValue()));
+            head.remove();
+        }
+        return wordStat;
+    }
+
+
+    private static void writeWordStat(List<WordWithInfo> wordStat, BufferedWriter writer) throws IOException {
         for (var wordData: wordStat) {
             StringBuilder lineBuilder = new StringBuilder();
             lineBuilder.append(wordData.word);
@@ -143,23 +149,5 @@ public class WsppSortedSecondG {
 
             writer.write(lineBuilder.toString());
         }
-    }
-
-//    private static List<WordWithCount> dumpCounterToListFast(LinkedHashMap<String, Integer> counter) {
-//        List<WordWithCount> wordStat = new ArrayList<>();
-//        counter.forEach((key, value) -> wordStat.add(new WordWithCount(key, value)));
-//        return wordStat;
-//    }
-
-    private static List<WordWithInfo> dumpCounterToListMemoryEfficient(LinkedHashMap<String, SingleWordInfo> counter) {
-        List<WordWithInfo> wordStat = new ArrayList<>();
-
-        while (!counter.isEmpty()) {
-            var head = counter.entrySet().iterator();
-            var thisEntry = head.next();
-            wordStat.add(new WordWithInfo(thisEntry.getKey(), thisEntry.getValue()));
-            head.remove();
-        }
-        return wordStat;
     }
 }
