@@ -10,14 +10,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 
-<<<<<<< HEAD:HT-5/src/ReverseHexAbc2.java
-/**
- * Fix:
- * 1) don't init new scanner for each line
- * 2) Both \n\r and \r\n (and maybe something else from wikipedia)
- */
-=======
->>>>>>> 6e16ea46676335afb9a55cab911149477cb9b467:HT_5/ReverseHexAbc2.java
 
 public class ReverseHexAbc2 {
     public static void main(String[] args) {

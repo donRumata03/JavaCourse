@@ -36,6 +36,35 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     }
 
 
+    /**
+     * If previous read character was CR and the next character is LF, it reads the LF
+     */
+    private void consumeNewlineSecondHalf() throws IOException {
+        if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
+            in.nextChar();
+            read = -1; // Not to consume second half more than once
+        }
+    }
+
+    /**
+     * @return How many newlines consumed
+     */
+    public int consumeDelimitersAndNewlines(IntPredicate isDelimiter) throws IOException {
+        int newlinesConsumed = 0;
+        while (in.hasNextChar()) {
+            if (in.testNext(BufferedScanner::isLineSeparator)) {
+                read = in.nextChar();
+                consumeNewlineSecondHalf();
+                newlinesConsumed++;
+            } else if (in.testNext(isDelimiter)) {
+                read = in.nextChar();
+            } else {
+                break;
+            }
+        }
+
+        return newlinesConsumed;
+    }
 
     public String nextSequence(IntPredicate isDelimiter) throws IOException {
         if (!in.hasNextChar()) {
@@ -88,9 +117,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         String lineAttempt = nextSequence(BufferedScanner::isLineSeparator);
 
         if (lineAttempt != null) {
-            if ((read == CR || read == LF) && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
-                in.nextChar();
-            }
+            consumeNewlineSecondHalf();
             return lineAttempt;
         }
         return null;

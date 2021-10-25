@@ -1,12 +1,8 @@
-package HT_6; // Comment when passing tests
+package HT_6_old; // Comment when passing tests
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 
 import HT_5.BufferedScanner;
