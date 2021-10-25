@@ -25,6 +25,7 @@ public class ReverseHexAbc2 {
         try {
             inputData = inputNumberStrings(inputReader);
         } catch (IOException e) {
+            System.err.println("Error occurred while reading input file's contents: " + e.getMessage());
             return;
         }
 

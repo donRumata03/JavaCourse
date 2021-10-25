@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
+import java.util.function.Predicate;
+
 
 public class BufferedScanner implements Closeable, AutoCloseable {
     private static boolean isFromWord(int c) {
@@ -24,9 +26,16 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return false;
     }
 
+    public static Predicate<BufferedScanner> generateSingleDelimiterConsumer(IntPredicate isDelimiter) {
+        return (BufferedScanner bs) -> {
+            return bs.consumeCharIf(isDelimiter);
+        };
+    }
 
-    ReaderBufferizer in;
-    int read = -1;
+
+    /// Fields
+    private final ReaderBufferizer in;
+    private int read = -1;
 
     public BufferedScanner (Reader reader) {
         in = new ReaderBufferizer(reader);
@@ -66,7 +75,13 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return newlinesConsumed;
     }
 
-    public String nextSequence(IntPredicate isDelimiter) throws IOException {
+    /**
+     * If buffer is empty, returns <code>null</code>;
+     *
+     * Else: Consumes one <b>delimiter if</b> there are some,
+     * then — returns continuous, delimiter-free sequence of characters
+     */
+    public String nextSequence(IntPredicate isDelimiterStart, Predicate<BufferedScanner> consumeOneDelimiter) throws IOException {
         if (!in.hasNextChar()) {
             return null;
         }
@@ -82,19 +97,48 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         }
         return builder.toString();
     }
-
-    public String nextSequenceIgnoreEmpty(IntPredicate isDelimiter) throws IOException {
-        // Skip delimiters
-        // (may be drastically faster than calling nextSequence every time while it doesn't become empty
-        // for files with a lot of spaces)
-        while (in.hasNextChar() && in.testNext(isDelimiter)) {
-            read = in.nextChar();
-        }
-
-        // Read is now first character in sequence or EOS
-        return nextSequence(isDelimiter);
+    public String nextSequence(IntPredicate isDelimiter) throws IOException {
+        return nextSequence(isDelimiter, BufferedScanner::generateSingleDelimiterConsumer (isDelimiter));
     }
 
+
+    /**
+     * If buffer is empty, returns <code>null</code>;
+     *
+     * Else: Consumes delimiter<b>s while</b> there are some,
+     * then — returns continuous, delimiter-free sequence of characters
+     */
+    public String nextSequenceIgnoreEmpty(IntPredicate isDelimiterStart, Predicate<BufferedScanner> consumeOneDelimiter) throws IOException {
+        // Skip all preceding delimiters
+        while (consumeOneDelimiter.test(this));
+
+        return nextSequence(isDelimiterStart, consumeOneDelimiter);
+    }
+    public String nextSequenceIgnoreEmpty(IntPredicate isDelimiter) throws IOException {
+        return nextSequenceIgnoreEmpty(isDelimiter, BufferedScanner::generateSingleDelimiterConsumer(isDelimiter));
+    }
+
+    // ---------------------------       Simple public interface        ---------------------------
+
+    public boolean hasNextChar() throws IOException {
+        return in.hasNextChar();
+    }
+
+    /**
+     * Test next char without consuming it
+     */
+    public boolean testNextChar(IntPredicate t) throws IOException {
+        return in.testNext(t);
+    }
+    public boolean consumeCharIf(IntPredicate t) throws IOException {
+        return in.consumeIf(t);
+    }
+
+    public char nextChar() throws IOException {
+        if (!in.hasNextChar()) throw new NoSuchElementException("Can't read next char: stream is exhausted!");
+
+        return (char) (read = in.nextChar());
+    }
 
     /**
      * @return next int in stream
@@ -118,9 +162,8 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
         if (lineAttempt != null) {
             consumeNewlineSecondHalf();
-            return lineAttempt;
         }
-        return null;
+        return lineAttempt;
     }
 
 

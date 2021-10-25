@@ -63,6 +63,13 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         return predicate.test(charBuffer[charBufferPtr]);
     }
 
+    public boolean consumeIf(IntPredicate predicate) throws IOException {
+        if (this.testNext(predicate)) {
+
+        }
+        return ;
+    }
+
     public char nextChar() throws IOException {
         if (!hasNextChar()) {
             throw new NoSuchElementException("EndOfStream: There are no symbols to read");
