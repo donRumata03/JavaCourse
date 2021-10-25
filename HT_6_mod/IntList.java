@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
-public class IntVector {
+public class IntList {
     private int mSize;
     private int[] mArray;
 
-    public IntVector() {
+    public IntList() {
         mSize = 0;
         mArray = new int[1];
     }
@@ -21,11 +21,12 @@ public class IntVector {
         mArray = Arrays.copyOf(mArray, newCapacity);
     }
 
-    public void add(int element) {
+    public IntList add(int element) {
         if (mSize + 1 == mArray.length) {
             reallocate(Math.max(mArray.length * 2, 4));
         }
         mArray[mSize++] = element;
+        return this;
     }
     public int get(int index) {
         return mArray[index];

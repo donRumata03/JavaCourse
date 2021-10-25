@@ -86,7 +86,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         String lineAttempt = nextSequence(BufferedScanner::isLineSeparator);
 
         if (lineAttempt != null) {
-            if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
+            if ((read == CR || read == LF) && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
                 in.nextChar();
             }
             return lineAttempt;

@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 
+/**
+ * Fix:
+ * 1) don't init new scanner for each line
+ * 2) Both \n\r and \r\n (and maybe something else from wikipedia)
+ */
+
 public class ReverseHexAbc2 {
     public static void main(String[] args) {
         BufferedScanner inputReader = new BufferedScanner(new InputStreamReader(
