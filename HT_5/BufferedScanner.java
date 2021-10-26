@@ -59,7 +59,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      */
     private void tryConsumeNewlineSecondHalf() throws IOException {
         if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
-            in.nextChar();
+            nextChar();
             read = READ_CHARACTER_HIDDEN; // Not to consume second half more than once
         }
     }
@@ -71,11 +71,11 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         int newlinesConsumed = 0;
         while (in.hasNextChar()) {
             if (in.testNext(BufferedScanner::isLineSeparator)) {
-                read = in.nextChar();
+                nextChar();
                 tryConsumeNewlineSecondHalf();
                 newlinesConsumed++;
             } else if (in.testNext(isDelimiter)) {
-                read = in.nextChar();
+                nextChar();
             } else {
                 break;
             }
@@ -101,7 +101,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         StringBuilder builder = new StringBuilder();
 
         while (in.hasNextChar() && !in.testNext(isDelimiterStart)) {
-            read = in.nextChar();
+            nextChar();
             builder.append((char)read);
         }
 
