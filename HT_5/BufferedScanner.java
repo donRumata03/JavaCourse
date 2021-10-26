@@ -31,10 +31,21 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     }
 
 
-    /// Fields
-    private final ReaderBufferizer in;
-    private int read = -1;
 
+    // Special Read Indicators:
+    private static final int DIDNT_READ_ANYTHING_EVER = -1;
+    private static final int READ_CHARACTER_HIDDEN = -2;
+
+    // Fields
+    private final ReaderBufferizer in;
+    private int read = DIDNT_READ_ANYTHING_EVER;
+
+    /**
+     * Scanner has been «touched» if either characters have been read or nextSequence[IgnoreEmpty] has been called
+    */
+    private boolean hasBeenTouched = false;
+
+    // Constructors:
     public BufferedScanner (Reader reader) {
         in = new ReaderBufferizer(reader);
     }
@@ -49,7 +60,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     private void tryConsumeNewlineSecondHalf() throws IOException {
         if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
             in.nextChar();
-            read = -1; // Not to consume second half more than once
+            read = READ_CHARACTER_HIDDEN; // Not to consume second half more than once
         }
     }
 
@@ -85,7 +96,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         }
 
         // Perform the consumption:
-        consumeOneDelimiter.consumeOneDelimiter(this);
+        if (hasBeenTouched) consumeOneDelimiter.consumeOneDelimiter(this);
 
         StringBuilder builder = new StringBuilder();
 
@@ -93,6 +104,8 @@ public class BufferedScanner implements Closeable, AutoCloseable {
             read = in.nextChar();
             builder.append((char)read);
         }
+
+        hasBeenTouched = true;
         return builder.toString();
     }
     public String nextSequence(IntPredicate isDelimiter) throws IOException {
@@ -144,7 +157,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         if (!in.hasNextChar()) {
             throw new NoSuchElementException("Can't read next char: stream is exhausted!");
         }
-
+        hasBeenTouched = true;
         return (char) (read = in.nextChar());
     }
 
