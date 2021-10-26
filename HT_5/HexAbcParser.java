@@ -1,24 +1,12 @@
 package HT_5;
 
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
 
-public class HexAbcScanner implements Closeable, AutoCloseable {
-    BufferedScanner rawReader;
-
-    public HexAbcScanner(BufferedScanner rawReader) {
-        this.rawReader = rawReader;
-    }
-
-    public int nextInt() throws IOException {
-        String token = rawReader.nextSequenceIgnoreEmpty(Character::isWhitespace);
-        if (token == null) {
-            throw new NoSuchElementException();
-        }
-
+public class HexAbcParser {
+    public static int parseHexAbcInt(String token) throws IOException {
         String stringToParse;
         int radix;
         if (token.length() > 2 && startsWithIgnoreCase(token, "0x")) {
@@ -54,10 +42,5 @@ public class HexAbcScanner implements Closeable, AutoCloseable {
         }
 
         return resultBuilder.toString();
-    }
-
-    @Override
-    public void close() throws IOException {
-        rawReader.close();
     }
 }

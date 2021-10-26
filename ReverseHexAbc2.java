@@ -1,5 +1,5 @@
 import HT_5.BufferedScanner;
-import HT_5.HexAbcScanner;
+import HT_5.HexAbcParser;
 import HT_5.IntList;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +23,10 @@ public class ReverseHexAbc2 {
 
         List<IntList> inputData;
         try {
-            inputData = inputNumberStrings(inputReader);
+            inputData =
+                // inputNumberStrings(inputReader)
+                inputNumberStringsOptimized(inputReader)
+            ;
         } catch (IOException e) {
             System.err.println("Error occurred while reading input file's contents: " + e.getMessage());
             return;
@@ -52,7 +55,37 @@ public class ReverseHexAbc2 {
             if (thisLine == null) {
                 break;
             }
-            HexAbcScanner lineParser = new HexAbcScanner(new BufferedScanner(new StringReader(thisLine)));
+            HexAbcParser lineParser = new HexAbcParser(new BufferedScanner(new StringReader(thisLine)));
+
+            inputData.add(new IntList());
+            var currentVector = inputData.get(inputData.size() - 1);
+            while (true) {
+                try {
+                    currentVector.add(lineParser.nextInt());
+                } catch (NoSuchElementException e) {
+                    break;
+                }
+            }
+            if (currentVector.isEmpty()) {
+                inputData.set(inputData.size() - 1, null);
+            }
+        }
+        int lastInputDataIndex = inputData.size() - 1;
+        if (!inputData.isEmpty() && inputData.get(lastInputDataIndex) == null) { // Ignore last newline
+            inputData.remove(inputData.size() - 1);
+        }
+
+        return inputData;
+    }
+    static List<IntList> inputNumberStringsOptimized(BufferedScanner scanner) throws IOException {
+        // Input lines:
+        List<IntList> inputData = new ArrayList<>();
+        while (true) {
+            String thisLine = scanner.nextLine();
+            if (thisLine == null) {
+                break;
+            }
+            HexAbcParser lineParser = new HexAbcParser(new BufferedScanner(new StringReader(thisLine)));
 
             inputData.add(new IntList());
             var currentVector = inputData.get(inputData.size() - 1);
