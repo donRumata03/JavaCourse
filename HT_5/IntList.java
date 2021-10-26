@@ -9,7 +9,7 @@ public class IntList {
 
     public IntList() {
         mSize = 0;
-        mArray = new int[mSize];
+        mArray = null;
     }
 
     public int size() {
@@ -21,7 +21,7 @@ public class IntList {
     }
 
     private void reallocate(int newCapacity) {
-        if (mArray.length != 0) {
+        if (mArray != null && mArray.length != 0) {
             mArray = Arrays.copyOf(mArray, newCapacity); // This function is pretty weird: it crashes if input size == 0
         } else {
             mArray = new int[newCapacity];
