@@ -64,10 +64,11 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     }
 
     public boolean consumeIf(IntPredicate predicate) throws IOException {
-        if (this.testNext(predicate)) {
-
+        if (testNext(predicate)) {
+            nextChar();
+            return true;
         }
-        return ;
+        return false;
     }
 
     public char nextChar() throws IOException {
