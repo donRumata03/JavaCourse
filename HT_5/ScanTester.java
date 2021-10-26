@@ -31,8 +31,9 @@ public class ScanTester {
 //        int i = s.nextInt();
 
 
-        testScanner(samplePath);
+//        testScanner(samplePath);
 //        testBufferizer(samplePath);
+        compareLineReading(samplePath);
 
 
 
@@ -112,8 +113,38 @@ public class ScanTester {
         }
     }
 
-    static void compareLineReading() {
+    static void compareLineReading(Path path) {
+        BufferedScanner scanner = null;
+        try {
+            scanner = new BufferedScanner(
+                new InputStreamReader(
+                    new FileInputStream(path.toString()), StandardCharsets.UTF_8
+                )
+            );
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Scanner output:");
+        try {
+            testScanningLines(scanner);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("____________________________________");
+        try {
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                    new FileInputStream(path.toString()), StandardCharsets.UTF_8
+                )
+            );
+            System.out.println("BR output:");
+            testBRScanningLines(reader);
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static void testScanningLines(BufferedScanner scanner) throws IOException {
