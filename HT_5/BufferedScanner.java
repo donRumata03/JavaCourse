@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
-import java.util.function.Predicate;
-
 
 public class BufferedScanner implements Closeable, AutoCloseable {
+    // Default delimiters:
     private static boolean isFromWord(int c) {
         return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || (char)c == '\'';
     }
@@ -26,10 +25,9 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return false;
     }
 
-    public static Predicate<BufferedScanner> generateSingleDelimiterConsumer(IntPredicate isDelimiter) {
-        return (BufferedScanner bs) -> {
-            return bs.consumeCharIf(isDelimiter);
-        };
+    // Default consumer generating:
+    public static DelimiterConsumer generateSingleDelimiterConsumer(IntPredicate isDelimiter) {
+        return (BufferedScanner bs) -> bs.consumeCharIf(isDelimiter);
     }
 
 
@@ -48,7 +46,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     /**
      * If previous read character was CR and the next character is LF, it reads the LF
      */
-    private void consumeNewlineSecondHalf() throws IOException {
+    private void tryConsumeNewlineSecondHalf() throws IOException {
         if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
             in.nextChar();
             read = -1; // Not to consume second half more than once
@@ -63,7 +61,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         while (in.hasNextChar()) {
             if (in.testNext(BufferedScanner::isLineSeparator)) {
                 read = in.nextChar();
-                consumeNewlineSecondHalf();
+                tryConsumeNewlineSecondHalf();
                 newlinesConsumed++;
             } else if (in.testNext(isDelimiter)) {
                 read = in.nextChar();
@@ -81,24 +79,24 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * Else: Consumes one <b>delimiter if</b> there are some,
      * then — returns continuous, delimiter-free sequence of characters
      */
-    public String nextSequence(IntPredicate isDelimiterStart, Predicate<BufferedScanner> consumeOneDelimiter) throws IOException {
+    public String nextSequence(IntPredicate isDelimiterStart, DelimiterConsumer consumeOneDelimiter) throws IOException {
         if (!in.hasNextChar()) {
             return null;
         }
 
+        // Perform the consumption:
+        consumeOneDelimiter.consumeOneDelimiter(this);
+
         StringBuilder builder = new StringBuilder();
 
-        while (in.hasNextChar()) {
+        while (in.hasNextChar() && !in.testNext(isDelimiterStart)) {
             read = in.nextChar();
-            if (isDelimiter.test(read)) {
-                break;
-            }
             builder.append((char)read);
         }
         return builder.toString();
     }
     public String nextSequence(IntPredicate isDelimiter) throws IOException {
-        return nextSequence(isDelimiter, BufferedScanner::generateSingleDelimiterConsumer (isDelimiter));
+        return nextSequence(isDelimiter, BufferedScanner.generateSingleDelimiterConsumer(isDelimiter));
     }
 
 
@@ -108,14 +106,14 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * Else: Consumes delimiter<b>s while</b> there are some,
      * then — returns continuous, delimiter-free sequence of characters
      */
-    public String nextSequenceIgnoreEmpty(IntPredicate isDelimiterStart, Predicate<BufferedScanner> consumeOneDelimiter) throws IOException {
+    public String nextSequenceIgnoreEmpty(IntPredicate isDelimiterStart, DelimiterConsumer consumeOneDelimiter) throws IOException {
         // Skip all preceding delimiters
-        while (consumeOneDelimiter.test(this));
+        while (consumeOneDelimiter.consumeOneDelimiter(this));
 
         return nextSequence(isDelimiterStart, consumeOneDelimiter);
     }
     public String nextSequenceIgnoreEmpty(IntPredicate isDelimiter) throws IOException {
-        return nextSequenceIgnoreEmpty(isDelimiter, BufferedScanner::generateSingleDelimiterConsumer(isDelimiter));
+        return nextSequenceIgnoreEmpty(isDelimiter, BufferedScanner.generateSingleDelimiterConsumer(isDelimiter));
     }
 
     // ---------------------------       Simple public interface        ---------------------------
@@ -134,8 +132,14 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return in.consumeIf(t);
     }
 
+    /**
+     * @return Next char in the stream
+     * @throws NoSuchElementException is the stream is exhausted
+     */
     public char nextChar() throws IOException {
-        if (!in.hasNextChar()) throw new NoSuchElementException("Can't read next char: stream is exhausted!");
+        if (!in.hasNextChar()) {
+            throw new NoSuchElementException("Can't read next char: stream is exhausted!");
+        }
 
         return (char) (read = in.nextChar());
     }
@@ -158,10 +162,19 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      *         If there are no lines left, null is returned
      */
     public String nextLine() throws IOException {
-        String lineAttempt = nextSequence(BufferedScanner::isLineSeparator);
+        String lineAttempt = nextSequence(
+            BufferedScanner::isLineSeparator,
+            (BufferedScanner bs) -> {
+                if (bs.consumeCharIf(BufferedScanner::isLineSeparator)) {
+                    tryConsumeNewlineSecondHalf();
+                    return true;
+                }
+                return false;
+            }
+        );
 
         if (lineAttempt != null) {
-            consumeNewlineSecondHalf();
+            tryConsumeNewlineSecondHalf();
         }
         return lineAttempt;
     }
@@ -171,11 +184,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * @return next word in the stream or null (word delimiters are <code>!BufferedScanner::isFromWord()</code>)
     */
     public String nextWord() throws IOException {
-        try {
-            return nextSequenceIgnoreEmpty((int ch) -> !BufferedScanner.isFromWord(ch));
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+        return nextSequenceIgnoreEmpty((int ch) -> !BufferedScanner.isFromWord(ch));
     }
 
 
