@@ -142,7 +142,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return in.testNext(t);
     }
     public boolean consumeCharIf(IntPredicate t) throws IOException {
-        boolean testResult = in.testNext(t);
+        boolean testResult = hasNextChar() && in.testNext(t);
         if (testResult) {
             nextChar();
         }

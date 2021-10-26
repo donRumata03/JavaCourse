@@ -29,16 +29,24 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
 
     private void tryReadNewChunk() throws IOException {
         if ((charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) || !hasBuffer) {
-            int charactersRead;
+            // Need to and can try to increase:
+
+            int proposedBufferSize = 0;
+            int read;
             do {
-                charactersRead = in.read(charBuffer);
-                // System.err.println(charactersRead);
-            } while(charactersRead == 0);
+                read = in.read(charBuffer, proposedBufferSize, charBuffer.length - proposedBufferSize);
+                if (read != -1) {
+                    proposedBufferSize += read;
+                }
+            } while (read != -1 && proposedBufferSize != charBuffer.length);
+
             // System.out.println(charactersRead);
-            if (charactersRead != charBuffer.length) {
+            if (read == -1) {
                 // This is the last buffer that might be not full
                 // It can even have length «0»
-                lastBufferSizeIfAny = (charactersRead == -1) ? 0 : charactersRead;
+                lastBufferSizeIfAny = proposedBufferSize;
+            } else { // Read full buffer
+
             }
             charBufferPtr = 0;
             hasBuffer = true;
@@ -64,7 +72,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     }
 
     public boolean consumeIf(IntPredicate predicate) throws IOException {
-        if (testNext(predicate)) {
+        if (hasNextChar() && testNext(predicate)) {
             nextChar();
             return true;
         }
@@ -73,7 +81,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
 
     public char nextChar() throws IOException {
         if (!hasNextChar()) {
-            throw new NoSuchElementException("EndOfStream: There are no symbols to read");
+            throw new NoSuchElementException("[Bufferizer] EndOfStream: There are no symbols to read");
         }
 
         return charBuffer[charBufferPtr++];

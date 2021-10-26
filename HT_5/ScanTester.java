@@ -32,8 +32,8 @@ public class ScanTester {
 
 
 //        testScanner(samplePath);
-//        testBufferizer(samplePath);
-        compareLineReading(samplePath);
+        testBufferizer(samplePath);
+//        compareLineReading(samplePath);
 
 
 

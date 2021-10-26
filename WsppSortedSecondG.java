@@ -1,5 +1,3 @@
-package HT_6_mod;
-
 import HT_5.BufferedScanner;
 import HT_5.IntList;
 import java.io.*;
