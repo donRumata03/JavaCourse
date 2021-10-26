@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
 
 public class ReaderBufferizer implements Closeable, AutoCloseable {
-    private static final int defaultCharBufferSize = 8192;
+    private static final int defaultCharBufferSize = 1024;
 
     private final Reader in;
     private final char[] charBuffer;
