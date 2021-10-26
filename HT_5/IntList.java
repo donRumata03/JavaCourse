@@ -9,7 +9,7 @@ public class IntList {
 
     public IntList() {
         mSize = 0;
-        mArray = null;
+        mArray = new int[0];
     }
 
     public int size() {
