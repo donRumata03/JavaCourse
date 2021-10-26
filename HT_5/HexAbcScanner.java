@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 public class HexAbcScanner implements Closeable, AutoCloseable {
     BufferedScanner rawReader;
 
-    HexAbcScanner (BufferedScanner rawReader) {
+    public HexAbcScanner(BufferedScanner rawReader) {
         this.rawReader = rawReader;
     }
 

@@ -20,12 +20,12 @@ public class ScanTester {
         ;
         // System.out.println(rootPath);
 
-        String sampleFilename = "sample_test.txt";
+//        String sampleFilename = "sample_test.txt";
 //        String sampleFilename = "sample_input_words.txt";
 //        String sampleFilename = "sample_ints.txt";
-//        String sampleFilename = "sample_lines.txt";
+        String sampleFilename = "sample_lines.txt";
 
-          Path samplePath = rootPath.resolve("HT_5").resolve("samples").resolve(Paths.get(sampleFilename));
+        Path samplePath = rootPath.resolve("HT_5").resolve("samples").resolve(Paths.get(sampleFilename));
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();

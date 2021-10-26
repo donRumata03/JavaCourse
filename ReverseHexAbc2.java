@@ -1,6 +1,6 @@
-package HT_5;
-
-
+import HT_5.BufferedScanner;
+import HT_5.HexAbcScanner;
+import HT_5.IntList;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -66,6 +66,10 @@ public class ReverseHexAbc2 {
             if (currentVector.isEmpty()) {
                 inputData.set(inputData.size() - 1, null);
             }
+        }
+        int lastInputDataIndex = inputData.size() - 1;
+        if (!inputData.isEmpty() && inputData.get(lastInputDataIndex) == null) { // Ignore last newline
+            inputData.remove(inputData.size() - 1);
         }
 
         return inputData;
