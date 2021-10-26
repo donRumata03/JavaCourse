@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 
 public class HexAbcParser {
-    public static int parseHexAbcInt(String token) throws IOException {
+    public static int parseHexAbcInt(String token) {
         String stringToParse;
         int radix;
         if (token.length() > 2 && startsWithIgnoreCase(token, "0x")) {

@@ -47,61 +47,65 @@ public class ReverseHexAbc2 {
         }
     }
 
-    static List<IntList> inputNumberStrings(BufferedScanner scanner) throws IOException {
-        // Input lines:
-        List<IntList> inputData = new ArrayList<>();
-        while (true) {
-            String thisLine = scanner.nextLine();
-            if (thisLine == null) {
-                break;
-            }
-            HexAbcParser lineParser = new HexAbcParser(new BufferedScanner(new StringReader(thisLine)));
+//    static List<IntList> inputNumberStrings(BufferedScanner scanner) throws IOException {
+//        // Input lines:
+//        List<IntList> inputData = new ArrayList<>();
+//        while (true) {
+//            String thisLine = scanner.nextLine();
+//            if (thisLine == null) {
+//                break;
+//            }
+//            HexAbcParser lineParser = new HexAbcParser(new BufferedScanner(new StringReader(thisLine)));
+//
+//            inputData.add(new IntList());
+//            var currentVector = inputData.get(inputData.size() - 1);
+//            while (true) {
+//                try {
+//                    currentVector.add(lineParser.nextInt());
+//                } catch (NoSuchElementException e) {
+//                    break;
+//                }
+//            }
+//            if (currentVector.isEmpty()) {
+//                inputData.set(inputData.size() - 1, null);
+//            }
+//        }
+//        int lastInputDataIndex = inputData.size() - 1;
+//        if (!inputData.isEmpty() && inputData.get(lastInputDataIndex) == null) { // Ignore last newline
+//            inputData.remove(inputData.size() - 1);
+//        }
+//
+//        return inputData;
+//    }
 
-            inputData.add(new IntList());
-            var currentVector = inputData.get(inputData.size() - 1);
-            while (true) {
-                try {
-                    currentVector.add(lineParser.nextInt());
-                } catch (NoSuchElementException e) {
-                    break;
-                }
-            }
-            if (currentVector.isEmpty()) {
-                inputData.set(inputData.size() - 1, null);
-            }
-        }
-        int lastInputDataIndex = inputData.size() - 1;
-        if (!inputData.isEmpty() && inputData.get(lastInputDataIndex) == null) { // Ignore last newline
-            inputData.remove(inputData.size() - 1);
-        }
-
-        return inputData;
-    }
     static List<IntList> inputNumberStringsOptimized(BufferedScanner scanner) throws IOException {
         // Input lines:
         List<IntList> inputData = new ArrayList<>();
         while (true) {
-            String thisLine = scanner.nextLine();
-            if (thisLine == null) {
-                break;
-            }
-            HexAbcParser lineParser = new HexAbcParser(new BufferedScanner(new StringReader(thisLine)));
+            int newlinesRead = scanner.consumeDelimitersAndNewlines(Character::isWhitespace);
 
-            inputData.add(new IntList());
-            var currentVector = inputData.get(inputData.size() - 1);
-            while (true) {
-                try {
-                    currentVector.add(lineParser.nextInt());
-                } catch (NoSuchElementException e) {
-                    break;
-                }
+            if (inputData.isEmpty() && newlinesRead != 0) {
+                inputData.add(new IntList());
             }
-            if (currentVector.isEmpty()) {
-                inputData.set(inputData.size() - 1, null);
+            for (int i = 0; i < newlinesRead; i++) {
+                inputData.add(new IntList());
+//                if (!inputData.isEmpty() && inputData.get(inputData.size() - 1) != null && inputData.get(inputData.size() - 1).isEmpty()) {
+//                    inputData.set(inputData.size() - 1, null);
+//                }
+            }
+
+            try {
+                if (inputData.isEmpty()) {
+                    inputData.add(new IntList());
+                }
+                inputData.get(inputData.size() - 1)
+                    .add(HexAbcParser.parseHexAbcInt(scanner.nextSequenceIgnoreEmpty(Character::isWhitespace)));
+            } catch(NoSuchElementException e) {
+                break;
             }
         }
         int lastInputDataIndex = inputData.size() - 1;
-        if (!inputData.isEmpty() && inputData.get(lastInputDataIndex) == null) { // Ignore last newline
+        if (!inputData.isEmpty() && (inputData.get(lastInputDataIndex) == null || inputData.get(lastInputDataIndex).isEmpty())) { // Ignore last newline
             inputData.remove(inputData.size() - 1);
         }
 
