@@ -10,11 +10,11 @@ public class Strikeout extends MarkdownWrappingElement implements MarkdownWrapab
 
     @Override
     protected String getOpener() {
-        return "*";
+        return "~";
     }
 
     @Override
     protected String getCloser() {
-        return "*";
+        return "~";
     }
 }
