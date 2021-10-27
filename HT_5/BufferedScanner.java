@@ -33,12 +33,20 @@ public class BufferedScanner implements Closeable, AutoCloseable {
 
 
     // Special Read Indicators:
-    private static final int DIDNT_READ_ANYTHING_EVER = -1;
-    private static final int READ_CHARACTER_HIDDEN = -2;
+    public enum ReadStates {
+        DIDNT_READ_ANYTHING_EVER(-1),
+        READ_CHARACTER_HIDDEN(-2);
+
+        public final int stateCode;
+
+        ReadStates(int stateCode) {
+            this.stateCode = stateCode;
+        }
+    }
 
     // Fields
     private final ReaderBufferizer in;
-    private int read = DIDNT_READ_ANYTHING_EVER;
+    private int read = ReadStates.DIDNT_READ_ANYTHING_EVER.stateCode;
 
     /**
      * Scanner has been «touched» if either characters have been read or nextSequence[IgnoreEmpty] has been called
@@ -60,7 +68,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     private void tryConsumeNewlineSecondHalf() throws IOException {
         if (read == CR && in.hasNextChar() && in.testNext((int ch) -> ch == LF)) {
             nextChar();
-            read = READ_CHARACTER_HIDDEN; // Not to consume second half more than once
+            read = ReadStates.READ_CHARACTER_HIDDEN.stateCode; // Not to consume «second half» more than once
         }
     }
 
@@ -161,6 +169,14 @@ public class BufferedScanner implements Closeable, AutoCloseable {
         return (char) (read = in.nextChar());
     }
 
+    /**
+     * If function's output is >= 0, it's guaranteed to be the last character read.
+     * Else — it's guaranteed to be one of the BufferedScanner::ReadState enum's values
+     */
+    public int lastReadCharacter() {
+        return read;
+    }
+    
     /**
      * @return next int in stream
      * @throws NoSuchElementException is EOS reached
