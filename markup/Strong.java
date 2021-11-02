@@ -2,7 +2,7 @@ package markup;
 
 import java.util.List;
 
-public class Strong extends MarkdownWrappingElement implements MarkdownWrapableElement {
+public class Strong extends WrappingMarkupElement implements MarkdownElement {
 
     public Strong(List<MarkdownWrapableElement> children) {
         super(children);

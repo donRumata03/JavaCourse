@@ -2,7 +2,7 @@ package markup;
 
 import java.util.List;
 
-public class Paragraph extends MarkdownWrappingElement {
+public class Paragraph extends WrappingMarkupElement {
 
     public Paragraph(List<MarkdownWrapableElement> children) {
         super(children);

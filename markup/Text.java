@@ -1,6 +1,6 @@
 package markup;
 
-public class Text implements MarkdownWrapableElement {
+public class Text implements MarkdownElement {
     private final String text;
 
 
