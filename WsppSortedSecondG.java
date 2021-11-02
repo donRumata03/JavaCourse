@@ -102,13 +102,6 @@ public class WsppSortedSecondG {
                 wordCountInThisLine.compute(thisWord, (word, count) -> (count == null) ? 1 : count + 1);
                 Integer indexInThisLine = wordCountInThisLine.get(thisWord);
 
-
-//                SingleWordInfo thisWordData = counter.computeIfAbsent(thisWord,
-//                    (String key) -> new SingleWordInfo()
-//                );
-//
-//                counter.put(thisWord, thisWordData);
-
                 int finalTotalIndex = totalIndex;
                 counter.compute(thisWord, (word, wordInfo) -> {
                     if (wordInfo == null) {
