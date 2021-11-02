@@ -14,11 +14,14 @@ import java.util.List;
 class SingleWordInfo {
     int count = 0;
     IntList indexes = new IntList();
-
-    SingleWordInfo() {}
 }
 
 class WordWithInfo {
+    // This fields aren't private because doesn't assume any behaviour itself
+    // It would be more appropriate to call it a `struct`.
+    // See C++ Core Guidelines:
+    // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c2-use-class-if-the-class-has-an-invariant-use-struct-if-the-data-members-can-vary-independently
+    // And the constructor should be generated automatically…
     String word;
     SingleWordInfo info;
 
@@ -96,22 +99,28 @@ public class WsppSortedSecondG {
                 }
                 totalIndex++;
                 thisWord = thisWord.toLowerCase();
-                wordCountInThisLine.put(
-                    thisWord, wordCountInThisLine.getOrDefault(thisWord, 0) + 1
-                );
+                wordCountInThisLine.compute(thisWord, (word, count) -> (count == null) ? 1 : count + 1);
                 Integer indexInThisLine = wordCountInThisLine.get(thisWord);
 
 
-                SingleWordInfo thisWordData = counter.computeIfAbsent(thisWord,
-                    (String key) -> new SingleWordInfo()
-                );
-                thisWordData.count++;
+//                SingleWordInfo thisWordData = counter.computeIfAbsent(thisWord,
+//                    (String key) -> new SingleWordInfo()
+//                );
+//
+//                counter.put(thisWord, thisWordData);
 
-                if (indexInThisLine % 2 == 0) {
-                    thisWordData.indexes.add(totalIndex);
-                }
+                int finalTotalIndex = totalIndex;
+                counter.compute(thisWord, (word, wordInfo) -> {
+                    if (wordInfo == null) {
+                        wordInfo = new SingleWordInfo();
+                    }
+                    wordInfo.count++;
 
-                counter.put(thisWord, thisWordData);
+                    if (indexInThisLine % 2 == 0) {
+                        wordInfo.indexes.add(finalTotalIndex);
+                    }
+                    return wordInfo;
+                });
             }
         }
 
