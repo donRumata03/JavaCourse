@@ -94,15 +94,14 @@ public class ReverseHexAbc2 {
 //                }
             }
 
-            try {
-                if (inputData.isEmpty()) {
-                    inputData.add(new IntList());
-                }
-                inputData.get(inputData.size() - 1)
-                    .add(HexAbcParser.parseHexAbcInt(scanner.nextSequenceIgnoreEmpty(Character::isWhitespace)));
-            } catch(NoSuchElementException e) {
+            if (inputData.isEmpty()) {
+                inputData.add(new IntList());
+            }
+            String sequenceForInt = scanner.nextSequenceIgnoreEmpty(Character::isWhitespace);
+            if (sequenceForInt == null) {
                 break;
             }
+            inputData.get(inputData.size() - 1).add(HexAbcParser.parseHexAbcInt(sequenceForInt));
         }
         int lastInputDataIndex = inputData.size() - 1;
         if (!inputData.isEmpty() && (inputData.get(lastInputDataIndex) == null || inputData.get(lastInputDataIndex).isEmpty())) { // Ignore last newline

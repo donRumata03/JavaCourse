@@ -1,5 +1,3 @@
-package HT_4;
-
 import HT_5.BufferedScanner;
 
 import java.io.*;
@@ -9,7 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.function.IntPredicate;
 
 
 class WordWithCount {
