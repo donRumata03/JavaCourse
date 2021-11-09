@@ -16,7 +16,7 @@ class SingleWordInfo {
     IntList indexes = new IntList();
 }
 
-class WordWithInfo {
+/* data */ class WordWithInfo {
     // This fields aren't private because doesn't assume any behaviour itself
     // It would be more appropriate to call it a `struct`.
     // See C++ Core Guidelines:
