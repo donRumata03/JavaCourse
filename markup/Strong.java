@@ -3,7 +3,7 @@ package markup;
 import java.util.List;
 
 public class Strong extends WrappingMarkupElement {
-    public Strong(List<MarkupElement> children) {
+    public Strong(List<InlineMarkupElement> children) {
         super(children);
     }
 

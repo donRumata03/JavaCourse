@@ -13,15 +13,17 @@ public class HtmlListTest extends ListTest {
         test(paragraph::toHtml, expected, HTML);
     }
 
-    protected void test(UnorderedList list, final String expected) {
+    @Override
+    protected void test(final UnorderedList list, final String expected) {
         test(list::toHtml, expected, HTML);
     }
 
-    protected void test(OrderedList list, final String expected) {
+    @Override
+    protected void test(final OrderedList list, final String expected) {
         test(list::toHtml, expected, HTML);
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new HtmlListTest().run();
     }
 }

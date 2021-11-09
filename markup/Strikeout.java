@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-public class Strikeout extends WrappingMarkupElement {
-    public Strikeout(List<MarkupElement> children) {
+public class Strikeout extends WrappingMarkupElement implements InlineMarkupElement {
+    public Strikeout(List<InlineMarkupElement> children) {
         super(children);
     }
 

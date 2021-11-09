@@ -3,22 +3,22 @@ package markup;
 import java.util.List;
 
 public class Paragraph implements SelfContainedMarkupElement {
-    List<MarkupElement> children;
+    List<InlineMarkupElement> children;
 
-    public Paragraph(List<MarkupElement> children) {
+    public Paragraph(List<InlineMarkupElement> children) {
         this.children = children;
     }
 
     @Override
     public void toMarkdown(StringBuilder stringBuilder) {
-        for (MarkupElement element: children) {
+        for (InlineMarkupElement element: children) {
             element.toMarkdown(stringBuilder);
         }
     }
 
     @Override
     public void toHtml(StringBuilder builder) {
-        for (MarkupElement element: children) {
+        for (InlineMarkupElement element: children) {
             element.toHtml(builder);
         }
     }

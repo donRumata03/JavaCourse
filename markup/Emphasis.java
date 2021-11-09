@@ -2,8 +2,8 @@ package markup;
 
 import java.util.List;
 
-public class Emphasis extends WrappingMarkupElement {
-    public Emphasis(List<MarkupElement> children) {
+public class Emphasis extends WrappingMarkupElement implements InlineMarkupElement {
+    public Emphasis(List<InlineMarkupElement> children) {
         super(children);
     }
 
