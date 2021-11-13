@@ -54,7 +54,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     }
 
     private int currentBufferLength() {
-        return (lastBufferSizeIfAny == -1) ? charBuffer.length : lastBufferSizeIfAny;
+        return !hasBuffer ? 0 : ((lastBufferSizeIfAny == -1) ? charBuffer.length : lastBufferSizeIfAny);
     }
 
     public boolean hasNextChar() throws IOException {
