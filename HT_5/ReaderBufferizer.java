@@ -28,6 +28,8 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     public ReaderBufferizer(Reader reader) { this(reader, defaultCharBufferSize); }
 
     private void tryReadNewChunk() throws IOException {
+        // TODO: this should block only if there are exactly zero chars in buffer => have only currentBufferSize
+
         if ((charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) || !hasBuffer) {
             // Need to and can try to increase:
 
@@ -45,9 +47,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
                 // This is the last buffer that might be not full
                 // It can even have length «0»
                 lastBufferSizeIfAny = proposedBufferSize;
-            } else { // Read full buffer
-
-            }
+            } // else: Full buffer is read
             charBufferPtr = 0;
             hasBuffer = true;
         }
