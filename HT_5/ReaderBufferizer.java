@@ -12,65 +12,47 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
 
     private final Reader in;
     private final char[] charBuffer;
-    private int lastBufferSizeIfAny;
-    private int charBufferPtr;
-    private boolean hasBuffer;
+    private int currentBufferSize = 0;
+    private int charBufferPtr = 0;
+//    private int lastBufferSizeIfAny;
+//    private boolean hasBuffer;
 
 
     public ReaderBufferizer(Reader reader, int bufferSize) {
         this.in = reader;
         charBuffer = new char[bufferSize];
-        charBufferPtr = 0;
-        lastBufferSizeIfAny = -1;
-        hasBuffer = false;
+        // lastBufferSizeIfAny = -1;
+        // hasBuffer = false;
     }
 
     public ReaderBufferizer(Reader reader) { this(reader, defaultCharBufferSize); }
 
     private void tryReadNewChunk() throws IOException {
-        // TODO: this should block only if there are exactly zero chars in buffer => have only currentBufferSize
-
-        if ((charBufferPtr >= charBuffer.length && lastBufferSizeIfAny == -1) || !hasBuffer) {
-            // Need to and can try to increase:
-
-            int proposedBufferSize = 0;
-            int read;
+        if (charBufferPtr >= currentBufferSize) {
             do {
-                read = in.read(charBuffer, proposedBufferSize, charBuffer.length - proposedBufferSize);
-                if (read != -1) {
-                    proposedBufferSize += read;
-                }
-            } while (read != -1 && proposedBufferSize != charBuffer.length);
-
-            // System.out.println(charactersRead);
-            if (read == -1) {
-                // This is the last buffer that might be not full
-                // It can even have length «0»
-                lastBufferSizeIfAny = proposedBufferSize;
-            } // else: Full buffer is read
+                currentBufferSize = in.read(charBuffer); // Can be -1, 0 or something meaningful…
+            } while(currentBufferSize == 0);
             charBufferPtr = 0;
-            hasBuffer = true;
         }
-    }
-
-    private int currentBufferLength() {
-        return !hasBuffer ? 0 : ((lastBufferSizeIfAny == -1) ? charBuffer.length : lastBufferSizeIfAny);
     }
 
     public boolean hasNextChar() throws IOException {
-        // If already have some characters:
-        if (charBufferPtr < currentBufferLength()) {
+        // If already have some characters, result definitely exists:
+        if (charBufferPtr < currentBufferSize) {
             return true;
         }
 
-        // If currently buffer is exhausted but stream might be not:
+        // Currently, buffer is exhausted but stream might be not.
+        // The actual answer can't be known until some data arrives or stream is closed.
         tryReadNewChunk();
-        return charBufferPtr < currentBufferLength();
+
+        // Current buffer size is either -1 (EOS => return false) or > 0 => return true
+        return currentBufferSize != -1;
     }
 
     public char viewNext() throws IOException {
         if (!hasNextChar()) {
-            throw new NoSuchElementException("EndOfStream: There are no symbols to test");
+            throw new NoSuchElementException("[Bufferizer] EndOfStream: can't view next, there are no symbols to test");
         }
         return charBuffer[charBufferPtr];
     }
@@ -88,9 +70,18 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         return false;
     }
 
+    public char[] viewNextN(int n) {
+        if (n > charBuffer.length) {
+            throw new IllegalArgumentException("for ReaderBufferizer::viewNextN(int n) «n» can't be greater than buffer size");
+        }
+        // TODO!!!
+        return new char[0];
+    }
+
+
     public char nextChar() throws IOException {
         if (!hasNextChar()) {
-            throw new NoSuchElementException("[Bufferizer] EndOfStream: There are no symbols to read");
+            throw new NoSuchElementException("[Bufferizer] EndOfStream: can't get next char, there are no symbols to read");
         }
 
         return charBuffer[charBufferPtr++];
