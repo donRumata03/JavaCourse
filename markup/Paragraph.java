@@ -2,24 +2,18 @@ package markup;
 
 import java.util.List;
 
-public class Paragraph implements SelfContainedMarkupElement {
-    List<InlineMarkupElement> children;
-
+public class Paragraph extends WrappingMarkupElement implements SelfContainedMarkupElement {
     public Paragraph(List<InlineMarkupElement> children) {
-        this.children = children;
+        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
     }
 
     @Override
-    public void toMarkdown(StringBuilder stringBuilder) {
-        for (InlineMarkupElement element: children) {
-            element.toMarkdown(stringBuilder);
-        }
+    protected String getMarkdownDelimiter() {
+        return "";
     }
 
     @Override
-    public void toHtml(StringBuilder builder) {
-        for (InlineMarkupElement element: children) {
-            element.toHtml(builder);
-        }
+    protected String getHtmlDelimiter() {
+        return "";
     }
 }

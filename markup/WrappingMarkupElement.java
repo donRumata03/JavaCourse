@@ -6,22 +6,22 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 
-public abstract class WrappingMarkupElement implements MarkupElement, InlineMarkupElement {
+public abstract class WrappingMarkupElement implements MarkupElement {
 
-    protected List<InlineMarkupElement> children;
+    protected List<MarkupElement> children;
 
-    public WrappingMarkupElement(List<InlineMarkupElement> children) {
+    public WrappingMarkupElement(List<MarkupElement> children) {
         this.children = children;
     }
 
     protected abstract String getMarkdownDelimiter();
     protected abstract String getHtmlDelimiter();
 
-    private void toStringBuilder(StringBuilder stringBuilder, BiConsumer<InlineMarkupElement, StringBuilder> renderGetter,
+    private void toStringBuilder(StringBuilder stringBuilder, BiConsumer<MarkupElement, StringBuilder> renderGetter,
         String opener, String closer)
     {
         stringBuilder.append(opener);
-        for (InlineMarkupElement child : children) {
+        for (MarkupElement child : children) {
             renderGetter.accept(child, stringBuilder);
         }
         stringBuilder.append(closer);
@@ -34,6 +34,12 @@ public abstract class WrappingMarkupElement implements MarkupElement, InlineMark
 
     @Override
     public void toHtml(StringBuilder stringBuilder) {
-        toStringBuilder(stringBuilder, MarkupElement::toHtml, "<" + getHtmlDelimiter() + ">", "</" + getHtmlDelimiter() + ">");
+        String delimiter = getHtmlDelimiter();
+
+        toStringBuilder(
+            stringBuilder, MarkupElement::toHtml,
+            delimiter.isEmpty() ? "" : "<" + delimiter + ">",
+            delimiter.isEmpty() ? "" : "</" + delimiter + ">"
+        );
     }
 }

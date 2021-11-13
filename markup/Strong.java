@@ -2,9 +2,9 @@ package markup;
 
 import java.util.List;
 
-public class Strong extends WrappingMarkupElement {
+public class Strong extends WrappingMarkupElement implements InlineMarkupElement {
     public Strong(List<InlineMarkupElement> children) {
-        super(children);
+        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
     }
 
     @Override

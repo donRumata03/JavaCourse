@@ -2,24 +2,20 @@ package markup;
 
 import java.util.List;
 
-public class ListItem implements MarkupElement {
-    List<SelfContainedMarkupElement> elementSequence;
-
+public class ListItem extends WrappingMarkupElement {
     public ListItem(List<SelfContainedMarkupElement> elementSequence) {
-        this.elementSequence = elementSequence;
+        super((List<MarkupElement>)(List<? extends MarkupElement>) elementSequence);
     }
 
     @Override
-    public void toMarkdown(StringBuilder stringBuilder) {
-        throw new NonSupportedMarkupConversionException("Can't convert HTML ListItem to Markdown!");
+    protected String getMarkdownDelimiter() {
+        throw new NonSupportedMarkupConversionException(
+            "Can't convert list element to Markdown (only HTML is supported)"
+        );
     }
 
     @Override
-    public void toHtml(StringBuilder builder) {
-        builder.append("<li>");
-        for (SelfContainedMarkupElement element: elementSequence) {
-            element.toHtml(builder);
-        }
-        builder.append("</li>");
+    protected String getHtmlDelimiter() {
+        return "li";
     }
 }

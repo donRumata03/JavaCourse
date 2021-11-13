@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Emphasis extends WrappingMarkupElement implements InlineMarkupElement {
     public Emphasis(List<InlineMarkupElement> children) {
-        super(children);
+        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
     }
 
     @Override
