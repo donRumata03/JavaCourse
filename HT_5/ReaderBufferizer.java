@@ -58,8 +58,13 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     }
 
     public boolean hasNextChar() throws IOException {
-        tryReadNewChunk();
+        // If already have some characters:
+        if (charBufferPtr < currentBufferLength()) {
+            return true;
+        }
 
+        // If currently buffer is exhausted but stream might be not:
+        tryReadNewChunk();
         return charBufferPtr < currentBufferLength();
     }
 
