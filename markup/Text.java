@@ -4,7 +4,7 @@ public class Text implements MarkupElement, InlineMarkupElement {
     private final String text;
 
 
-    Text(String text) {
+    public Text(String text) {
         this.text = text;
     }
 
@@ -15,6 +15,6 @@ public class Text implements MarkupElement, InlineMarkupElement {
 
     @Override
     public void toHtml(StringBuilder builder) {
-        builder.append(text);
+        builder.append(HtmlEscaper.escapeText(text));
     }
 }

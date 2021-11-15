@@ -22,7 +22,9 @@ public class MarkdownToken {
     public String toString() {
         switch (this.type) {
             case Text: return text;
-            case SpecialSymbol: return
+            case SpecialSymbol: return "";
         }
+
+        throw new RuntimeException("");
     }
 }

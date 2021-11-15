@@ -1,7 +1,14 @@
-package markup;
+package markup.tests;
 
 import java.util.List;
 import java.util.Map;
+import markup.Emphasis;
+import markup.Paragraph;
+import markup.Strikeout;
+import markup.Strong;
+import markup.Text;
+
+
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

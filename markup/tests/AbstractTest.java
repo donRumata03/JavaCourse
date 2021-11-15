@@ -1,4 +1,4 @@
-package markup;
+package markup.tests;
 
 import base.Asserts;
 import base.TestCounter;

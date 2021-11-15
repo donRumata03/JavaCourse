@@ -9,7 +9,7 @@ public class Strikeout extends WrappingMarkupElement implements InlineMarkupElem
 
     @Override
     protected String getMarkdownDelimiter() {
-        return "~";
+        return "--";
     }
 
     @Override

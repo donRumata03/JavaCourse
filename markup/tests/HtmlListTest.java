@@ -1,6 +1,10 @@
-package markup;
+package markup.tests;
 
 import java.util.Map;
+import markup.ListTest;
+import markup.OrderedList;
+import markup.Paragraph;
+import markup.UnorderedList;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

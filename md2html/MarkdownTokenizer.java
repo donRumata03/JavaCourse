@@ -15,7 +15,7 @@ public class MarkdownTokenizer implements Closeable, AutoCloseable {
     }
 
     public Optional<MarkdownToken> nextToken() {
-
+        return Optional.empty();
     }
 
     @Override

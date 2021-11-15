@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import markup.tests.AbstractTest;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

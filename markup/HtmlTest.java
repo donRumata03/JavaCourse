@@ -1,6 +1,7 @@
 package markup;
 
 import java.util.Map;
+import markup.tests.MarkdownTest;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
