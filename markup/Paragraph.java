@@ -14,6 +14,6 @@ public class Paragraph extends WrappingMarkupElement implements SelfContainedMar
 
     @Override
     protected String getHtmlDelimiter() {
-        return "";
+        return "p";
     }
 }

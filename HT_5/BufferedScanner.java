@@ -7,24 +7,6 @@ import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
 
 public class BufferedScanner implements Closeable, AutoCloseable {
-    // Default delimiters:
-    private static boolean isFromWord(int c) {
-        return Character.isLetter(c) || Character.getType(c) == Character.DASH_PUNCTUATION || (char)c == '\'';
-    }
-
-    private static final char LF = 0x000A;
-    private static final char CR = 0x000D;
-    private static final char[] lineSeparators = { LF, 0x000B, 0x000C, CR, 0x0085, 0x2028, 0x2029 };
-
-    private static boolean isLineSeparator(int c) {
-        for (char sep : lineSeparators) {
-            if (sep == c) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // Default consumer generating:
     public static DelimiterConsumer generateSingleDelimiterConsumer(IntPredicate isDelimiter) {
         return (BufferedScanner bs) -> bs.consumeCharIf(isDelimiter);
@@ -66,8 +48,8 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * If previous read character was CR and the next character is LF, it reads the LF
      */
     private void tryConsumeNewlineSecondHalf() throws IOException {
-        if (read == CR || read == LF
-            && in.hasNextChar() && in.testNext((int ch) -> (ch == LF || ch == CR) && ch != read)
+        if (read == ScanningUtils.CR || read == ScanningUtils.LF
+            && in.hasNextChar() && in.testNext((int ch) -> (ch == ScanningUtils.LF || ch == ScanningUtils.CR) && ch != read)
         ) {
             nextChar();
             read = ReadStates.READ_CHARACTER_HIDDEN.stateCode; // Not to consume «second half» more than once
@@ -80,7 +62,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
     public int consumeDelimitersAndNewlines(IntPredicate isDelimiter) throws IOException {
         int newlinesConsumed = 0;
         while (in.hasNextChar()) {
-            if (in.testNext(BufferedScanner::isLineSeparator)) {
+            if (in.testNext(ScanningUtils::isLineSeparator)) {
                 nextChar();
                 tryConsumeNewlineSecondHalf();
                 newlinesConsumed++;
@@ -198,9 +180,9 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      */
     public String nextLine() throws IOException {
         String lineAttempt = nextSequence(
-            BufferedScanner::isLineSeparator,
+            ScanningUtils::isLineSeparator,
             (BufferedScanner bs) -> {
-                if (bs.consumeCharIf(BufferedScanner::isLineSeparator)) {
+                if (bs.consumeCharIf(ScanningUtils::isLineSeparator)) {
                     tryConsumeNewlineSecondHalf();
                     return true;
                 }
@@ -219,7 +201,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * @return next word in the stream or null (word delimiters are <code>!BufferedScanner::isFromWord()</code>)
     */
     public String nextWord() throws IOException {
-        return nextSequenceIgnoreEmpty((int ch) -> !BufferedScanner.isFromWord(ch));
+        return nextSequenceIgnoreEmpty((int ch) -> !ScanningUtils.isFromWord(ch));
     }
 
 
