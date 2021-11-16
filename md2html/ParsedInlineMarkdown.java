@@ -11,6 +11,7 @@ import md2html.InlineMarkdownToken.TokenType;
 public class ParsedInlineMarkdown {
 
     private List<ParsedInlineMarkdown> children;
+    private String text = null;
     private Optional<InlineMarkdownToken> opener = Optional.empty();
     private Optional<InlineMarkdownToken> closer = Optional.empty();
 
@@ -21,6 +22,13 @@ public class ParsedInlineMarkdown {
     public ParsedInlineMarkdown(List<ParsedInlineMarkdown> children, InlineMarkdownToken opener) {
         this.children = children;
         this.opener = Optional.of(opener);
+    }
+
+    public ParsedInlineMarkdown(String text) {
+        this.children = null;
+        this.text = text;
+        this.opener = Optional.of(new InlineMarkdownToken(TokenType.SpecialSymbol, ""));
+        this.closer = this.opener;
     }
 
     // public to
@@ -42,7 +50,7 @@ public class ParsedInlineMarkdown {
             InlineMarkdownToken nextToken = mayBeNextToken.get();
 
             if (nextToken.getType() == TokenType.Text) {
-                currentNode.children.add(new Text(nextToken.getText()));
+                currentNode.children.add(new ParsedInlineMarkdown(nextToken.getText()));
             } else {
                 if (currentNode.opener.isPresent() && currentNode.opener.get().equals(nextToken)) {
                     // Go to parent
@@ -52,20 +60,25 @@ public class ParsedInlineMarkdown {
                 } else {
                     // Init new child:
                     currentNode.children.add(new ParsedInlineMarkdown(new ArrayList<>(), nextToken));
+                    currentNode = currentNode.children.get(currentNode.children.size() - 1);
+                    parentSequence.add(currentNode);
                 }
             }
         }
 
         // Post-process tree (if there are unclosed elements):
-        while (true) {
+        while (!parentSequence.isEmpty()) {
             if (currentNode.closer.isEmpty()) {
                 ParsedInlineMarkdown thisParent = parentSequence.get(parentSequence.size() - 1);
                 // Copy elements to parent:
-                // …
-                // TODO
+
+                List<ParsedInlineMarkdown> currentNodeChildren = currentNode.children;
+                assert currentNode == thisParent.children.get(thisParent.children.size() - 1); // By address
+
+                thisParent.children.remove(thisParent.children.size() - 1);
+                thisParent.children.addAll(currentNodeChildren);
             }
 
-            if(parentSequence.isEmpty()) break;
             currentNode = parentSequence.get(parentSequence.size() - 1);
             parentSequence.remove(parentSequence.size() - 1);
         }
