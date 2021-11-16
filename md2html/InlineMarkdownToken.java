@@ -1,6 +1,7 @@
 package md2html;
 
 import java.util.Map;
+import markup.DelimiterDictionary;
 
 public class InlineMarkdownToken {
     public enum TokenType {
@@ -17,9 +18,30 @@ public class InlineMarkdownToken {
 
     // private static Map<SpecialSymbolType, String>
 
+    static boolean isImdSpecialSymbol(char c) {
+        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c));
+    }
+
+    static boolean isImdDoubleableSpecialSymbol(char c) {
+        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c).repeat(2));
+    }
+
     private TokenType type;
     private String text;
     // SpecialSymbolType specialSymbolType;
+
+    public InlineMarkdownToken(TokenType type, String text) {
+        this.type = type;
+        this.text = text;
+    }
+
+    public TokenType getType() {
+        return type;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     @Override
     public String toString() {
