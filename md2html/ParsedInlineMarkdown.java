@@ -53,13 +53,7 @@ public class ParsedInlineMarkdown {
          try {
              return ((Class<InlineMarkupElement>)elementClass)
                  .getConstructor(List.class).newInstance(toInlineMarkdownElementList());
-         } catch (InstantiationException e) {
-             e.printStackTrace();
-         } catch (IllegalAccessException e) {
-             e.printStackTrace();
-         } catch (InvocationTargetException e) {
-             e.printStackTrace();
-         } catch (NoSuchMethodException e) {
+         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
              e.printStackTrace();
          }
          throw new RuntimeException("");

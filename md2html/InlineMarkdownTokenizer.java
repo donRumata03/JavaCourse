@@ -25,7 +25,20 @@ public class InlineMarkdownTokenizer {
         return sourcePtr < source.length();
     }
 
+    private boolean nextIsSpecialSymbol() {
+        return hasNext() && InlineMarkdownToken.isImdSpecialSymbol(viewNext());
+    }
 
+    private boolean nextIsDoubleSpecialSymbol() {
+        return
+            (sourcePtr + 1) < source.length() &&
+                InlineMarkdownToken.isImdDoubleableSpecialSymbol(viewNext()) &&
+                source.charAt(sourcePtr + 1) == viewNext();
+    }
+
+    private boolean nextIsEscaping() {
+        return viewNext() == '\\';
+    }
 
 
     public InlineMarkdownTokenizer(String source) {
@@ -37,24 +50,30 @@ public class InlineMarkdownTokenizer {
             return Optional.empty();
         }
 
-        if (viewNext() == '\\') {
+        if (nextIsEscaping()) {
             consumeNext();
             return Optional.of(new InlineMarkdownToken(TokenType.Text, String.valueOf(consumeNext())));
         }
-        else if (
-            InlineMarkdownToken.isImdDoubleableSpecialSymbol(viewNext()) &&
-                (sourcePtr + 1) < source.length() &&
-                source.charAt(sourcePtr + 1) == viewNext()
-        ) {
+        else if (nextIsDoubleSpecialSymbol()) {
             return Optional.of(
                 new InlineMarkdownToken(TokenType.SpecialSymbol, String.valueOf(consumeNext()) + consumeNext())
             );
-        } else if (InlineMarkdownToken.isImdSpecialSymbol(viewNext())) {
+        } else if (nextIsSpecialSymbol()) {
             return Optional.of(new InlineMarkdownToken(TokenType.SpecialSymbol, String.valueOf(consumeNext())));
         } else {
             // Scan while end or special symbol found:
             StringBuilder result = new StringBuilder();
-            while (hasNext() && !InlineMarkdownToken.isImdSpecialSymbol(viewNext())) {
+            while (hasNext() && !(nextIsEscaping() || nextIsSpecialSymbol() || nextIsDoubleSpecialSymbol())
+//                hasNext() &&
+//                !(
+//                    InlineMarkdownToken.isImdSpecialSymbol(viewNext()) ||
+//                    (
+//                        (sourcePtr + 1) < source.length() &&
+//                        source.charAt(sourcePtr + 1) == viewNext() &&
+//                        InlineMarkdownToken.isImdDoubleableSpecialSymbol(viewNext())
+//                    )
+//                )
+            ) {
                 result.append(consumeNext());
             }
             return Optional.of(new InlineMarkdownToken(TokenType.Text, result.toString()));
