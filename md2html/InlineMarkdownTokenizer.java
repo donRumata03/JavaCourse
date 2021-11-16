@@ -4,6 +4,7 @@ import HT_5.BufferedScanner;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Optional;
+import markup.InlineMarkupElement;
 import md2html.InlineMarkdownToken.TokenType;
 
 
@@ -36,7 +37,11 @@ public class InlineMarkdownTokenizer {
             return Optional.empty();
         }
 
-        if (
+        if (viewNext() == '\\') {
+            consumeNext();
+            return Optional.of(new InlineMarkdownToken(TokenType.Text, String.valueOf(consumeNext())));
+        }
+        else if (
             InlineMarkdownToken.isImdDoubleableSpecialSymbol(viewNext()) &&
                 (sourcePtr + 1) < source.length() &&
                 source.charAt(sourcePtr + 1) == viewNext()
