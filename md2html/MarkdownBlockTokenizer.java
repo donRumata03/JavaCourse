@@ -5,29 +5,33 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MarkdownBlockTokenizer implements Closeable, AutoCloseable {
     private final BufferedScanner in;
+    String lastReadLine = "";
 
     public MarkdownBlockTokenizer(BufferedScanner bufferedScanner) {
         in = bufferedScanner;
     }
 
     Optional<String> nextBlock() throws IOException {
-        if (!in.hasNextChar()) {
+        // Skip empty lines before paragraph:
+        while (lastReadLine != null && lastReadLine.isEmpty()) {
+            lastReadLine = in.nextLine();
+        }
+
+        if (lastReadLine == null) {
             return Optional.empty();
         }
 
         List<String> lines = new ArrayList<>();
 
         // Split here by empty lines:
-        while (true) {
-            String nextLine = in.nextLine();
-            if (nextLine.equals("")) {
-                break;
-            }
-            lines.add(nextLine);
+        while (lastReadLine != null && !lastReadLine.isEmpty()) {
+            lines.add(lastReadLine);
+            lastReadLine = in.nextLine();
         }
         return Optional.of(String.join("\n", lines));
     }

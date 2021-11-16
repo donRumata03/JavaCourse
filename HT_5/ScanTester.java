@@ -25,7 +25,7 @@ public class ScanTester {
 //        String sampleFilename = "sample_ints.txt";
         String sampleFilename = "sample_lines.txt";
 
-        Path samplePath = rootPath.resolve("HT_5").resolve("samples").resolve(Paths.get(sampleFilename));
+        Path samplePath = rootPath.resolve("HT_5").resolve("md2html/samples").resolve(Paths.get(sampleFilename));
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
