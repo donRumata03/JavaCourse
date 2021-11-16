@@ -12,25 +12,30 @@ import markup.Paragraph;
 import markup.SelfContainedMarkupElement;
 
 public class ParsedMarkdown {
-    List<? extends SelfContainedMarkupElement> blockList = new ArrayList<>();
+    List<SelfContainedMarkupElement> blockList = new ArrayList<>();
 
     public void absorbStringBlock(String block) {
         // A header or a paragraph?
 
         int shouldBeAtSpace = StringUtils.findFirstNot(block, '#');
-        if (shouldBeAtSpace <= block.length() - 2 && block.charAt(shouldBeAtSpace) == ' ' && shouldBeAtSpace < 6) {
+        if (
+            shouldBeAtSpace <= block.length() - 2 &&
+                block.charAt(shouldBeAtSpace) == ' ' &&
+                shouldBeAtSpace > 0 &&
+                shouldBeAtSpace < 6
+        ) {
             // For header: at least 1 character after space; <= 6 '#'s
-            blockList.add(new Header(…parse…(block.substring(shouldBeAtSpace + 1))));
+            blockList.add(new Header(ParsedInlineMarkdown.parseString(block.substring(shouldBeAtSpace + 1)), shouldBeAtSpace));
         } else {
             // Paragraph:
-            blockList.add(new Paragraph(…parse…(block)));
+            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block)));
         }
     }
 
     @Override
     public String toString() {
         return blockList.stream()
-            .map((Function<SelfContainedMarkupElement, String>) MarkupElement::toHtml)
+            .map(MarkupElement::toHtml)
             .map(Object::toString)
             .collect(Collectors.joining("\n"));
     }
