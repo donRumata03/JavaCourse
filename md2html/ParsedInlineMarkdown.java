@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import markup.DelimiterDictionary;
 import markup.InlineMarkdownGrouper;
 import markup.InlineMarkupElement;
-import markup.MarkupElement;
 import markup.Text;
-import md2html.InlineMarkdownToken.TokenType;
+import md2html.tokens.InlineMarkdownToken;
+import md2html.tokens.InlineMarkdownToken.TokenType;
 
 public class ParsedInlineMarkdown {
 

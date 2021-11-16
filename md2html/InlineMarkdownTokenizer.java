@@ -1,11 +1,8 @@
 package md2html;
 
-import HT_5.BufferedScanner;
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Optional;
-import markup.InlineMarkupElement;
-import md2html.InlineMarkdownToken.TokenType;
+import md2html.tokens.InlineMarkdownToken;
+import md2html.tokens.InlineMarkdownToken.TokenType;
 
 
 // #[derive(close)]
@@ -63,17 +60,7 @@ public class InlineMarkdownTokenizer {
         } else {
             // Scan while end or special symbol found:
             StringBuilder result = new StringBuilder();
-            while (hasNext() && !(nextIsEscaping() || nextIsSpecialSymbol() || nextIsDoubleSpecialSymbol())
-//                hasNext() &&
-//                !(
-//                    InlineMarkdownToken.isImdSpecialSymbol(viewNext()) ||
-//                    (
-//                        (sourcePtr + 1) < source.length() &&
-//                        source.charAt(sourcePtr + 1) == viewNext() &&
-//                        InlineMarkdownToken.isImdDoubleableSpecialSymbol(viewNext())
-//                    )
-//                )
-            ) {
+            while (hasNext() && !(nextIsEscaping() || nextIsSpecialSymbol() || nextIsDoubleSpecialSymbol())) {
                 result.append(consumeNext());
             }
             return Optional.of(new InlineMarkdownToken(TokenType.Text, result.toString()));
