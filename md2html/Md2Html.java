@@ -23,7 +23,7 @@ import markup.SelfContainedMarkupElement;
  *
  * Here's a brief specification of supported format:
  * — Text is defined as a sequence of blocks divided by double line breaks.
- * — Block is either a header (if it starts with "#{1-6}\s") or a paragraph (otherwise)
+ * — Block is either a header (if it starts with "#{1-6}\s") or a paragraph (otherwise)
  * — Header just contains text after "#{1-6}\s" in the block
  * — Paragraph is a sequence of inline markup elements ∈ {Text, Emphasis (* or _), Strikeout (--), Strong(** or __), Code(`)}
  * all the delimiters can be opening or closing depending on context

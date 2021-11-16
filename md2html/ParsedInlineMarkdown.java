@@ -1,8 +1,11 @@
 package md2html;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import markup.DelimiterDictionary;
 import markup.InlineMarkupElement;
 import markup.MarkupElement;
 import markup.Text;
@@ -31,7 +34,36 @@ public class ParsedInlineMarkdown {
         this.closer = this.opener;
     }
 
-    // public to
+     public List<InlineMarkupElement> toInlineMarkdownElementList() {
+        assert children != null;
+
+        return children.stream().map(ParsedInlineMarkdown::toInlineMarkdownElement).collect(Collectors.toList());
+     }
+
+     public InlineMarkupElement toInlineMarkdownElement() {
+         assert opener.isPresent();
+
+         if (children == null) {
+             return new Text(text);
+         }
+
+         // Determine type by opener:
+         Class<? extends InlineMarkupElement> elementClass =
+             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.get().getText());
+         try {
+             return ((Class<InlineMarkupElement>)elementClass)
+                 .getConstructor(List.class).newInstance(toInlineMarkdownElementList());
+         } catch (InstantiationException e) {
+             e.printStackTrace();
+         } catch (IllegalAccessException e) {
+             e.printStackTrace();
+         } catch (InvocationTargetException e) {
+             e.printStackTrace();
+         } catch (NoSuchMethodException e) {
+             e.printStackTrace();
+         }
+         throw new RuntimeException("");
+     }
 
     public static ParsedInlineMarkdown parseString(String source) {
         InlineMarkdownTokenizer tokenizer = new InlineMarkdownTokenizer(source);
@@ -60,8 +92,8 @@ public class ParsedInlineMarkdown {
                 } else {
                     // Init new child:
                     currentNode.children.add(new ParsedInlineMarkdown(new ArrayList<>(), nextToken));
-                    currentNode = currentNode.children.get(currentNode.children.size() - 1);
                     parentSequence.add(currentNode);
+                    currentNode = currentNode.children.get(currentNode.children.size() - 1);
                 }
             }
         }
@@ -76,6 +108,7 @@ public class ParsedInlineMarkdown {
                 assert currentNode == thisParent.children.get(thisParent.children.size() - 1); // By address
 
                 thisParent.children.remove(thisParent.children.size() - 1);
+                thisParent.children.add(new ParsedInlineMarkdown(currentNode.opener.get().getText()));
                 thisParent.children.addAll(currentNodeChildren);
             }
 

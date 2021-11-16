@@ -25,10 +25,13 @@ public class ParsedMarkdown {
                 shouldBeAtSpace <= 6
         ) {
             // For header: at least 1 character after space; <= 6 '#'s
-            blockList.add(new Header(ParsedInlineMarkdown.parseString(block.substring(shouldBeAtSpace + 1)), shouldBeAtSpace));
+            blockList.add(new Header(
+                ParsedInlineMarkdown.parseString(block.substring(shouldBeAtSpace + 1))
+                    .toInlineMarkdownElementList(), shouldBeAtSpace
+            ));
         } else {
             // Paragraph:
-            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block)));
+            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block).toInlineMarkdownElementList()));
         }
     }
 
