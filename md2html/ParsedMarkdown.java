@@ -22,7 +22,7 @@ public class ParsedMarkdown {
             shouldBeAtSpace <= block.length() - 2 &&
                 block.charAt(shouldBeAtSpace) == ' ' &&
                 shouldBeAtSpace > 0 &&
-                shouldBeAtSpace < 6
+                shouldBeAtSpace <= 6
         ) {
             // For header: at least 1 character after space; <= 6 '#'s
             blockList.add(new Header(ParsedInlineMarkdown.parseString(block.substring(shouldBeAtSpace + 1)), shouldBeAtSpace));
