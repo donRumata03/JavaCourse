@@ -14,7 +14,7 @@ public class MarkdownInlineTokenizer implements Closeable, AutoCloseable {
         this.in = in;
     }
 
-    public Optional<MarkdownToken> nextToken() {
+    public Optional<InlineMarkdownToken> nextToken() {
         return Optional.empty();
     }
 
