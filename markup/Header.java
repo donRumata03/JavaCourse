@@ -26,7 +26,7 @@ public class Header extends WrappingMarkupElement implements SelfContainedMarkup
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "h" + headerLevel;
     }
 }

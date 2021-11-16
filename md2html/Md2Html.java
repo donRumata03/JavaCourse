@@ -15,8 +15,7 @@ import java.util.Optional;
 import markup.SelfContainedMarkupElement;
 
 // TODO:
-// — Multiple MarkDown delimiters for single markup element
-// — Rename delimiters to sth mode meaningful
+// — At rendering markdown and html: use Dictionary (Map) inside getHtmlTag, getMarkdownOpener, …
 
 /**
  * Converts MarkDown file with filename provided as the first argument to HTML file provided as the second argument

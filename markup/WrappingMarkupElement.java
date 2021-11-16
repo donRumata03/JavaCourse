@@ -2,8 +2,6 @@ package markup;
 
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 
 public abstract class WrappingMarkupElement implements MarkupElement {
@@ -14,8 +12,10 @@ public abstract class WrappingMarkupElement implements MarkupElement {
         this.children = children;
     }
 
-    protected abstract String getMarkdownDelimiter();
-    protected abstract String getHtmlDelimiter();
+    protected abstract String getHtmlTag();
+    protected abstract String getMarkdownOpener();
+    protected abstract String getMarkdownCloser();
+
 
     private void toStringBuilder(StringBuilder stringBuilder, BiConsumer<MarkupElement, StringBuilder> renderGetter,
         String opener, String closer)
@@ -29,12 +29,12 @@ public abstract class WrappingMarkupElement implements MarkupElement {
 
     @Override
     public void toMarkdown(StringBuilder stringBuilder) {
-        toStringBuilder(stringBuilder, MarkupElement::toMarkdown,  getMarkdownDelimiter(), getMarkdownDelimiter());
+        toStringBuilder(stringBuilder, MarkupElement::toMarkdown, getMarkdownOpener(), getMarkdownCloser());
     }
 
     @Override
     public void toHtml(StringBuilder stringBuilder) {
-        String delimiter = getHtmlDelimiter();
+        String delimiter = getHtmlTag();
 
         toStringBuilder(
             stringBuilder, MarkupElement::toHtml,

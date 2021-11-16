@@ -15,7 +15,7 @@ public class ListItem extends WrappingMarkupElement {
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "li";
     }
 }

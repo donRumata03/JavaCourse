@@ -9,7 +9,7 @@ public class UnorderedList extends HtmlList {
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "ul";
     }
 }

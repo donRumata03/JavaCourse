@@ -13,7 +13,7 @@ public class Paragraph extends WrappingMarkupElement implements SelfContainedMar
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "p";
     }
 }

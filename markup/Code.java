@@ -14,7 +14,7 @@ public class Code extends WrappingMarkupElement implements InlineMarkupElement {
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "code";
     }
 }

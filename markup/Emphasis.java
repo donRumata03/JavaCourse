@@ -13,7 +13,7 @@ public class Emphasis extends WrappingMarkupElement implements InlineMarkupEleme
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "em";
     }
 }

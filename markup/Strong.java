@@ -13,7 +13,7 @@ public class Strong extends WrappingMarkupElement implements InlineMarkupElement
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "strong";
     }
 }

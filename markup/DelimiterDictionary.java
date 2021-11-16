@@ -15,7 +15,11 @@ public class DelimiterDictionary {
         "_", Emphasis.class,
         "**", Strong.class,
         "__", Strong.class,
-        "`", Code.class
+        "`", Code.class,
+        "<<", Insertion.class,
+        ">>", Insertion.class,
+        "}}", Deleted.class,
+        "{{", Deleted.class
     );
 
     public static Map<String, OpenCloseness> OpenClosenessByMarkdownDelimiter = Map.of(
@@ -24,6 +28,10 @@ public class DelimiterDictionary {
         "_", OpenCloseness.Any,
         "**", OpenCloseness.Any,
         "__", OpenCloseness.Any,
-        "`", OpenCloseness.Any
+        "`", OpenCloseness.Any,
+        "<<", OpenCloseness.Opening,
+        ">>", OpenCloseness.Closing,
+        "}}", OpenCloseness.Opening,
+        "{{", OpenCloseness.Closing
     );
 }

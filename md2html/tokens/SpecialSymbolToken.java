@@ -3,11 +3,11 @@ package md2html.tokens;
 import markup.DelimiterDictionary;
 
 public class SpecialSymbolToken extends InlineMarkdownToken {
-    static boolean isImdSpecialSymbol(char c) {
+    public static boolean isImdSpecialSymbol(char c) {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c));
     }
 
-    static boolean isImdDoubleableSpecialSymbol(char c) {
+    public static boolean isImdDoubleableSpecialSymbol(char c) {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c).repeat(2));
     }
 

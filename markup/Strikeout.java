@@ -13,7 +13,7 @@ public class Strikeout extends WrappingMarkupElement implements InlineMarkupElem
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "s";
     }
 }

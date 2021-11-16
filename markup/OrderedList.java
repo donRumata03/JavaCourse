@@ -9,7 +9,7 @@ public class OrderedList extends HtmlList {
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "ol";
     }
 }

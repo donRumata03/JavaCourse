@@ -15,7 +15,7 @@ public class InlineMarkdownGrouper extends WrappingMarkupElement implements Inli
     }
 
     @Override
-    protected String getHtmlDelimiter() {
+    protected String getHtmlTag() {
         return "";
     }
 }

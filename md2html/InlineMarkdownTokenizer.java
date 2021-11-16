@@ -2,7 +2,7 @@ package md2html;
 
 import java.util.Optional;
 import md2html.tokens.InlineMarkdownToken;
-import md2html.tokens.InlineMarkdownToken.TokenType;
+import md2html.tokens.SpecialSymbolToken;
 
 
 // #[derive(close)]
@@ -23,7 +23,7 @@ public class InlineMarkdownTokenizer {
     }
 
     private boolean nextIsSpecialSymbol() {
-        return hasNext() && InlineMarkdownToken.isImdSpecialSymbol(viewNext());
+        return hasNext() && SpecialSymbolToken.isImdSpecialSymbol(viewNext());
     }
 
     private boolean nextIsDoubleSpecialSymbol() {
