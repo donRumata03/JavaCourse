@@ -49,15 +49,25 @@ public class ParsedInlineMarkdown {
                     currentNode.closer = Optional.of(nextToken);
                     currentNode = parentSequence.get(parentSequence.size() - 1);
                     parentSequence.remove(parentSequence.size() - 1);
-                } else if () {
-                    // Last element is fictive:
-
-                }
-                else {
+                } else {
                     // Init new child:
                     currentNode.children.add(new ParsedInlineMarkdown(new ArrayList<>(), nextToken));
                 }
             }
+        }
+
+        // Post-process tree (if there are unclosed elements):
+        while (true) {
+            if (currentNode.closer.isEmpty()) {
+                ParsedInlineMarkdown thisParent = parentSequence.get(parentSequence.size() - 1);
+                // Copy elements to parent:
+                // …
+                // TODO
+            }
+
+            if(parentSequence.isEmpty()) break;
+            currentNode = parentSequence.get(parentSequence.size() - 1);
+            parentSequence.remove(parentSequence.size() - 1);
         }
 
         return root;
