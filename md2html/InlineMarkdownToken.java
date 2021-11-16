@@ -1,6 +1,7 @@
 package md2html;
 
 import java.util.Map;
+import java.util.Objects;
 import markup.DelimiterDictionary;
 
 public class InlineMarkdownToken {
@@ -26,8 +27,8 @@ public class InlineMarkdownToken {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c).repeat(2));
     }
 
-    private TokenType type;
-    private String text;
+    private final TokenType type;
+    private final String text;
     // SpecialSymbolType specialSymbolType;
 
     public InlineMarkdownToken(TokenType type, String text) {
@@ -41,6 +42,24 @@ public class InlineMarkdownToken {
 
     public String getText() {
         return text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InlineMarkdownToken that = (InlineMarkdownToken) o;
+        return type == that.type &&
+            text.equals(that.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, text);
     }
 
     @Override
