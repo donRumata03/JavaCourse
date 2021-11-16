@@ -2,7 +2,7 @@ package markup;
 
 import java.util.List;
 
-public class ListItem extends WrappingMarkupElement {
+public class ListItem extends SymmetricWrappingMarkupElement {
     public ListItem(List<SelfContainedMarkupElement> elementSequence) {
         super((List<MarkupElement>)(List<? extends MarkupElement>) elementSequence);
     }

@@ -2,7 +2,7 @@ package markup;
 
 import java.util.List;
 
-public class Strikeout extends WrappingMarkupElement implements InlineMarkupElement {
+public class Strikeout extends SymmetricWrappingMarkupElement implements InlineMarkupElement {
     public Strikeout(List<InlineMarkupElement> children) {
         super((List<MarkupElement>)(List<? extends MarkupElement>) children);
     }

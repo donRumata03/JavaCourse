@@ -21,7 +21,11 @@ public class Header extends WrappingMarkupElement implements SelfContainedMarkup
     }
 
     @Override
-    protected String getMarkdownDelimiter() {
+    protected String getMarkdownOpener() {
+        throw new NonSupportedMarkupConversionException("Method is implemented another way");
+    }
+    @Override
+    protected String getMarkdownCloser() {
         throw new NonSupportedMarkupConversionException("Method is implemented another way");
     }
 

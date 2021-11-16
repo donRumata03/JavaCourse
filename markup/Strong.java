@@ -2,7 +2,7 @@ package markup;
 
 import java.util.List;
 
-public class Strong extends WrappingMarkupElement implements InlineMarkupElement {
+public class Strong extends SymmetricWrappingMarkupElement implements InlineMarkupElement {
     public Strong(List<InlineMarkupElement> children) {
         super((List<MarkupElement>)(List<? extends MarkupElement>) children);
     }

@@ -5,10 +5,11 @@ import markup.ListItem;
 import markup.MarkupElement;
 import markup.NonSupportedMarkupConversionException;
 import markup.SelfContainedMarkupElement;
+import markup.SymmetricWrappingMarkupElement;
 import markup.WrappingMarkupElement;
 
 
-public abstract class HtmlList extends WrappingMarkupElement implements SelfContainedMarkupElement {
+public abstract class HtmlList extends SymmetricWrappingMarkupElement implements SelfContainedMarkupElement {
 
     public HtmlList(List<ListItem> items) {
         super((List<MarkupElement>)(List<? extends MarkupElement>) items);
