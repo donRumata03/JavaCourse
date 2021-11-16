@@ -7,10 +7,10 @@ import java.util.Optional;
 
 
 // #[derive(close)]
-public class MarkdownTokenizer implements Closeable, AutoCloseable {
+public class MarkdownInlineTokenizer implements Closeable, AutoCloseable {
     BufferedScanner in;
 
-    public MarkdownTokenizer(BufferedScanner in) {
+    public MarkdownInlineTokenizer(BufferedScanner in) {
         this.in = in;
     }
 

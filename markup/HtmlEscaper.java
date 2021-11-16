@@ -24,10 +24,9 @@ public class HtmlEscaper {
      * ` → &#x60;
      */
     static String escapeText(String text) {
-        // TODO: (should be called in Text.toHtml)!
-
         // More efficient than multiple replace method calls:
-        return text.codePoints().mapToObj((int c) -> htmlEscapeSequenceBySymbol.getOrDefault((char)c, String.valueOf((char)c)))
+        return text.codePoints()
+            .mapToObj((int c) -> htmlEscapeSequenceBySymbol.getOrDefault((char)c, String.valueOf((char)c)))
             .map(Object::toString)
             .collect(Collectors.joining());
     }

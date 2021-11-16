@@ -1,12 +1,18 @@
 package md2html;
 
 import HT_5.BufferedScanner;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import markup.SelfContainedMarkupElement;
 
 // TODO:
 // — Multiple MarkDown delimiters for single markup element
@@ -29,7 +35,9 @@ public class Md2Html {
         String outputPath = args[1];
 
 
-        try (MarkdownTokenizer markdownTokenizer = new MarkdownTokenizer(
+        ParsedMarkdown parsedMarkdown = new ParsedMarkdown();
+
+        try (MarkdownBlockTokenizer blockTokenizer = new MarkdownBlockTokenizer(
             new BufferedScanner(
                 new InputStreamReader(
                     new FileInputStream(inputPath),
@@ -37,6 +45,14 @@ public class Md2Html {
                 )
             )
         )) {
+
+            while (true) {
+                Optional<String> nextBlock = blockTokenizer.nextBlock();
+                if (nextBlock.isEmpty()) {
+                    break;
+                }
+                parsedMarkdown.absorbStringBlock(nextBlock.get());
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("No such file (provided as input): " + inputPath);
@@ -46,6 +62,21 @@ public class Md2Html {
             return;
         }
 
+        // Write output:
+        try (BufferedWriter writer = new BufferedWriter(
+            new OutputStreamWriter(
+                new FileOutputStream(outputPath),
+                StandardCharsets.UTF_8
+            )
+        )) {
+            writer.write(parsedMarkdown.toString());
+        } catch (FileNotFoundException e) {
+            System.err.println("FileNotFoundException appeared => the file exists but is a directory"
+                +"rather than a regular file, does not exist but cannot"
+                +"be created, or cannot be opened for any other reason");
+        } catch (IOException e) {
+            System.err.println("There were some errors while working with output file");
+        }
 
     }
 }

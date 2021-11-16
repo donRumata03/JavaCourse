@@ -1,5 +1,7 @@
 package md2html;
 
+import java.util.Map;
+
 public class MarkdownToken {
     public enum TokenType {
         Text,
@@ -12,7 +14,7 @@ public class MarkdownToken {
         Strong
     }
 
-    // private static
+    private static Map<SpecialSymbolType, >
 
     private TokenType type;
     String text;
