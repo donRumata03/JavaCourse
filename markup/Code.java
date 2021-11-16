@@ -1,11 +1,12 @@
 package markup;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Code extends SymmetricWrappingMarkupElement implements InlineMarkupElement {
 
     public Code(List<InlineMarkupElement> children) {
-        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
+        super(Collections.unmodifiableList(children));
     }
 
     @Override

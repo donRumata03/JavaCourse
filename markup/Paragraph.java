@@ -1,10 +1,11 @@
 package markup;
 
+import java.util.Collections;
 import java.util.List;
 
-public class Paragraph extends WrappingMarkupElement implements SelfContainedMarkupElement {
+public class Paragraph extends SymmetricWrappingMarkupElement implements SelfContainedMarkupElement {
     public Paragraph(List<InlineMarkupElement> children) {
-        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
+        super(Collections.unmodifiableList(children));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package markup;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -7,7 +8,7 @@ public class Header extends WrappingMarkupElement implements SelfContainedMarkup
     int headerLevel;
 
     public Header(List<InlineMarkupElement> children, int headerLevel) {
-        super((List<MarkupElement>)(List<? extends MarkupElement>) children);
+        super(Collections.unmodifiableList(children));
         this.headerLevel = headerLevel;
     }
 
