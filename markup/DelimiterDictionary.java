@@ -9,29 +9,26 @@ public class DelimiterDictionary {
         Any
     }
 
-    public static Map<String, Class<? extends InlineMarkupElement>> inlineMarkupElementByMarkdownDelimiter = Map.of(
-        "--", Strikeout.class,
-        "*", Emphasis.class,
-        "_", Emphasis.class,
-        "**", Strong.class,
-        "__", Strong.class,
-        "`", Code.class,
-        "<<", Insertion.class,
-        ">>", Insertion.class,
-        "}}", Deleted.class,
-        "{{", Deleted.class
-    );
+    public static class DelimiterData {
+        Class<? extends InlineMarkupElement> markupClass;
+        OpenCloseness openCloseness;
 
-    public static Map<String, OpenCloseness> OpenClosenessByMarkdownDelimiter = Map.of(
-        "--", OpenCloseness.Any,
-        "*", OpenCloseness.Any,
-        "_", OpenCloseness.Any,
-        "**", OpenCloseness.Any,
-        "__", OpenCloseness.Any,
-        "`", OpenCloseness.Any,
-        "<<", OpenCloseness.Opening,
-        ">>", OpenCloseness.Closing,
-        "}}", OpenCloseness.Opening,
-        "{{", OpenCloseness.Closing
+        public DelimiterData(Class<? extends InlineMarkupElement> markupClass, OpenCloseness openCloseness) {
+            this.markupClass = markupClass;
+            this.openCloseness = openCloseness;
+        }
+    }
+
+    public static Map<String, DelimiterData> inlineMarkupElementByMarkdownDelimiter = Map.of(
+        "--", new DelimiterData(Strikeout.class, OpenCloseness.Any),
+        "*", new DelimiterData(Emphasis.class, OpenCloseness.Any),
+        "_", new DelimiterData(Emphasis.class, OpenCloseness.Any),
+        "**", new DelimiterData(Strong.class, OpenCloseness.Any),
+        "__", new DelimiterData(Strong.class, OpenCloseness.Any),
+        "`", new DelimiterData(Code.class, OpenCloseness.Any),
+        "<<", new DelimiterData(Insertion.class, OpenCloseness.Opening),
+        ">>", new DelimiterData(Insertion.class, OpenCloseness.Closing),
+        "}}", new DelimiterData(Deleted.class, OpenCloseness.Opening),
+        "{{", new DelimiterData(Deleted.class, OpenCloseness.Closing)
     );
 }
