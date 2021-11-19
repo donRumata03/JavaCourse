@@ -1,8 +1,14 @@
 package md2html.tokens;
 
-import java.util.Objects;
-import markup.DelimiterDictionary;
-
 public abstract class InlineMarkdownToken {
     // …
+    protected String text;
+
+    protected InlineMarkdownToken(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

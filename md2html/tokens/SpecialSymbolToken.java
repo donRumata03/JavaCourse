@@ -12,11 +12,16 @@ public class SpecialSymbolToken extends InlineMarkdownToken {
     }
 
 
+    public SpecialSymbolToken(String text) {
+        super(text);
+        assert checkCorrectness();
+    }
 
+    boolean checkCorrectness() {
+        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(text);
+    }
 
-//    public SpecialSymbolToken(String text) {
-//        super(type, text);
-//    }
-
-
+    DelimiterDictionary.OpenCloseness getOpenCloseness() {
+        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(text).openCloseness;
+    }
 }

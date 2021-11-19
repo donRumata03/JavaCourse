@@ -3,15 +3,15 @@ package markup;
 import java.util.Map;
 
 public class DelimiterDictionary {
-    enum OpenCloseness {
+    public enum OpenCloseness {
         Opening,
         Closing,
         Any
     }
 
     public static class DelimiterData {
-        Class<? extends InlineMarkupElement> markupClass;
-        OpenCloseness openCloseness;
+        public Class<? extends InlineMarkupElement> markupClass;
+        public OpenCloseness openCloseness;
 
         public DelimiterData(Class<? extends InlineMarkupElement> markupClass, OpenCloseness openCloseness) {
             this.markupClass = markupClass;
