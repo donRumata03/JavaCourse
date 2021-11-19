@@ -10,7 +10,9 @@ import markup.InlineMarkdownGrouper;
 import markup.InlineMarkupElement;
 import markup.Text;
 import md2html.tokens.InlineMarkdownToken;
-import md2html.tokens.InlineMarkdownToken.TokenType;
+import md2html.tokens.SpecialSymbolToken;
+import md2html.tokens.TextToken;
+
 
 public class ParsedInlineMarkdown {
 
@@ -32,11 +34,7 @@ public class ParsedInlineMarkdown {
     }
 
     public ParsedInlineMarkdown(ParsedInlineMarkdown parent, String text) {
-        this.parent = parent;
-        this.children = null;
-        this.text = text;
-        this.opener = Optional.of(new InlineMarkdownToken(TokenType.SpecialSymbol, ""));
-        this.closer = this.opener;
+        // Text
     }
 
      public List<InlineMarkupElement> toInlineMarkdownElementList() {
@@ -46,27 +44,30 @@ public class ParsedInlineMarkdown {
      }
 
      public InlineMarkupElement toInlineMarkdownElement() {
-         if (parent == null) {
-             throw new IllegalArgumentException("`this` shouldn't be root");
-         }
 
-         if (children == null) {
-             return new Text(text);
-         } else if (opener.isEmpty()) {
-             // It's just a grouper:
-             return new InlineMarkdownGrouper(toInlineMarkdownElementList());
-         }
+        ///// TODO: SPLIT BY CLASSES
 
-         // Determine type by opener:
-         Class<? extends InlineMarkupElement> elementClass =
-             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.get().getText());
-         try {
-             return ((Class<InlineMarkupElement>)elementClass)
-                 .getConstructor(List.class).newInstance(toInlineMarkdownElementList());
-         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-             e.printStackTrace();
-             throw new RuntimeException("");
-         }
+        //         if (parent == null) {
+//             throw new IllegalArgumentException("`this` shouldn't be root");
+//         }
+//
+//         if (children == null) {
+//             return new Text(text);
+//         } else if (opener.isEmpty()) {
+//             // It's just a grouper:
+//             return new InlineMarkdownGrouper(toInlineMarkdownElementList());
+//         }
+//
+//         // Determine type by opener:
+//         Class<? extends InlineMarkupElement> elementClass =
+//             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.get().getText());
+//         try {
+//             return ((Class<InlineMarkupElement>)elementClass)
+//                 .getConstructor(List.class).newInstance(toInlineMarkdownElementList());
+//         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+//             e.printStackTrace();
+//             throw new RuntimeException("");
+//         }
      }
 
     public static ParsedInlineMarkdown parseString(String source) {
@@ -85,7 +86,7 @@ public class ParsedInlineMarkdown {
             }
             InlineMarkdownToken nextToken = mayBeNextToken.get();
 
-            if (nextToken.getType() == TokenType.Text) {
+            if (nextToken instanceof TextToken) {
                 currentNode.children.add(new ParsedInlineMarkdown(currentNode, nextToken.getText()));
             } else {
                 if (currentNode.opener.isPresent() && currentNode.opener.get().equals(nextToken)) {
