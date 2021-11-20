@@ -6,12 +6,13 @@ import java.util.Optional;
 import markup.DelimiterDictionary;
 import markup.InlineMarkupElement;
 import md2html.tokens.InlineMarkdownToken;
+import md2html.tokens.SpecialSymbolToken;
 
 public class WrapperParsedImd extends MotherableParsedImd {
-    protected InlineMarkdownToken opener;
+    protected SpecialSymbolToken opener;
     protected Optional<InlineMarkdownToken> closer = Optional.empty();
 
-    public WrapperParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children, InlineMarkdownToken opener) {
+    public WrapperParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children, SpecialSymbolToken opener) {
         super(Optional.of(parent), children);
         this.opener = opener;
     }

@@ -47,7 +47,7 @@ public abstract class ParsedInlineMarkdown {
             } else {
                 if (
                     currentNode instanceof WrapperParsedImd &&
-                        ((WrapperParsedImd)currentNode).opener.equals(nextToken)
+                        ((SpecialSymbolToken)nextToken).canClose(((WrapperParsedImd)currentNode).opener)
                 ) {
                     // «Close» this Node and go to parent:
                     assert ((SpecialSymbolToken)nextToken).getOpenCloseness() != OpenCloseness.Opening;
@@ -60,7 +60,7 @@ public abstract class ParsedInlineMarkdown {
                     // «Open» new child and go to it:
                     assert ((SpecialSymbolToken)nextToken).getOpenCloseness() != OpenCloseness.Closing;
 
-                    currentNode.children.add(new WrapperParsedImd(currentNode, new ArrayList<>(), nextToken));
+                    currentNode.children.add(new WrapperParsedImd(currentNode, new ArrayList<>(), (SpecialSymbolToken) nextToken));
                     currentNode = (MotherableParsedImd) currentNode.children.get(currentNode.children.size() - 1);
                 }
             }
