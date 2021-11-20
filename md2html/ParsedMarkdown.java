@@ -7,6 +7,7 @@ import markup.Header;
 import markup.MarkupElement;
 import markup.Paragraph;
 import markup.SelfContainedMarkupElement;
+import md2html.ParsedImds.ParsedInlineMarkdown;
 
 public class ParsedMarkdown {
     List<SelfContainedMarkupElement> blockList = new ArrayList<>();

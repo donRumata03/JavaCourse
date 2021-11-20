@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import markup.InlineMarkupElement;
-import md2html.ParsedInlineMarkdown;
 
 public class RootParsedImd extends MotherableParsedImd {
 

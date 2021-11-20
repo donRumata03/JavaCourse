@@ -17,11 +17,11 @@ public class SpecialSymbolToken extends InlineMarkdownToken {
         assert checkCorrectness();
     }
 
-    boolean checkCorrectness() {
+    public boolean checkCorrectness() {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(text);
     }
 
-    DelimiterDictionary.OpenCloseness getOpenCloseness() {
+    public DelimiterDictionary.OpenCloseness getOpenCloseness() {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(text).openCloseness;
     }
 }

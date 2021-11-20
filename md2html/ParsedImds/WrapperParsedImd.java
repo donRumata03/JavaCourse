@@ -5,25 +5,23 @@ import java.util.List;
 import java.util.Optional;
 import markup.DelimiterDictionary;
 import markup.InlineMarkupElement;
-import md2html.ParsedInlineMarkdown;
 import md2html.tokens.InlineMarkdownToken;
 
 public class WrapperParsedImd extends MotherableParsedImd {
-    protected Optional<InlineMarkdownToken> opener = Optional.empty();
+    protected InlineMarkdownToken opener;
     protected Optional<InlineMarkdownToken> closer = Optional.empty();
 
-    public WrapperParsedImd(Optional<MotherableParsedImd> parent, List<ParsedInlineMarkdown> children) {
+    public WrapperParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children, InlineMarkdownToken opener) {
         super(parent, children);
+        this.opener = opener;
     }
 
 
     @Override
     public InlineMarkupElement toInlineMarkdownElement() {
-        assert opener.isPresent();
-
          // Determine type by opener:
          Class<? extends InlineMarkupElement> elementClass =
-             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.get().getText()).markupClass;
+             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.getText()).markupClass;
          try {
              return ((Class<InlineMarkupElement>)elementClass)
                  .getConstructor(List.class).newInstance(childrenAsImdElements());

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import markup.InlineMarkupElement;
 import markup.Text;
-import md2html.ParsedInlineMarkdown;
 
 public class TextParsedImd extends ParsedInlineMarkdown {
     protected String text;
@@ -14,7 +13,7 @@ public class TextParsedImd extends ParsedInlineMarkdown {
         super(parent);
         this.text = text;
     }
-    TextParsedImd(MotherableParsedImd parent, String text) {
+    public TextParsedImd(MotherableParsedImd parent, String text) {
         this(Optional.of(parent), text);
     }
 

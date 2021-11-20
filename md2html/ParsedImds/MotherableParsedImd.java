@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import markup.InlineMarkupElement;
-import md2html.ParsedInlineMarkdown;
 
 public abstract class MotherableParsedImd extends ParsedInlineMarkdown {
     protected List<ParsedInlineMarkdown> children;
 
-    public MotherableParsedImd(Optional<MotherableParsedImd> parent, List<ParsedInlineMarkdown> children) {
-        super(parent);
+    public MotherableParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children) {
+        super(Optional.of(parent));
         this.children = children;
     }
 
