@@ -1,10 +1,7 @@
 package md2html;
 
-import static md2html.StringUtils.findFirstNot;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import markup.Header;
 import markup.MarkupElement;
@@ -27,11 +24,11 @@ public class ParsedMarkdown {
             // For header: at least 1 character after space; <= 6 '#'s
             blockList.add(new Header(
                 ParsedInlineMarkdown.parseString(block.substring(shouldBeAtSpace + 1))
-                    .toInlineMarkdownElementList(), shouldBeAtSpace
+                    .childrenAsImdElements(), shouldBeAtSpace
             ));
         } else {
             // Paragraph:
-            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block).toInlineMarkdownElementList()));
+            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block).childrenAsImdElements()));
         }
     }
 

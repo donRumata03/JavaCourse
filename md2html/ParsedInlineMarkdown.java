@@ -1,74 +1,29 @@
 package md2html;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import markup.DelimiterDictionary;
-import markup.InlineMarkdownGrouper;
 import markup.InlineMarkupElement;
-import markup.Text;
+import md2html.ParsedImds.MotherableParsedImd;
 import md2html.tokens.InlineMarkdownToken;
-import md2html.tokens.SpecialSymbolToken;
 import md2html.tokens.TextToken;
 
 
-public class ParsedInlineMarkdown {
+public abstract class ParsedInlineMarkdown {
+    protected Optional<MotherableParsedImd> parent = Optional.empty();
 
-    private ParsedInlineMarkdown parent = null;
-    private List<ParsedInlineMarkdown> children = null;
-    private String text = null;
-    private Optional<InlineMarkdownToken> opener = Optional.empty();
-    private Optional<InlineMarkdownToken> closer = Optional.empty();
 
-    private ParsedInlineMarkdown(ParsedInlineMarkdown parent, List<ParsedInlineMarkdown> children) {
-        this.parent = parent;
-        this.children = children;
+    protected ParsedInlineMarkdown(MotherableParsedImd parent) {
+        this.parent = Optional.of(parent);
     }
 
-    public ParsedInlineMarkdown(ParsedInlineMarkdown parent, List<ParsedInlineMarkdown> children, InlineMarkdownToken opener) {
-        this.parent = parent;
-        this.children = children;
-        this.opener = Optional.of(opener);
-    }
 
-    public ParsedInlineMarkdown(ParsedInlineMarkdown parent, String text) {
-        // Text
-    }
 
-     public List<InlineMarkupElement> toInlineMarkdownElementList() {
-        assert children != null;
 
-        return children.stream().map(ParsedInlineMarkdown::toInlineMarkdownElement).collect(Collectors.toList());
-     }
+     protected abstract List<InlineMarkupElement> childrenAsImdElements();
 
-     public InlineMarkupElement toInlineMarkdownElement() {
+     public abstract InlineMarkupElement toInlineMarkdownElement();
 
-        ///// TODO: SPLIT BY CLASSES
-
-        //         if (parent == null) {
-//             throw new IllegalArgumentException("`this` shouldn't be root");
-//         }
-//
-//         if (children == null) {
-//             return new Text(text);
-//         } else if (opener.isEmpty()) {
-//             // It's just a grouper:
-//             return new InlineMarkdownGrouper(toInlineMarkdownElementList());
-//         }
-//
-//         // Determine type by opener:
-//         Class<? extends InlineMarkupElement> elementClass =
-//             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.get().getText());
-//         try {
-//             return ((Class<InlineMarkupElement>)elementClass)
-//                 .getConstructor(List.class).newInstance(toInlineMarkdownElementList());
-//         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-//             e.printStackTrace();
-//             throw new RuntimeException("");
-//         }
-     }
 
     public static ParsedInlineMarkdown parseString(String source) {
         InlineMarkdownTokenizer tokenizer = new InlineMarkdownTokenizer(source);
