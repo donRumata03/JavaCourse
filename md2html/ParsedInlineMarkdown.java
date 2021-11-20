@@ -5,20 +5,20 @@ import java.util.List;
 import java.util.Optional;
 import markup.InlineMarkupElement;
 import md2html.ParsedImds.MotherableParsedImd;
+import md2html.ParsedImds.RootParsedImd;
+import md2html.ParsedImds.TextParsedImd;
 import md2html.tokens.InlineMarkdownToken;
 import md2html.tokens.TextToken;
 
 
 public abstract class ParsedInlineMarkdown {
-    protected Optional<MotherableParsedImd> parent = Optional.empty();
+    protected Optional<MotherableParsedImd> parent;
 
 
-    protected ParsedInlineMarkdown(MotherableParsedImd parent) {
-        this.parent = Optional.of(parent);
+    protected ParsedInlineMarkdown(Optional<MotherableParsedImd> parent) {
+        this.parent = parent;
     }
-
-
-
+\
 
      protected abstract List<InlineMarkupElement> childrenAsImdElements();
 
@@ -28,7 +28,7 @@ public abstract class ParsedInlineMarkdown {
     public static ParsedInlineMarkdown parseString(String source) {
         InlineMarkdownTokenizer tokenizer = new InlineMarkdownTokenizer(source);
 
-        ParsedInlineMarkdown root = new ParsedInlineMarkdown(null, new ArrayList<>());
+        ParsedInlineMarkdown root = new RootParsedImd();
         ParsedInlineMarkdown currentNode = root;
 //        List<ParsedInlineMarkdown> parentSequence = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public abstract class ParsedInlineMarkdown {
             InlineMarkdownToken nextToken = mayBeNextToken.get();
 
             if (nextToken instanceof TextToken) {
-                currentNode.children.add(new ParsedInlineMarkdown(currentNode, nextToken.getText()));
+                currentNode.children.add(new TextParsedImd(currentNode, nextToken.getText()));
             } else {
                 if (currentNode.opener.isPresent() && currentNode.opener.get().equals(nextToken)) {
                     // Go to parent

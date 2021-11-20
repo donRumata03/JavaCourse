@@ -1,13 +1,14 @@
 package md2html.ParsedImds;
 
 import java.util.List;
+import java.util.Optional;
 import markup.InlineMarkdownGrouper;
 import markup.InlineMarkupElement;
 import md2html.ParsedInlineMarkdown;
 
 public class GrouperParsedImd extends MotherableParsedImd {
 
-    public GrouperParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children) {
+    public GrouperParsedImd(Optional<MotherableParsedImd> parent, List<ParsedInlineMarkdown> children) {
         super(parent, children);
     }
 

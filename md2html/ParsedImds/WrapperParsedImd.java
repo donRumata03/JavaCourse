@@ -12,7 +12,7 @@ public class WrapperParsedImd extends MotherableParsedImd {
     protected Optional<InlineMarkdownToken> opener = Optional.empty();
     protected Optional<InlineMarkdownToken> closer = Optional.empty();
 
-    public WrapperParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children) {
+    public WrapperParsedImd(Optional<MotherableParsedImd> parent, List<ParsedInlineMarkdown> children) {
         super(parent, children);
     }
 
