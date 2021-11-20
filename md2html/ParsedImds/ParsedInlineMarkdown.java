@@ -21,7 +21,7 @@ public abstract class ParsedInlineMarkdown {
     }
 
 
-     protected abstract List<InlineMarkupElement> childrenAsImdElements();
+     public abstract List<InlineMarkupElement> childrenAsImdElements();
 
      public abstract InlineMarkupElement toInlineMarkdownElement();
 

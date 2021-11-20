@@ -18,7 +18,7 @@ public class TextParsedImd extends ParsedInlineMarkdown {
     }
 
     @Override
-    protected List<InlineMarkupElement> childrenAsImdElements() {
+    public List<InlineMarkupElement> childrenAsImdElements() {
         return new ArrayList<>();
     }
 

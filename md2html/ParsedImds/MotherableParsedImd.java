@@ -8,8 +8,8 @@ import markup.InlineMarkupElement;
 public abstract class MotherableParsedImd extends ParsedInlineMarkdown {
     protected List<ParsedInlineMarkdown> children;
 
-    public MotherableParsedImd(MotherableParsedImd parent, List<ParsedInlineMarkdown> children) {
-        super(Optional.of(parent));
+    public MotherableParsedImd(Optional<MotherableParsedImd> parent, List<ParsedInlineMarkdown> children) {
+        super(parent);
         this.children = children;
     }
 
