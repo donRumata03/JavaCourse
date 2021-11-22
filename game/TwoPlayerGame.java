@@ -25,8 +25,8 @@ public class TwoPlayerGame {
     }
 
     private int makeMove(Player player, int no, boolean log) {
-        final Move move = player.makeMove(board.getPosition());
-        final GameResult result = board.makeMove(move);
+        final Discrete2dMove move = player.makeMove(board.getPosition());
+        final TwoPlayerGameState result = board.makeMove(move);
         if (log) {
             System.out.println();
             System.out.println("Player: " + no);

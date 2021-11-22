@@ -1,11 +1,11 @@
 package game;
 
-public class Move {
+public class Discrete2dMove {
     private final int row;
     private final int col;
-    private final Cell value;
+    private final CellState value;
 
-    public Move(int row, int col, Cell value) {
+    public Discrete2dMove(int row, int col, CellState value) {
         this.row = row;
         this.col = col;
         this.value = value;
@@ -19,7 +19,7 @@ public class Move {
         return col;
     }
 
-    public Cell getValue() {
+    public CellState getValue() {
         return value;
     }
 

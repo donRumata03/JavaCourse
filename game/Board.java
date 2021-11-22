@@ -3,5 +3,5 @@ package game;
 public interface Board {
     Position getPosition();
 
-    GameResult makeMove(Move move);
+    TwoPlayerGameState makeMove(Discrete2dMove move);
 }

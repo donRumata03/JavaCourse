@@ -1,5 +1,5 @@
 package game;
 
-public enum Cell {
+public enum CellState {
     E, X, O
 }

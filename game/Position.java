@@ -1,9 +1,9 @@
 package game;
 
 public interface Position {
-    Cell getTurn();
+    CellState getNextTurn();
 
-    boolean isValid(Move move);
+    boolean isValid(Discrete2dMove move);
 
-    Cell getCell(int row, int column);
+    CellState getCell(int row, int column);
 }

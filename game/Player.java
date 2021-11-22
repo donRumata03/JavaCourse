@@ -1,5 +1,5 @@
 package game;
 
 public interface Player {
-    Move makeMove(Position position);
+    Discrete2dMove makeMove(Position position);
 }
