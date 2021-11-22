@@ -2,7 +2,7 @@ package game.players;
 
 import game.Discrete2dMove;
 import game.Player;
-import game.Position;
+import game.UnmodifiableBoardView;
 import java.util.Scanner;
 
 public class HumanPlayer implements Player {
@@ -13,11 +13,11 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public Discrete2dMove makeMove(Position position) {
+    public Discrete2dMove makeMove(UnmodifiableBoardView view) {
         System.out.println();
         System.out.println("Current position");
-        System.out.println(position);
-        System.out.println("Enter you move for " + position.getNextTurn());
-        return new Discrete2dMove(in.nextInt() - 1, in.nextInt() - 1, position.getNextTurn());
+        System.out.println(view);
+        System.out.println("Enter you move for " + view.getNextPlayerIndex());
+        return new Discrete2dMove(in.nextInt() - 1, in.nextInt() - 1, view.getNextPlayerIndex());
     }
 }

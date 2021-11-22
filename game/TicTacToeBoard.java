@@ -3,7 +3,7 @@ package game;
 import java.util.Arrays;
 import java.util.Map;
 
-public class TicTacToeBoard implements Board, Position {
+public class TicTacToeBoard implements Board {
     private static final Map<CellState, String> CELL_TO_STRING = Map.of(
             CellState.E, ".",
             CellState.X, "X",
@@ -22,12 +22,12 @@ public class TicTacToeBoard implements Board, Position {
     }
 
     @Override
-    public CellState getNextTurn() {
+    public CellState getNextPlayerIndex() {
         return nextTurn;
     }
 
     @Override
-    public Position getPosition() {
+    public UnmodifiableBoardView getPosition() {
         return this;
     }
 
