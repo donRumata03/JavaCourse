@@ -18,9 +18,15 @@ public class InlineMarkdownTokenizer {
     private char viewNext() {
         return source.charAt(sourcePtr);
     }
+    private char viewAfterNext() {
+        return source.charAt(sourcePtr + 1);
+    }
 
     private boolean hasNext() {
         return sourcePtr < source.length();
+    }
+    private boolean hasAfterNext() {
+        return sourcePtr + 1 < source.length();
     }
 
     private boolean nextIsSpecialSymbol() {
@@ -29,9 +35,9 @@ public class InlineMarkdownTokenizer {
 
     private boolean nextIsDoubleSpecialSymbol() {
         return
-            (sourcePtr + 1) < source.length() &&
-                SpecialSymbolToken.isImdDoubleableSpecialSymbol(viewNext()) &&
-                source.charAt(sourcePtr + 1) == viewNext();
+            hasAfterNext() &&
+                SpecialSymbolToken.isImdSpecialSymbolPair(viewNext(), viewAfterNext()) &&
+                viewNext() == viewAfterNext();
     }
 
     private boolean nextIsEscaping() {

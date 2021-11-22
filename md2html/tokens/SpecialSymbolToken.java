@@ -9,8 +9,8 @@ public class SpecialSymbolToken extends InlineMarkdownToken {
         return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c));
     }
 
-    public static boolean isImdDoubleableSpecialSymbol(char c) {
-        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c).repeat(2));
+    public static boolean isImdSpecialSymbolPair(char c1, char c2) {
+        return DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.containsKey(String.valueOf(c1) + c2);
     }
 
 
