@@ -6,7 +6,5 @@ public interface UnmodifiableBoardView {
         return getNextTurnIndex() % 2;
     }
 
-    boolean isValid(Discrete2dMove move);
-
     CellState cellStateAt(Position2d position);
 }

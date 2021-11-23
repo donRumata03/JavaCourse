@@ -14,7 +14,7 @@ public class TwoPlayerGame {
     public int play(boolean log) {
         while (true) {
             final int result1 = makeMove(player1, 1, log);
-            if (result1 != -1)  {
+            if (result1 != TwoPlayerGameState.GAME_NOT_FINISHED)  {
                 return result1;
             }
             final int result2 = makeMove(player2, 2, log);
@@ -24,8 +24,8 @@ public class TwoPlayerGame {
         }
     }
 
-    private int makeMove(Player player, int no, boolean log) {
-        final Discrete2dMove move = player.makeMove(board.getPosition());
+    private TwoPlayerGameState makeMove(Player player, int no, boolean log) {
+        final Discrete2dMove move = player.makeMove(board.get());
         final TwoPlayerGameState result = board.makeMove(move);
         if (log) {
             System.out.println();
@@ -34,17 +34,7 @@ public class TwoPlayerGame {
             System.out.println(board);
             System.out.println("Result: " + result);
         }
-        switch (result) {
-            case WIN:
-                return no;
-            case LOOSE:
-                return 3 - no;
-            case DRAW:
-                return 0;
-            case UNKNOWN:
-                return -1;
-            default:
-                throw new AssertionError("Unknown makeMove result " + result);
-        }
+
+        return result;
     }
 }
