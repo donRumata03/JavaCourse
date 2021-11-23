@@ -4,12 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class MNKBoard implements Board {
-    enum TurnResult {
-        GAME_NOT_FINISHED,
-        WIN,
-        LOOSE,
-        DRAW
-    }
+
 
 
 
@@ -36,14 +31,14 @@ public class MNKBoard implements Board {
     @Override
     public TwoPlayerGameState makeMove(Discrete2dMove move) {
         if (!this.isValid(move)) {
-            return toAbsoluteResult(TurnResult.LOOSE);
+            return TurnResult.LOOSE.toAbsoluteResult(getNextPlayerIndex());
         }
 
         field[move.getPosition().row][move.getPosition().col] = getNextPlayerFigure();
         cellsFilled++;
         nextTurnIndex++;
 
-        return toAbsoluteResult(checkGameStateUpdate(move.getPosition()));
+        return checkGameStateUpdate(move.getPosition()).toAbsoluteResult(getNextPlayerIndex());
     }
 
     @Override
@@ -60,15 +55,6 @@ public class MNKBoard implements Board {
 
     private CellState getNextPlayerFigure() {
         return getNextPlayerIndex() == 0 ? CellState.X : CellState.O;
-    }
-
-    private TwoPlayerGameState toAbsoluteResult(TurnResult result) {
-        return switch (result) {
-            case GAME_NOT_FINISHED -> TwoPlayerGameState.GAME_NOT_FINISHED;
-            case WIN -> getNextPlayerIndex() == 0 ? TwoPlayerGameState.FIRST_WINS : TwoPlayerGameState.SECOND_WINS;
-            case LOOSE -> getNextPlayerIndex() == 0 ? TwoPlayerGameState.SECOND_WINS : TwoPlayerGameState.FIRST_WINS;
-            case DRAW -> TwoPlayerGameState.DRAW;
-        };
     }
 
 
@@ -118,18 +104,6 @@ public class MNKBoard implements Board {
 
     @Override
     public String toString() {
-        // Determine max number width:
-        int maxWidth = Integer.max(Integer.toString(rows).length(), Integer.toString(cols).length());
-
-        StringBuilder builder = new StringBuilder();
-
-        String formattingString = ("%0" + (maxWidth + 1) + "d").repeat(cols);
-        for (int y = 0; y < rows; y++) {
-            builder.append(String.format(formattingString,
-                Arrays.stream(field[y]).map(CellState::toString).toArray()
-                ));
-        }
-
-        return builder.toString();
+        return PrettyFormatter.formatNumberedTable(field);
     }
 }
