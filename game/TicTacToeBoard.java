@@ -37,7 +37,7 @@ public class TicTacToeBoard implements Board {
             return TwoPlayerGameState.LOOSE;
         }
 
-        field[move.getRow()][move.getCol()] = move.getValue();
+        field[move.getPosition().row()][move.getCol()] = move.getValue();
         if (checkWin()) {
             return TwoPlayerGameState.WIN;
         }

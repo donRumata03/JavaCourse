@@ -4,12 +4,23 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class MNKBoard implements Board {
+    enum TurnResult {
+        GAME_NOT_FINISHED,
+        WIN,
+        LOOSE,
+        DRAW
+    }
+
+
+
     private final int rows;
     private final int cols;
     private final int k;
 
     private final CellState[][] field;
     private int cellsFilled = 0;
+
+    private int nextTurnIndex = 0;
 
     public MNKBoard(int rows, int cols, int k) {
         this.rows = rows;
@@ -25,13 +36,39 @@ public class MNKBoard implements Board {
     @Override
     public TwoPlayerGameState makeMove(Discrete2dMove move) {
         if (!this.isValid(move)) {
-            return TwoPlayerGameState.
+            return toAbsoluteResult(TurnResult.LOOSE);
         }
+
+        field[move.getPosition().row][move.getPosition().col] = getNextPlayerFigure();
+        cellsFilled++;
+        nextTurnIndex++;
+
+        return toAbsoluteResult(checkGameStateUpdate(move.getPosition()));
     }
 
     @Override
     public UnmodifiableBoardView getUnmodifiableView() {
-        return null;
+        return new UnmodifiableMNKBoardView(this.field, this.nextTurnIndex);
+    }
+
+    /**
+     * @return next Player index in { 0, 1 }
+     */
+    private int getNextPlayerIndex() {
+        return nextTurnIndex % 2;
+    }
+
+    private CellState getNextPlayerFigure() {
+        return getNextPlayerIndex() == 0 ? CellState.X : CellState.O;
+    }
+
+    private TwoPlayerGameState toAbsoluteResult(TurnResult result) {
+        return switch (result) {
+            case GAME_NOT_FINISHED -> TwoPlayerGameState.GAME_NOT_FINISHED;
+            case WIN -> getNextPlayerIndex() == 0 ? TwoPlayerGameState.FIRST_WINS : TwoPlayerGameState.SECOND_WINS;
+            case LOOSE -> getNextPlayerIndex() == 0 ? TwoPlayerGameState.SECOND_WINS : TwoPlayerGameState.FIRST_WINS;
+            case DRAW -> TwoPlayerGameState.DRAW;
+        };
     }
 
 
@@ -44,15 +81,7 @@ public class MNKBoard implements Board {
     }
 
 
-    enum TurnResult {
-        GAME_NOT_FINISHED,
-        WIN,
-        DRAW
-    }
-
     private TurnResult checkGameStateUpdate(Position2d updatedPosition) {
-        cellsFilled++;
-
         // Updates will contain updatedPosition and in case of win it would contain current value:
 
         int distX = countSameTowards(updatedPosition, 0, 1) + 1 + countSameTowards(updatedPosition, 0, -1);
