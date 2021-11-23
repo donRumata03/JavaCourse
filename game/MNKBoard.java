@@ -1,6 +1,7 @@
 package game;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class MNKBoard implements Board {
     private final int rows;
@@ -19,17 +20,27 @@ public class MNKBoard implements Board {
         for (CellState[] row : field) {
             Arrays.fill(row, CellState.E);
         }
-
     }
 
     @Override
     public TwoPlayerGameState makeMove(Discrete2dMove move) {
-        return null;
+        if (!this.isValid(move)) {
+            return TwoPlayerGameState.
+        }
     }
 
     @Override
     public UnmodifiableBoardView getUnmodifiableView() {
         return null;
+    }
+
+
+    private boolean isValid(Discrete2dMove move) {
+        Position2d pos = move.getPosition();
+        return
+            0 <= pos.col && pos.col < cols &&
+            0 <= pos.row && pos.row < rows &&
+                field[pos.row][pos.col] == CellState.E;
     }
 
 
@@ -73,5 +84,23 @@ public class MNKBoard implements Board {
         }
 
         return sameFoundInclusive - 1;
+    }
+
+
+    @Override
+    public String toString() {
+        // Determine max number width:
+        int maxWidth = Integer.max(Integer.toString(rows).length(), Integer.toString(cols).length());
+
+        StringBuilder builder = new StringBuilder();
+
+        String formattingString = ("%0" + (maxWidth + 1) + "d").repeat(cols);
+        for (int y = 0; y < rows; y++) {
+            builder.append(String.format(formattingString,
+                Arrays.stream(field[y]).map(CellState::toString).toArray()
+                ));
+        }
+
+        return builder.toString();
     }
 }
