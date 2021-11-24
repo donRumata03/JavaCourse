@@ -20,4 +20,14 @@ public class UnmodifiableMNKBoardView implements UnmodifiableBoardView {
         // Specific enum type isn't a reference one => there are no security issues here
         return field[position.row][position.col];
     }
+
+    @Override
+    public int getRows() {
+        return field.length;
+    }
+
+    @Override
+    public int getCols() {
+        return field[0].length;
+    }
 }

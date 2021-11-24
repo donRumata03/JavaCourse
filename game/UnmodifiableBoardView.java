@@ -7,4 +7,6 @@ public interface UnmodifiableBoardView {
     }
 
     CellState cellStateAt(Position2d position);
+    int getRows();
+    int getCols();
 }
