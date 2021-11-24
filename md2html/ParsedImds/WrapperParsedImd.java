@@ -21,14 +21,16 @@ public class WrapperParsedImd extends MotherableParsedImd {
     @Override
     public InlineMarkupElement toInlineMarkdownElement() {
          // Determine type by opener:
-         Class<? extends InlineMarkupElement> elementClass =
-             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.getText()).markupClass;
-         try {
-             return ((Class<InlineMarkupElement>)elementClass)
-                 .getConstructor(List.class).newInstance(childrenAsImdElements());
-         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-             e.printStackTrace();
-             throw new RuntimeException("");
-         }
+//         Class<? extends InlineMarkupElement> elementClass =
+//             DelimiterDictionary.inlineMarkupElementByMarkdownDelimiter.get(opener.getText()).markupClass;
+//         try {
+//             return ((Class<InlineMarkupElement>)elementClass)
+//                 .getConstructor(List.class).newInstance(childrenAsImdElements());
+//         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+//             e.printStackTrace();
+//             throw new RuntimeException("");
+//         }
+
+        return DelimiterDictionary.instantiateImdByDelimiter(opener.getText(), childrenAsImdElements());
     }
 }

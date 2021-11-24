@@ -1,5 +1,6 @@
 package markup;
 
+import java.util.List;
 import java.util.Map;
 
 public class DelimiterDictionary {
@@ -31,4 +32,28 @@ public class DelimiterDictionary {
         "}}", new DelimiterData(Deleted.class, OpenCloseness.Opening),
         "{{", new DelimiterData(Deleted.class, OpenCloseness.Closing)
     );
+
+    public static InlineMarkupElement instantiateImdByDelimiter(String delimiter, List<InlineMarkupElement> children) {
+        if (!inlineMarkupElementByMarkdownDelimiter.containsKey(delimiter)) {
+            throw new IllegalArgumentException("Delimiter string doesn't correspond to any Inline Markdown Element");
+        }
+
+        Class<? extends InlineMarkupElement> selectedClass = inlineMarkupElementByMarkdownDelimiter.get(delimiter).markupClass;
+
+        if (selectedClass == Strikeout.class) {
+            return new Strikeout(children);
+        } else if (selectedClass == Emphasis.class) {
+            return new Emphasis(children);
+        } else if(selectedClass == Strong.class) {
+            return new Strong(children);
+        } else if(selectedClass == Code.class) {
+            return new Code(children);
+        } else if(selectedClass == Insertion.class) {
+            return new Insertion(children);
+        } else if(selectedClass == Deleted.class) {
+            return new Deleted(children);
+        }
+
+        throw new RuntimeException();
+    }
 }
