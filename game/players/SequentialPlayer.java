@@ -1,17 +1,19 @@
 package game.players;
 
+import game.CellState;
 import game.Discrete2dMove;
 import game.Player;
+import game.Position2d;
 import game.UnmodifiableBoardView;
 
 public class SequentialPlayer implements Player {
     @Override
     public Discrete2dMove makeMove(UnmodifiableBoardView view) {
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
-                final Discrete2dMove move = new Discrete2dMove(r, c, view.getNextPlayerIndex());
-                if (view.isValid(move)) {
-                    return move;
+        for (int r = 0; r < view.getRows(); r++) {
+            for (int c = 0; c < view.getCols(); c++) {
+                Position2d position = new Position2d(r, c);
+                if (view.cellStateAt(position) == CellState.E) {
+                    return new Discrete2dMove(position);
                 }
             }
         }
