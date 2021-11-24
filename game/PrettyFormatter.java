@@ -23,16 +23,15 @@ public class PrettyFormatter {
         String[] forFirstLine = (String[]) IntStream.range(0, cols + 1).mapToObj(i -> (i == 0) ? "" : Integer.toString(i)).toArray();
         builder.append(String.format(formattingString, (Object[]) forFirstLine));
 
-
-
-        Arrays.stream(table).map((T[] line) ->
-            String.format(formattingString, (Stream::of() Arrays.stream(line)).map(Object::toString).toArray())
-        ).collect(Collectors.joining("\n"));
-
-        for (T[] ts : table) {
+        for (int i = 0; i < table.length; i++) {
+            T[] ts = table[i];
+            Stream<String> lineNumberStream = Stream.of(Integer.toString(i + 1));
             builder.append(String.format(formattingString,
-                Arrays.stream(ts).map(T::toString).toArray()
-            )).append("\n");
+                Stream.concat(lineNumberStream, Arrays.stream(ts).map(T::toString)).toArray()
+            ));
+            if (i != table.length - 1) {
+                builder.append("\n");
+            }
         }
 
         return builder.toString();
