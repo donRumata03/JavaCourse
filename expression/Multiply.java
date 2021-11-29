@@ -1,7 +1,17 @@
 package expression;
 
-public class Multiply {
+public class Multiply extends TwoArgumentExpression  {
+    public Multiply(Expression left, Expression right) {
+        super(left, right);
+    }
 
-    public Multiply(Const aConst, Variable x) {
+    @Override
+    public String toMiniString() {
+        return null;
+    }
+
+    @Override
+    int reductionOperation(int leftResult, int rightResult) {
+        return leftResult * rightResult;
     }
 }
