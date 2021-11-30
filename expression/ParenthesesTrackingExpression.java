@@ -1,13 +1,9 @@
 package expression;
 
-public abstract class ParenthesesTrackingExpression implements StringBuildableExpression {
+public abstract class ParenthesesTrackingExpression extends StringBuildableExpression {
     protected int lowestPriorityAfterBraces = Integer.MAX_VALUE;
     protected boolean needsParentheses = false;
+    protected boolean isAssociativeAmongPriorityClass = false;
 
     public ParenthesesTrackingExpression() {}
-
-    public ParenthesesTrackingExpression(int lowestPriorityAfterBraces, boolean needsParentheses) {
-        this.lowestPriorityAfterBraces = lowestPriorityAfterBraces;
-        this.needsParentheses = needsParentheses;
-    }
 }

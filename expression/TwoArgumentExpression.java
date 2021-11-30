@@ -11,7 +11,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     private final int priority;
 
 
-    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, int priority) {
+    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, int priority, boolean isAssociativeAmongPriorityClass) {
         this.left = left;
         this.right = right;
         this.priority = priority;
@@ -19,6 +19,10 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         // Make decision if parentheses are necessary or not
         // (It's easy to prove that greedy algorithm makes sense)
         // — Decisions are made separately for left and right
+        // — If priority of smth is higher => don't have PS
+        // — If priority of smth is lower => have PS
+        // — If priority of smth is the same, for left don't have PS, but for right it becomes more interesting…
+        // — So, for right with same priorities it is removed if: ……………
 
         this.lowestPriorityAfterBraces = this.priority;
 
@@ -71,19 +75,5 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         builder.append("(");
         toBasicStringBuilder(builder);
         builder.append(")");
-    }
-
-    @Override
-    public String toMiniString() {
-        StringBuilder builder = new StringBuilder();
-        this.toMiniStringBuilder(builder);
-        return builder.toString();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        this.toStringBuilder(builder);
-        return builder.toString();
     }
 }

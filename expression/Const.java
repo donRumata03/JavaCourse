@@ -1,6 +1,6 @@
 package expression;
 
-public class Const implements Expression {
+public final class Const extends ParenthesesTrackingExpression {
 
     private final int value;
 
@@ -16,5 +16,15 @@ public class Const implements Expression {
     @Override
     public String toMiniString() {
         return null;
+    }
+
+    @Override
+    public void toStringBuilder(StringBuilder builder) {
+        builder.append(value);
+    }
+
+    @Override
+    public void toMiniStringBuilder(StringBuilder builder) {
+        this.toStringBuilder(builder);
     }
 }

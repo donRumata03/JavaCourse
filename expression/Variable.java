@@ -1,6 +1,6 @@
 package expression;
 
-public class Variable implements Expression {
+public final class Variable extends ParenthesesTrackingExpression {
     private final String varName;
 
     public Variable(String varName) {
@@ -9,11 +9,16 @@ public class Variable implements Expression {
 
     @Override
     public int evaluate(int x) {
-        return 0;
+        return x;
     }
 
     @Override
-    public String toString() {
-        return varName;
+    void toStringBuilder(StringBuilder builder) {
+        builder.append(varName);
+    }
+
+    @Override
+    void toMiniStringBuilder(StringBuilder builder) {
+        this.toStringBuilder(builder);
     }
 }
