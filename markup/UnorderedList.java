@@ -1,7 +1,7 @@
 package markup;
 
 import java.util.List;
-import markup.tests.HtmlList;
+import markup.HtmlList;
 
 public class UnorderedList extends HtmlList {
     public UnorderedList(List<ListItem> items) {
