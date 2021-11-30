@@ -72,7 +72,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
             cachingInfo.includeInParenthesesLessGroup(leftInfo);
         }
 
-        if (rightInfo.lowestPriorityAfterParentheses < this.operatorInfo.priority
+        if (this.operatorInfo.priority < rightInfo.lowestPriorityAfterParentheses
             || (
                 rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority
                 && this.operatorInfo.commutativityAmongPriorityClass

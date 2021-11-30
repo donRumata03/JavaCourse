@@ -30,13 +30,21 @@ public class ParenthesesElisionTrackingInfo {
         );
     }
 
-    void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other) {
-        this.lowestPriorityAfterParentheses = Integer.min(
-            this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
-        );
+    void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other, int thisPriority) {
+//        this.lowestPriorityAfterParentheses = Integer.min(
+//            this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
+//        );
+//
+//        if (thisPriority >  this.containsNonAssociativeLowestPriorityAfterParentheses |=
+//            other.containsNonAssociativeLowestPriorityAfterParentheses;
 
-        this.containsNonAssociativeLowestPriorityAfterParentheses |=
-            other.containsNonAssociativeLowestPriorityAfterParentheses;
+        if (thisPriority > other.lowestPriorityAfterParentheses) {
+
+        } else if (thisPriority == other.lowestPriorityAfterParentheses) {
+
+        } else /* thisPriority < other.lowestPriorityAfterParentheses */ {
+            // pass (other doesn't change anything)
+        }
     }
 
     public ParenthesesElisionTrackingInfo(boolean parenthesesApplied, int lowestPriorityAfterParentheses,
