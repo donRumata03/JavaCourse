@@ -8,13 +8,13 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     private final StringBuildableExpression left;
     private final StringBuildableExpression right;
 
-    private final int priority;
+    private final OperatorTraits operatorInfo;
 
 
-    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, int priority, boolean isAssociativeAmongPriorityClass) {
+    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, OperatorTraits operatorInfo) {
         this.left = left;
         this.right = right;
-        this.priority = priority;
+        this.operatorInfo = operatorInfo;
 
         // Make decision if parentheses are necessary or not
         // (It's easy to prove that greedy algorithm makes sense)
@@ -24,18 +24,20 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         // — If priority of smth is the same, for left don't have PS, but for right it becomes more interesting…
         // — So, for right with same priorities it is removed if: ……………
 
-        this.lowestPriorityAfterBraces = this.priority;
+        this.lowestPriorityAfterParentheses = this.priority;
 
-        if (left.lowestPriorityAfterBraces < this.priority) {
+        if (left.lowestPriorityAfterParentheses < this.priority) {
             left.needsParentheses = true;
         } else {
-            lowestPriorityAfterBraces = Integer.min(lowestPriorityAfterBraces, left.lowestPriorityAfterBraces);
+            lowestPriorityAfterParentheses = Integer.min(
+                lowestPriorityAfterParentheses, left.lowestPriorityAfterParentheses);
         }
 
-        if (right.lowestPriorityAfterBraces <= this.priority) {
+        if (right.lowestPriorityAfterParentheses <= this.priority) {
             right.needsParentheses = true;
         } else {
-            lowestPriorityAfterBraces = Integer.min(lowestPriorityAfterBraces, right.lowestPriorityAfterBraces);
+            lowestPriorityAfterParentheses = Integer.min(
+                lowestPriorityAfterParentheses, right.lowestPriorityAfterParentheses);
         }
     }
 
