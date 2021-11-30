@@ -1,13 +1,13 @@
 package expression;
 
 public class Add extends TwoArgumentExpression {
-    public Add(Expression left, Expression right) {
-        super(left, right);
-    }
-
-    @Override
-    public String toMiniString() {
-        return null;
+    public Add(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
+        super(left, right, new OperatorTraits(
+            1,
+            true,
+            true,
+            "+"
+        ));
     }
 
     @Override

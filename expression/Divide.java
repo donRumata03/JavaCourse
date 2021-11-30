@@ -1,14 +1,13 @@
 package expression;
 
 public class Divide extends TwoArgumentExpression {
-
-    public Divide(Expression left, Expression right) {
-        super(left, right);
-    }
-
-    @Override
-    public String toMiniString() {
-        return null;
+    public Divide(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
+        super(left, right, new OperatorTraits(
+            2,
+            false,
+            false,
+            "/"
+        ));
     }
 
     @Override

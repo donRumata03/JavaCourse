@@ -1,13 +1,13 @@
 package expression;
 
 public class Multiply extends TwoArgumentExpression  {
-    public Multiply(Expression left, Expression right) {
-        super(left, right);
-    }
-
-    @Override
-    public String toMiniString() {
-        return null;
+    public Multiply(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
+        super(left, right, new OperatorTraits(
+            2,
+            true,
+            true,
+            "*"
+        ));
     }
 
     @Override
