@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract int reductionOperation(int leftResult, int rightResult);
-    abstract String operationSymbol();
+    abstract String ();
 
     ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
@@ -34,6 +34,16 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         cachedPriorityInfo = Optional.empty();
     }
 
+
+    /**
+     *  Make decision if parentheses are necessary for children or not
+     *  (It's easy to prove that greedy algorithm makes sense)
+     *  — Decisions are made separately for left and right
+     *  — If priority of smth is higher => don't have PS
+     *  — If priority of smth is lower => have PS
+     *  — If priority of smth is the same, for left don't have PS, but for right it becomes more interesting…
+     *  — So, for right with same priorities it is removed if: ……………
+     */
     @Override
     ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         if (cachedPriorityInfo.isPresent()) {
@@ -43,33 +53,32 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         ParenthesesElisionTrackingInfo leftInfo = left.getCachedPriorityInfo();
         ParenthesesElisionTrackingInfo rightInfo = right.getCachedPriorityInfo();
 
-        // Make decision if parentheses are necessary or not
-        // (It's easy to prove that greedy algorithm makes sense)
-        // — Decisions are made separately for left and right
-        // — If priority of smth is higher => don't have PS
-        // — If priority of smth is lower => have PS
-        // — If priority of smth is the same, for left don't have PS, but for right it becomes more interesting…
-        // — So, for right with same priorities it is removed if: ……………
-
         cachedPriorityInfo = Optional.of(new ParenthesesElisionTrackingInfo());
         ParenthesesElisionTrackingInfo cachingInfo = cachedPriorityInfo.get();
 
+
         cachingInfo.lowestPriorityAfterParentheses = this.operatorInfo.priority;
+        cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass;
 
-        if (left. lowestPriorityAfterParentheses < this.operatorInfo.priority) {
-            left.needsParentheses = true;
+        if (leftInfo.lowestPriorityAfterParentheses < this.operatorInfo.priority) {
+            left.parenthesesApplied = true;
         } else {
-            lowestPriorityAfterParentheses = Integer.min(
-                lowestPriorityAfterParentheses, left.lowestPriorityAfterParentheses);
+            cachingInfo.includeInParenthesesLessGroup(leftInfo);
         }
 
-        if (right.lowestPriorityAfterParentheses <= this.priority) {
-            right.needsParentheses = true;
+        if (rightInfo.lowestPriorityAfterParentheses < this.operatorInfo.priority
+            || (
+                rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority
+                && this.operatorInfo.commutativityAmongPriorityClass
+                && !rightInfo.containsNonAssociativeLowestPriorityAfterParentheses
+            )
+        ) {
+            right.parenthesesApplied = true;
         } else {
-            lowestPriorityAfterParentheses = Integer.min(
-                lowestPriorityAfterParentheses, right.lowestPriorityAfterParentheses);
+            cachingInfo.includeInParenthesesLessGroup(rightInfo);
         }
 
+        return cachingInfo;
     }
 
     /////////////////////////////////////////////////////////

@@ -5,4 +5,12 @@ public class ParenthesesElisionTrackingInfo {
     protected boolean containsNonAssociativeLowestPriorityAfterParentheses = false;
 
     ParenthesesElisionTrackingInfo() {}
+
+    void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other) {
+        this.lowestPriorityAfterParentheses = Integer.min(
+            this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
+        );
+
+        this.containsNonAssociativeLowestPriorityAfterParentheses |= other.containsNonAssociativeLowestPriorityAfterParentheses;
+    }
 }
