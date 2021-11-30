@@ -67,14 +67,14 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass;
 
         // When to ADD brackets:
-        if (leftInfo.lowestPriorityAfterParentheses < this.operatorInfo.priority) {
+        if (this.operatorInfo.priority > leftInfo.lowestPriorityAfterParentheses) {
             leftInfo.performParenthesesApplicationDecision(true);
         } else {
             cachingInfo.includeInParenthesesLessGroup(leftInfo);
         }
 
         // When to ADD brackets:
-        if (this.operatorInfo.priority < rightInfo.lowestPriorityAfterParentheses
+        if (this.operatorInfo.priority > rightInfo.lowestPriorityAfterParentheses
             || (
                 rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority
                 && (!this.operatorInfo.commutativityAmongPriorityClass || rightInfo.containsNonAssociativeLowestPriorityAfterParentheses)
