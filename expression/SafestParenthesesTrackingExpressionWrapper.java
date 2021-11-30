@@ -1,17 +1,17 @@
 package expression;
 
-public class DummyParenthesesTrackingExpressionWrapper extends ParenthesesTrackingExpression {
+public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrackingExpression {
 
     private final Expression inner;
 
-    DummyParenthesesTrackingExpressionWrapper(Expression wrapped) {
+    SafestParenthesesTrackingExpressionWrapper(Expression wrapped) {
         this.inner = wrapped;
     }
 
 
     @Override
     ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
-        return new ParenthesesElisionTrackingInfo();
+        return ParenthesesElisionTrackingInfo.generateSafestExpressionInfo();
     }
 
     @Override

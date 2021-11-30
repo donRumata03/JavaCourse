@@ -4,7 +4,6 @@ import java.util.Optional;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract int reductionOperation(int leftResult, int rightResult);
-    abstract String operationSymbol();
 
     ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
@@ -12,6 +11,10 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     private final OperatorTraits operatorInfo;
     private Optional<ParenthesesElisionTrackingInfo> cachedPriorityInfo = Optional.empty();
+
+    public TwoArgumentExpression(Expression left, Expression right, OperatorTraits operatorInfo) {
+        this(new SafestParenthesesTrackingExpressionWrapper(left), new SafestParenthesesTrackingExpressionWrapper(right), operatorInfo);
+    }
 
 
     public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, OperatorTraits operatorInfo) {
@@ -88,7 +91,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
         builder
             .append(" ")
-            .append(operationSymbol())
+            .append(operatorInfo.operatorSymbol)
             .append(" ");
 
         right.toStringBuilder(builder);

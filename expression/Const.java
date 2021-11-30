@@ -1,7 +1,6 @@
 package expression;
 
-public final class Const extends ParenthesesTrackingExpression {
-
+public final class Const extends AtomicParenthesesTrackingExpression {
     private final int value;
 
     public Const(int value) {
@@ -13,18 +12,9 @@ public final class Const extends ParenthesesTrackingExpression {
         return value;
     }
 
-    @Override
-    public String toMiniString() {
-        return null;
-    }
 
     @Override
-    public void toStringBuilder(StringBuilder builder) {
+    void toStringBuilder(StringBuilder builder) {
         builder.append(value);
-    }
-
-    @Override
-    public void toMiniStringBuilder(StringBuilder builder) {
-        this.toStringBuilder(builder);
     }
 }

@@ -1,19 +1,42 @@
 package expression;
 
 public class ParenthesesElisionTrackingInfo {
-    protected boolean parenthesesApplied = false;
+    /* package-private */ public boolean parenthesesApplied;
 
-    protected int lowestPriorityAfterParentheses = Integer.MAX_VALUE;
-    protected boolean containsNonAssociativeLowestPriorityAfterParentheses = false;
+    /* package-private */ public int lowestPriorityAfterParentheses;
+    /* package-private */ boolean containsNonAssociativeLowestPriorityAfterParentheses;
 
-    ParenthesesElisionTrackingInfo() {}
+    public static ParenthesesElisionTrackingInfo generateAtomicExpressionInfo() {
+        return new ParenthesesElisionTrackingInfo(
+            false,
+            Integer.MAX_VALUE,
+            false
+        );
+    }
+
+    public static ParenthesesElisionTrackingInfo generateSafestExpressionInfo() {
+        return new ParenthesesElisionTrackingInfo(
+            false,
+            Integer.MIN_VALUE,
+            true
+        );
+    }
 
     void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other) {
         this.lowestPriorityAfterParentheses = Integer.min(
             this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
         );
 
-        this.containsNonAssociativeLowestPriorityAfterParentheses |= other.containsNonAssociativeLowestPriorityAfterParentheses;
+        this.containsNonAssociativeLowestPriorityAfterParentheses |=
+            other.containsNonAssociativeLowestPriorityAfterParentheses;
+    }
+
+    public ParenthesesElisionTrackingInfo(boolean parenthesesApplied, int lowestPriorityAfterParentheses,
+        boolean containsNonAssociativeLowestPriorityAfterParentheses)
+    {
+        this.parenthesesApplied = parenthesesApplied;
+        this.lowestPriorityAfterParentheses = lowestPriorityAfterParentheses;
+        this.containsNonAssociativeLowestPriorityAfterParentheses = containsNonAssociativeLowestPriorityAfterParentheses;
     }
 
     void performParenthesesApplicationDecision(boolean toApplyOrNotToApply) {

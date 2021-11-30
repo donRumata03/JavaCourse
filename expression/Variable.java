@@ -1,6 +1,6 @@
 package expression;
 
-public final class Variable extends ParenthesesTrackingExpression {
+public final class Variable extends AtomicParenthesesTrackingExpression {
     private final String varName;
 
     public Variable(String varName) {
@@ -15,10 +15,5 @@ public final class Variable extends ParenthesesTrackingExpression {
     @Override
     void toStringBuilder(StringBuilder builder) {
         builder.append(varName);
-    }
-
-    @Override
-    void toMiniStringBuilder(StringBuilder builder) {
-        this.toStringBuilder(builder);
     }
 }
