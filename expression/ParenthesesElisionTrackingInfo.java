@@ -30,20 +30,25 @@ public class ParenthesesElisionTrackingInfo {
         );
     }
 
-    void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other, int thisPriority) {
-//        this.lowestPriorityAfterParentheses = Integer.min(
-//            this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
-//        );
-//
-//        if (thisPriority >  this.containsNonAssociativeLowestPriorityAfterParentheses |=
-//            other.containsNonAssociativeLowestPriorityAfterParentheses;
+    void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other) {
+        // this.lowestPriorityAfterParentheses <= priority of current operation
 
-        if (thisPriority > other.lowestPriorityAfterParentheses) {
+        // Should update
+        // — «lowestPriorityAfterParentheses»
+        // — «containsNonAssociativeLowestPriorityAfterParentheses»
+        if (this.lowestPriorityAfterParentheses > other.lowestPriorityAfterParentheses) {
+            // Accept theirs:
+            this.lowestPriorityAfterParentheses = other.lowestPriorityAfterParentheses;
+            this.containsNonAssociativeLowestPriorityAfterParentheses =
+                other.containsNonAssociativeLowestPriorityAfterParentheses;
 
-        } else if (thisPriority == other.lowestPriorityAfterParentheses) {
+        } else if (this.lowestPriorityAfterParentheses == other.lowestPriorityAfterParentheses) {
+            // Combine having associative:
+            this.containsNonAssociativeLowestPriorityAfterParentheses |=
+                other.containsNonAssociativeLowestPriorityAfterParentheses;
 
         } else /* thisPriority < other.lowestPriorityAfterParentheses */ {
-            // pass (other doesn't change anything)
+            // pass (accept «this» data)
         }
     }
 
