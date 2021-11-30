@@ -1,6 +1,8 @@
 package expression;
 
 public class ParenthesesElisionTrackingInfo {
+    protected boolean parenthesesApplied = false;
+
     protected int lowestPriorityAfterParentheses = Integer.MAX_VALUE;
     protected boolean containsNonAssociativeLowestPriorityAfterParentheses = false;
 
@@ -12,5 +14,9 @@ public class ParenthesesElisionTrackingInfo {
         );
 
         this.containsNonAssociativeLowestPriorityAfterParentheses |= other.containsNonAssociativeLowestPriorityAfterParentheses;
+    }
+
+    void performParenthesesApplicationDecision(boolean toApplyOrNotToApply) {
+        parenthesesApplied = toApplyOrNotToApply;
     }
 }

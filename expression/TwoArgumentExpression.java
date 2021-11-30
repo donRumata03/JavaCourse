@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract int reductionOperation(int leftResult, int rightResult);
-    abstract String ();
+    abstract String operationSymbol();
 
     ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
@@ -61,7 +61,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass;
 
         if (leftInfo.lowestPriorityAfterParentheses < this.operatorInfo.priority) {
-            left.parenthesesApplied = true;
+            leftInfo.performParenthesesApplicationDecision(true);
         } else {
             cachingInfo.includeInParenthesesLessGroup(leftInfo);
         }
@@ -73,7 +73,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
                 && !rightInfo.containsNonAssociativeLowestPriorityAfterParentheses
             )
         ) {
-            right.parenthesesApplied = true;
+            rightInfo.performParenthesesApplicationDecision(true);
         } else {
             cachingInfo.includeInParenthesesLessGroup(rightInfo);
         }
@@ -83,7 +83,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     /////////////////////////////////////////////////////////
 
-    private void toBasicStringBuilder(StringBuilder builder) {
+    private void toParenthesesLessStringBuilder(StringBuilder builder) {
         left.toStringBuilder(builder);
 
         builder
@@ -96,13 +96,15 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     @Override
     public void toMiniStringBuilder(StringBuilder builder) {
-        if (needsParentheses) {
+        ParenthesesElisionTrackingInfo thisInfo = getCachedPriorityInfo();
+
+        if (thisInfo.parenthesesApplied) {
             builder.append("(");
         }
 
-        toBasicStringBuilder(builder);
+        toParenthesesLessStringBuilder(builder);
 
-        if (needsParentheses) {
+        if (thisInfo.parenthesesApplied) {
             builder.append(")");
         }
     }
@@ -110,7 +112,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     @Override
     public void toStringBuilder(StringBuilder builder) {
         builder.append("(");
-        toBasicStringBuilder(builder);
+        toParenthesesLessStringBuilder(builder);
         builder.append(")");
     }
 }
