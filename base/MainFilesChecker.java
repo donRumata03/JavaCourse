@@ -1,6 +1,5 @@
 package base;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,11 +14,11 @@ public class MainFilesChecker extends MainChecker {
     }
 
     private Path getFile(final String suffix) {
-        return Paths.get(String.format("test%d.%s", counter.getTest() + 1, suffix));
+        return Paths.get(String.format("test%d.%s", counter.getTestNo(), suffix));
     }
 
     protected List<String> runFiles(final List<String> input) {
-        try {
+        return counter.call("io", () -> {
             final Path inf = getFile("in");
             final Path ouf = getFile("out");
             Files.write(inf, input);
@@ -28,8 +27,6 @@ public class MainFilesChecker extends MainChecker {
             Files.delete(inf);
             Files.delete(ouf);
             return output;
-        } catch (IOException e) {
-            throw new AssertionError(e);
-        }
+        });
     }
 }
