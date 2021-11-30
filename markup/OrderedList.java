@@ -1,7 +1,7 @@
 package markup;
 
 import java.util.List;
-import markup.tests.HtmlList;
+import markup.HtmlList;
 
 public class OrderedList extends HtmlList {
     public OrderedList(List<ListItem> items) {
