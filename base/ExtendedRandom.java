@@ -6,19 +6,28 @@ import java.util.Random;
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class Randomized {
+public final class ExtendedRandom {
     public static final String ENGLISH = "abcdefghijklmnopqrstuvwxyz";
     public static final String RUSSIAN = "абвгдеежзийклмнопрстуфхцчшщъыьэюя";
     public static final String GREEK = "αβγŋδεζηθικλμνξοπρτυφχψω";
+    public static final String SPACES = " \t\n\u000B\u2029\f";
 
-    public final Random random = new Random(8045702385702345702L);
+    private final Random random;
+
+    public ExtendedRandom(final Random random) {
+        this.random = random;
+    }
+
+    public ExtendedRandom() {
+        this(new Random(8045702385702345702L));
+    }
 
     public String randomString(final String chars) {
         return randomChar(chars) + (random.nextBoolean() ? "" : randomString(chars));
     }
 
     public char randomChar(final String chars) {
-        return chars.charAt(random.nextInt(chars.length()));
+        return chars.charAt(nextInt(chars.length()));
     }
 
     public String randomString(final String chars, final int length) {
@@ -29,21 +38,33 @@ public class Randomized {
         return string.toString();
     }
 
-    public String randomString(final String chars, final int minLength, int maxLength) {
-        return randomString(chars, randomInt(minLength, maxLength + 1));
+    public String randomString(final String chars, final int minLength, final int maxLength) {
+        return randomString(chars, nextInt(minLength, maxLength + 1));
     }
 
-    public int randomInt(final int min, final int max) {
-        return random.nextInt(max - min) + min;
+    public boolean nextBoolean() {
+        return random.nextBoolean();
+    }
+
+    public int nextInt() {
+        return random.nextInt();
+    }
+
+    public int nextInt(final int min, final int max) {
+        return nextInt(max - min) + min;
+    }
+
+    public int nextInt(final int n) {
+        return random.nextInt(n);
     }
 
     @SafeVarargs
     public final <T> T randomItem(final T... items) {
-        return items[random.nextInt(items.length)];
+        return items[nextInt(items.length)];
     }
 
-    public final <T> T randomItem(final List<T> items) {
-        return items.get(random.nextInt(items.size()));
+    public <T> T randomItem(final List<T> items) {
+        return items.get(nextInt(items.size()));
     }
 
     public Random getRandom() {

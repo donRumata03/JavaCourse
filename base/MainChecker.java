@@ -7,16 +7,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public class MainChecker extends Randomized {
+@SuppressWarnings("UseOfSystemOutOrSystemErr")
+public class MainChecker implements Checker {
     public static final String ENCODING = "utf8";
     private final Method method;
     protected final TestCounter counter = new TestCounter();
+    protected final ExtendedRandom random = new ExtendedRandom();
 
     public MainChecker(final String className) {
         try {
@@ -34,8 +37,7 @@ public class MainChecker extends Randomized {
     }
 
     public List<String> runComment(final String comment, final String... input) {
-        counter.nextTest();
-        System.err.format("Running test %02d: java %s %s\n", counter.getTest(), method.getDeclaringClass().getName(), comment);
+        counter.format("Running test %02d: java %s %s\n", counter.getTestNo(), method.getDeclaringClass().getName(), comment);
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final PrintStream oldOut = System.out;
         try {
@@ -62,24 +64,28 @@ public class MainChecker extends Randomized {
         }
     }
 
-    public void checkEquals(final List<String> expected, final List<String> actual) {
-        for (int i = 0; i < Math.min(expected.size(), actual.size()); i++) {
-            final String exp = expected.get(i);
-            final String act = actual.get(i);
-            if (!exp.equalsIgnoreCase(act)) {
-                Asserts.assertEquals("Line " + (i + 1), exp, act);
-                return;
+    protected void testEquals(final List<String> expected, final Supplier<List<String>> runner) {
+        counter.test(() -> {
+            final List<String> actual = runner.get();
+            for (int i = 0; i < Math.min(expected.size(), actual.size()); i++) {
+                final String exp = expected.get(i);
+                final String act = actual.get(i);
+                if (!exp.equalsIgnoreCase(act)) {
+                    Asserts.assertEquals("Line " + (i + 1), exp, act);
+                    return;
+                }
             }
-        }
-        Asserts.assertEquals("Number of lines", expected.size(), actual.size());
-        counter.passed();
+            Asserts.assertEquals("Number of lines", expected.size(), actual.size());
+        });
     }
 
-    public void printStatus(Class<?> aClass) {
+    @Override
+    public void printStatus(final Class<?> aClass) {
         counter.printStatus(aClass);
     }
 
-    public void printStatus() {
-        printStatus(getClass());
+    @Override
+    public ExtendedRandom getRandom() {
+        return random;
     }
 }
