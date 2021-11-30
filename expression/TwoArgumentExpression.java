@@ -56,7 +56,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         ParenthesesElisionTrackingInfo leftInfo = left.getCachedPriorityInfo();
         ParenthesesElisionTrackingInfo rightInfo = right.getCachedPriorityInfo();
 
-        cachedPriorityInfo = Optional.of(new ParenthesesElisionTrackingInfo());
+        cachedPriorityInfo = Optional.of(ParenthesesElisionTrackingInfo.neutralElement());
         ParenthesesElisionTrackingInfo cachingInfo = cachedPriorityInfo.get();
 
 

@@ -22,6 +22,14 @@ public class ParenthesesElisionTrackingInfo {
         );
     }
 
+    public static ParenthesesElisionTrackingInfo neutralElement() {
+        return new ParenthesesElisionTrackingInfo(
+            false,
+            Integer.MAX_VALUE,
+            false
+        );
+    }
+
     void includeInParenthesesLessGroup(ParenthesesElisionTrackingInfo other) {
         this.lowestPriorityAfterParentheses = Integer.min(
             this.lowestPriorityAfterParentheses, other.lowestPriorityAfterParentheses
