@@ -7,14 +7,14 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     abstract String operationSymbol();
 
     ////////////////////////////////////////////////////////////////////////////////////
-    private final StringBuildableExpression left;
-    private final StringBuildableExpression right;
+    private final ParenthesesTrackingExpression left;
+    private final ParenthesesTrackingExpression right;
 
     private final OperatorTraits operatorInfo;
     private Optional<ParenthesesElisionTrackingInfo> cachedPriorityInfo = Optional.empty();
 
 
-    public TwoArgumentExpression(StringBuildableExpression left, StringBuildableExpression right, OperatorTraits operatorInfo) {
+    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, OperatorTraits operatorInfo) {
         this.left = left;
         this.right = right;
         this.operatorInfo = operatorInfo;
@@ -27,13 +27,21 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     /////////////////////////////////////////////////////////
 
-    void ensureParenthesesElisionTrackingInfoCached() {
+
+
+    @Override
+    void resetCachedPriorityInfo() {
+        cachedPriorityInfo = Optional.empty();
+    }
+
+    @Override
+    ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         if (cachedPriorityInfo.isPresent()) {
-            return;
+            return cachedPriorityInfo.get();
         }
 
-        left.ensureParenthesesElisionTrackingInfoCached();
-        right.ensureParenthesesElisionTrackingInfoCached();
+        ParenthesesElisionTrackingInfo leftInfo = left.getCachedPriorityInfo();
+        ParenthesesElisionTrackingInfo rightInfo = right.getCachedPriorityInfo();
 
         // Make decision if parentheses are necessary or not
         // (It's easy to prove that greedy algorithm makes sense)
@@ -62,10 +70,6 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
                 lowestPriorityAfterParentheses, right.lowestPriorityAfterParentheses);
         }
 
-    }
-
-    void clearPriorityInfoCache() {
-        cachedPriorityInfo = Optional.empty();
     }
 
     /////////////////////////////////////////////////////////

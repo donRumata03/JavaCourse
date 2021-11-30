@@ -7,5 +7,5 @@ public abstract class ParenthesesTrackingExpression extends StringBuildableExpre
     protected boolean parenthesesApplied = false;
 
     abstract ParenthesesElisionTrackingInfo getCachedPriorityInfo();
-    abstract ParenthesesElisionTrackingInfo resetCachedPriorityInfo();
+    abstract void resetCachedPriorityInfo();
 }
