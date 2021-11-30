@@ -1,6 +1,9 @@
 package expression;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract int reductionOperation(int leftResult, int rightResult);
@@ -86,36 +89,59 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     /////////////////////////////////////////////////////////
 
-    private void toParenthesesLessStringBuilder(StringBuilder builder) {
-        left.toStringBuilder(builder);
+    private void toBaseStringBuilder(StringBuilder builder, boolean addParentheses,
+        BiConsumer<ParenthesesTrackingExpression, StringBuilder> buildCaller)
+    {
+        if (addParentheses) {
+            builder.append("(");
+        }
+        buildCaller.accept(left, builder);
 
         builder
             .append(" ")
             .append(operatorInfo.operatorSymbol)
             .append(" ");
 
-        right.toStringBuilder(builder);
+        buildCaller.accept(right, builder);
+        if (addParentheses) {
+            builder.append(")");
+        }
     }
 
     @Override
     public void toMiniStringBuilder(StringBuilder builder) {
         ParenthesesElisionTrackingInfo thisInfo = getCachedPriorityInfo();
 
-        if (thisInfo.parenthesesApplied) {
-            builder.append("(");
-        }
+        toBaseStringBuilder(builder, thisInfo.parenthesesApplied, ParenthesesTrackingExpression::toMiniStringBuilder);
 
-        toParenthesesLessStringBuilder(builder);
-
-        if (thisInfo.parenthesesApplied) {
-            builder.append(")");
-        }
+        resetCachedPriorityInfo();
     }
 
     @Override
     public void toStringBuilder(StringBuilder builder) {
-        builder.append("(");
-        toParenthesesLessStringBuilder(builder);
-        builder.append(")");
+        toBaseStringBuilder(builder, true, ParenthesesTrackingExpression::toStringBuilder);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof TwoArgumentExpression)) {
+            return false;
+        }
+
+        TwoArgumentExpression that = (TwoArgumentExpression) other;
+
+        return other.getClass() == this.getClass() &&
+            operatorInfo.equals(that.operatorInfo) &&
+            left.equals(that.left) &&
+            right.equals(that.right);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(left, right, operatorInfo);
     }
 }
