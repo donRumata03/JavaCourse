@@ -1,11 +1,14 @@
 package expression.common;
 
+import base.Asserts;
+import base.TestCounter;
+
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -14,30 +17,30 @@ import java.util.stream.Collectors;
  */
 public final class Selector<T extends BaseTester> {
     private final Class<?> owner;
-    private final IntFunction<T> tester;
+    private final BiFunction<TestCounter, Integer, T> tester;
     private final List<String> modes;
     private final Consumer<T> freezer;
 
-    private final Map<String, List<Consumer<? super T>>> variants = new HashMap<>();
+    private final Map<String, List<Consumer<? super T>>> variants = new LinkedHashMap<>();
 
-    private Selector(final Class<?> owner, final IntFunction<T> tester, final Consumer<T> freezer, final String... modes) {
+    private Selector(final Class<?> owner, final BiFunction<TestCounter, Integer, T> tester, final Consumer<T> freezer, final String... modes) {
         this.owner = owner;
         this.tester = tester;
         this.freezer = freezer;
         this.modes = List.of(modes);
     }
 
-    public static <T extends BaseTester> Selector<T> create(final Class<?> owner, final IntFunction<T> tester, final Consumer<T> freezer, final String... modes) {
+    public static <T extends BaseTester> Selector<T> create(final Class<?> owner, final BiFunction<TestCounter, Integer, T> tester, final Consumer<T> freezer, final String... modes) {
         return new Selector<>(owner, tester, freezer, modes);
     }
 
-    public static <T extends BaseTester> Selector<T> create(final Class<?> owner, final IntFunction<T> tester, final String... modes) {
+    public static <T extends BaseTester> Selector<T> create(final Class<?> owner, final BiFunction<TestCounter, Integer, T> tester, final String... modes) {
         return create(owner, tester, null, modes);
     }
 
     @SafeVarargs
     public final Selector<T> variant(final String name, final Consumer<? super T>... operations) {
-        variants.put(name, List.of(operations));
+        Asserts.assertTrue("Duplicate variant " + name, variants.put(name, List.of(operations)) == null);
         return this;
     }
 
@@ -52,10 +55,12 @@ public final class Selector<T extends BaseTester> {
         }
     }
 
-    public void main(final String[] args) {
+    public void main(final String... args) {
         check(args.length >= 2, "At least two arguments expected, found %s", args.length);
         final String mod = args[0];
-        final List<String> vars = Arrays.stream(args).skip(1).collect(Collectors.toList());
+        final List<String> vars = Arrays.stream(args).skip(1)
+                .flatMap(arg -> Arrays.stream(arg.split("[ +]+")))
+                .collect(Collectors.toList());
         if (!vars.contains("Base")) {
             vars.add(0, "Base");
         }
@@ -65,11 +70,21 @@ public final class Selector<T extends BaseTester> {
 
         vars.forEach(var -> check(variants.containsKey(var), "Unknown variant '%s'", var));
 
-        final T test = tester.apply(mode);
+        final TestCounter counter = new TestCounter(owner, Map.of("variant", String.join("+", vars), "mode", mod));
+        final T test = tester.apply(counter, mode);
         vars.forEach(var -> variants.get(var).forEach(v -> v.accept(test)));
         if (freezer != null) {
             freezer.accept(test);
         }
-        test.run(Map.of("variant", String.join("&", vars), "mode", mod));
+        test.test();
+        counter.printStatus();
+    }
+
+    public List<String> getVariants() {
+        return List.copyOf(variants.keySet());
+    }
+
+    public List<String> getModes() {
+        return modes;
     }
 }

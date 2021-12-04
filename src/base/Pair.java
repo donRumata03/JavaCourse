@@ -9,8 +9,8 @@ import java.util.function.UnaryOperator;
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
-public class Pair<F, S> {
+@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "unused"})
+public final class Pair<F, S> {
     public final F first;
     public final S second;
 
@@ -44,12 +44,15 @@ public class Pair<F, S> {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         final Pair<?, ?> pair = (Pair<?, ?>) o;
-
-        return first.equals(pair.first) && second.equals(pair.second);
+        return Objects.equals(first, pair.first) && Objects.equals(second, pair.second);
     }
 
     @Override

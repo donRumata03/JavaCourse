@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -19,7 +20,14 @@ import java.util.jar.JarFile;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public class TestCounter extends Log {
-    public static final int DENOMINATOR = Integer.parseInt(Objects.requireNonNullElse(System.getProperty("base.denominator"), "1"));
+    public static final int DENOMINATOR = Integer.getInteger("base.denominator", 1);
+    private final Class<?> owner;
+    private final Map<String, ?> properties;
+
+    public TestCounter(final Class<?> owner, final Map<String, ?> properties) {
+        this.owner = owner;
+        this.properties = properties;
+    }
 
     private final long start = System.currentTimeMillis();
     private int passed;
@@ -49,28 +57,19 @@ public class TestCounter extends Log {
         });
     }
 
-    public void test(final Class<?> testClass, final Map<String, Object> properties, final Runnable action) {
-        scope(getLine().repeat(3) + " " + title(testClass, properties), action);
-        printStatus(testClass, properties);
-    }
-
     private String getLine() {
         return getIndent() == 0 ? "=" : "-";
     }
 
-    public void printStatus(final Class<?> testClass) {
-        printStatus(testClass, Map.of());
-    }
-
-    public void printStatus(final Class<?> testClass, final Map<String, Object> properties) {
-        format("%s%n%s%n", getLine().repeat(30), title(testClass, properties));
+    public void printStatus() {
+        format("%s%n%s%n", getLine().repeat(30), title());
         format("%d tests passed in %d ms%n", passed, System.currentTimeMillis() - start);
-        println("Version: " + getVersion(testClass));
+        println("Version: " + getVersion(owner));
         println("");
     }
 
-    private static String title(final Class<?> testClass, final Map<String, Object> properties) {
-        return String.format("%s %s", testClass.getSimpleName(), properties.isEmpty() ? "" : properties);
+    private String title() {
+        return String.format("%s %s", owner.getSimpleName(), properties.isEmpty() ? "" : properties);
     }
 
     private static String getVersion(final Class<?> clazz) {
@@ -100,7 +99,7 @@ public class TestCounter extends Log {
     }
 
     public <T> T call(final String message, final SupplierE<T> supplier) {
-        return testV(() -> get(supplier).either(e -> fail(e, "%s", message), Function.identity()));
+        return get(supplier).either(e -> fail(e, "%s", message), Function.identity());
     }
 
     public void shouldFail(final String message, @SuppressWarnings("TypeMayBeWeakened") final RunnableE action) {
@@ -108,7 +107,7 @@ public class TestCounter extends Log {
     }
 
     public <T> T fail(final String format, final Object... args) {
-        return fail(new AssertionError(String.format(format, args)));
+        return fail(Asserts.error(format, args));
     }
 
     public <T> T fail(final Throwable throwable) {
@@ -129,6 +128,10 @@ public class TestCounter extends Log {
 
     public static <T> Either<Exception, T> get(final SupplierE<T> supplier) {
         return supplier.get();
+    }
+
+    public Path getFile(final String suffix) {
+        return Paths.get(String.format("test%d.%s", getTestNo(), suffix));
     }
 
     @FunctionalInterface

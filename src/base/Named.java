@@ -1,19 +1,19 @@
-package expression.common;
+package base;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public final class Op<T> {
+public final class Named<T> {
     public final String name;
     public final T value;
 
-    public Op(final String name, final T value) {
+    private Named(final String name, final T value) {
         this.name = name;
         this.value = value;
     }
 
-    public static <T> Op<T> of(final String name, final T f) {
-        return new Op<>(name, f);
+    public static <T> Named<T> of(final String name, final T f) {
+        return new Named<>(name, f);
     }
 
     public String getName() {
@@ -26,6 +26,6 @@ public final class Op<T> {
 
     @Override
     public String toString() {
-        return name + ":" + value;
+        return name;
     }
 }

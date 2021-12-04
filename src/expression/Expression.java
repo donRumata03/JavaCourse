@@ -2,6 +2,7 @@ package expression;
 
 import base.Asserts;
 import base.ExtendedRandom;
+import base.TestCounter;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,37 +17,38 @@ import java.util.stream.IntStream;
 public interface Expression extends ToMiniString {
     int evaluate(int x);
 
-    private static Const c(final Integer c) {
+    private static Const c(final int c) {
         return new Const(c);
     }
 
-    static ExpressionTester<?, ?, ?> tester(final int mode) {
-        final Variable vx = new Variable("x");
-        final Const c1 = c(1);
-        final Const c2 = c(2);
+    static ExpressionTester<?, ?, ?> tester(final TestCounter counter, final int mode) {
         final Subtract example = new Subtract(
                 new Multiply(new Const(2), new Variable("x")),
                 new Const(3)
         );
         Asserts.assertEquals("Example at 5", 7, example.evaluate(5));
         Asserts.assertEquals("Example toString", "((2 * x) - 3)", example.toString());
-        Asserts.assertTrue("Example equals 1", example.equals(new Subtract(
-                new Multiply(new Const(2), new Variable("x")),
-                new Const(3)
-        )));
-        Asserts.assertTrue("Example equals 2", !example.equals(new Subtract(
-                new Const(3),
+        Asserts.assertTrue("Example equals 1",
                 new Multiply(new Const(2), new Variable("x"))
-        )));
+                        .equals(new Multiply(new Const(2), new Variable("x"))));
+        Asserts.assertTrue("Example equals 2",
+                !new Multiply(new Const(2), new Variable("x"))
+                        .equals(new Multiply(new Variable("x"), new Const(2))));
+
+        final Variable vx = new Variable("x");
+        final Const c1 = c(1);
+        final Const c2 = c(2);
 
         //noinspection Convert2MethodRef
-        return new ExpressionTester<Expression, Integer, Integer>(
+        return new ExpressionTester<>(
+                counter,
                 mode,
+                Expression.class,
                 Expression::evaluate,
                 IntStream.rangeClosed(0, 10).boxed().collect(Collectors.toList()),
                 ExtendedRandom::nextInt,
                 ExtendedRandom::nextInt,
-                ExpressionTester.constant(c -> x -> c, Expression::c),
+                c -> x -> c, int.class,
                 (op, a, b) -> x -> op.apply(a.evaluate(x), b.evaluate(x)),
                 (a, b) -> a + b, (a, b) -> a - b, (a, b) -> a * b, (a, b) -> a / b,
                 ExpressionTester.variable("x", x -> x)

@@ -10,6 +10,7 @@ public final class ExtendedRandom {
     public static final String ENGLISH = "abcdefghijklmnopqrstuvwxyz";
     public static final String RUSSIAN = "абвгдеежзийклмнопрстуфхцчшщъыьэюя";
     public static final String GREEK = "αβγŋδεζηθικλμνξοπρτυφχψω";
+    @SuppressWarnings("StaticMethodOnlyUsedInOneClass")
     public static final String SPACES = " \t\n\u000B\u2029\f";
 
     private final Random random;

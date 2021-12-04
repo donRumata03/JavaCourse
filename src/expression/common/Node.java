@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public interface Node<T> {
-    <R> R get(final Function<T, R> constant, final BiFunction<String, List<Node<T>>, R> op);
-    <R> R cata(final Function<T, R> constant, final BiFunction<String, List<R>, R> op);
+    <R> R get(final Function<? super T, R> constant, final BiFunction<String, List<Node<T>>, R> op);
+    <R> R cata(final Function<? super T, R> constant, final BiFunction<String, List<R>, R> op);
 
     default int size() {
         return get(c -> 1, (op, args) -> 1 + args.stream().mapToInt(Node::size).sum());
@@ -25,12 +25,12 @@ public interface Node<T> {
     static <T> Node<T> op(final String name, final List<Node<T>> args) {
         return new Node<>() {
             @Override
-            public <R> R get(final Function<T, R> constant, final BiFunction<String, List<Node<T>>, R> op) {
+            public <R> R get(final Function<? super T, R> constant, final BiFunction<String, List<Node<T>>, R> op) {
                 return op.apply(name, args);
             }
 
             @Override
-            public <R> R cata(final Function<T, R> constant, final BiFunction<String, List<R>, R> op) {
+            public <R> R cata(final Function<? super T, R> constant, final BiFunction<String, List<R>, R> op) {
                 return op.apply(name, args.stream().map(arg -> arg.cata(constant, op)).collect(Collectors.toUnmodifiableList()));
             }
 
@@ -44,12 +44,12 @@ public interface Node<T> {
     static <T> Node<T> constant(final T value) {
         return new Node<>() {
             @Override
-            public <R> R get(final Function<T, R> constant, final BiFunction<String, List<Node<T>>, R> op) {
+            public <R> R get(final Function<? super T, R> constant, final BiFunction<String, List<Node<T>>, R> op) {
                 return constant.apply(value);
             }
 
             @Override
-            public <R> R cata(final Function<T, R> constant, final BiFunction<String, List<R>, R> op) {
+            public <R> R cata(final Function<? super T, R> constant, final BiFunction<String, List<R>, R> op) {
                 return constant.apply(value);
             }
 

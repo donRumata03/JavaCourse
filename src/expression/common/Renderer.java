@@ -12,10 +12,10 @@ import java.util.function.UnaryOperator;
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
 public class Renderer<C, T> {
-    private final Function<C, T> constant;
+    private final Function<? super C, T> constant;
     private final Map<String, Function<List<T>, T>> renderers = new HashMap<>();
 
-    public Renderer(final Function<C, T> constant) {
+    public Renderer(final Function<? super C, T> constant) {
         this.constant = constant;
     }
 

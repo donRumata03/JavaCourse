@@ -1,32 +1,25 @@
 package expression.common;
 
 import base.Asserts;
-import base.ExtendedRandom;
+import base.BaseChecker;
 import base.TestCounter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public abstract class BaseTester extends Asserts {
-    protected final ExtendedRandom random = new ExtendedRandom();
-    protected TestCounter counter = new TestCounter();
+public abstract class BaseTester extends BaseChecker {
     protected final int mode;
 
-    protected BaseTester(final int mode) {
+    protected BaseTester(final TestCounter counter, final int mode) {
+        super(counter);
         this.mode = mode;
         Locale.setDefault(Locale.US);
-        checkAssert(getClass());
-    }
-
-    public void run(final TestCounter counter) {
-        this.counter = counter;
-        run(Map.of());
-    }
-
-    public void run(final Map<String, Object> properties) {
-        counter.test(getClass(), properties, this::test);
+        Asserts.checkAssert(getClass());
     }
 
     protected abstract void test();
@@ -40,20 +33,5 @@ public abstract class BaseTester extends Asserts {
         for (int i = -d; i <= d; i++) {
             values.add(c + i);
         }
-    }
-
-    public static int mode(final String[] args, final String... modes) {
-        if (args.length != 1) {
-            throw error("Single argument expected. Supported modes: %s", Arrays.asList(modes));
-        }
-        final int index = List.of(modes).indexOf(args[0]);
-        if (index < 0) {
-            throw error("Invalid mode '%s'. Supported moves: %s", args[0], Arrays.asList(modes));
-        }
-        return index;
-    }
-
-    public static int mode(final String[] args) {
-        return mode(args, "easy", "hard");
     }
 }
