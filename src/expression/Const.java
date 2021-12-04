@@ -16,6 +16,11 @@ public final class Const extends AtomicParenthesesTrackingExpression {
     }
 
     @Override
+    public int evaluate(int x, int y, int z) {
+        return value;
+    }
+
+    @Override
     public void toStringBuilder(StringBuilder builder) {
         builder.append(value);
     }

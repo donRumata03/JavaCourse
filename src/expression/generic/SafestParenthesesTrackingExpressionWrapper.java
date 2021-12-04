@@ -1,12 +1,17 @@
 package expression.generic;
 
 import expression.Expression;
+import expression.ToMiniString;
+import expression.TripleExpression;
 
 public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrackingExpression {
 
-    private final Expression inner;
+    private final ToMiniString inner;
 
     SafestParenthesesTrackingExpressionWrapper(Expression wrapped) {
+        this.inner = wrapped;
+    }
+    SafestParenthesesTrackingExpressionWrapper(TripleExpression wrapped) {
         this.inner = wrapped;
     }
 
@@ -31,6 +36,17 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
 
     @Override
     public int evaluate(int x) {
-        return inner.evaluate(x);
+        if (!(inner instanceof Expression expression)) {
+            throw new AssertionError("Single-argument expression is only supported by ");
+        }
+        return expression.evaluate(x);
+    }
+
+    @Override
+    public int evaluate(int x, int y, int z) {
+        if (!(inner instanceof TripleExpression tripleExpression)) {
+            throw new AssertionError("Single-argument expression is only supported by ");
+        }
+        return tripleExpression.evaluate(x, y, z);
     }
 }

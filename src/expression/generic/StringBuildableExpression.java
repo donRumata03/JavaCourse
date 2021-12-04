@@ -1,11 +1,12 @@
 package expression.generic;
 
 import expression.Expression;
+import expression.TripleExpression;
 
 /**
  * We want to force implementors to be efficient :)
  */
-public abstract class StringBuildableExpression implements Expression {
+public abstract class StringBuildableExpression implements Expression, TripleExpression {
     abstract public void toStringBuilder(StringBuilder builder);
     abstract public void toMiniStringBuilder(StringBuilder builder);
 

@@ -12,7 +12,21 @@ public final class Variable extends AtomicParenthesesTrackingExpression {
 
     @Override
     public int evaluate(int x) {
+        if (!varName.equals("x")) {
+            throw new AssertionError("Variable isn't ");
+        }
+
         return x;
+    }
+
+    @Override
+    public int evaluate(int x, int y, int z) {
+        return switch (varName) {
+            case "x" -> x;
+            case "y" -> y;
+            case "z" -> z;
+            default -> throw new AssertionError("Variable name should be in { x, y, z }, it's: " + varName);
+        };
     }
 
     @Override

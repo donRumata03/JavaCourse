@@ -1,12 +1,13 @@
 package expression.generic;
 
 import expression.Expression;
+import expression.TripleExpression;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
-    abstract int reductionOperation(int leftResult, int rightResult);
+    abstract public int reductionOperation(int leftResult, int rightResult);
 
     ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
@@ -29,6 +30,11 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     @Override
     public int evaluate(int x) {
         return this.reductionOperation(left.evaluate(x), right.evaluate(x));
+    }
+
+    @Override
+    public int evaluate(int x, int y, int z) {
+        return this.reductionOperation(left.evaluate(x, y, z), right.evaluate(x, y, z));
     }
 
     /////////////////////////////////////////////////////////
@@ -63,8 +69,8 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         ParenthesesElisionTrackingInfo cachingInfo = cachedPriorityInfo.get();
 
 
-        cachingInfo.lowestPriorityAfterParentheses = this.operatorInfo.priority;
-        cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass;
+        cachingInfo.lowestPriorityAfterParentheses = this.operatorInfo.priority();
+        cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass();
 
         // When to ADD brackets:
         if (this.operatorInfo.priority() > leftInfo.lowestPriorityAfterParentheses) {

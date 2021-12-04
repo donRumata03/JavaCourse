@@ -15,7 +15,7 @@ public final class Subtract extends TwoArgumentExpression {
     }
 
     @Override
-    int reductionOperation(int leftResult, int rightResult) {
+    public int reductionOperation(int leftResult, int rightResult) {
         return leftResult - rightResult;
     }
 }
