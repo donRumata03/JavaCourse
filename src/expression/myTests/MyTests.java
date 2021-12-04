@@ -22,12 +22,12 @@ public class MyTests {
 //        var expression = new Multiply(new Divide(new Add(c2, c1), c1), vx);
 
 
-//        var expression = new Add(
-//            new Multiply(vx, vx),
-//            new Divide(new Subtract(vx, c(1)), c(10))
-//        );
+        var expression = new Add(
+            new Multiply(vx, vx),
+            new Divide(new Subtract(vx, c(1)), c(10))
+        );
 
-        var expression = new Multiply(c1, )
+//        var expression = new Multiply(c1, )
 
         System.out.println(expression.evaluate(10));
         System.out.println(expression.toMiniString());
