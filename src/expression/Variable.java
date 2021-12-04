@@ -1,5 +1,6 @@
 package expression;
 
+import expression.generic.AtomicParenthesesTrackingExpression;
 import java.util.Objects;
 
 public final class Variable extends AtomicParenthesesTrackingExpression {
@@ -15,7 +16,7 @@ public final class Variable extends AtomicParenthesesTrackingExpression {
     }
 
     @Override
-    void toStringBuilder(StringBuilder builder) {
+    public void toStringBuilder(StringBuilder builder) {
         builder.append(varName);
     }
 

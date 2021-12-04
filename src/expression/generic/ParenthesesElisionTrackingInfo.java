@@ -1,4 +1,4 @@
-package expression;
+package expression.generic;
 
 public class ParenthesesElisionTrackingInfo {
     /* package-private */ public boolean parenthesesApplied;

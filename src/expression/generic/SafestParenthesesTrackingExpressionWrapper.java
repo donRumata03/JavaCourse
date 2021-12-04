@@ -1,4 +1,6 @@
-package expression;
+package expression.generic;
+
+import expression.Expression;
 
 public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrackingExpression {
 
@@ -10,20 +12,20 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
 
 
     @Override
-    ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
+    public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         return ParenthesesElisionTrackingInfo.generateSafestExpressionInfo();
     }
 
     @Override
-    void resetCachedPriorityInfo() {}
+    public void resetCachedPriorityInfo() {}
 
     @Override
-    void toStringBuilder(StringBuilder builder) {
+    public void toStringBuilder(StringBuilder builder) {
         builder.append(inner.toString());
     }
 
     @Override
-    void toMiniStringBuilder(StringBuilder builder) {
+    public void toMiniStringBuilder(StringBuilder builder) {
         builder.append(inner.toMiniString());
     }
 

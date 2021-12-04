@@ -1,16 +1,16 @@
-package expression;
+package expression.generic;
 
 public abstract class AtomicParenthesesTrackingExpression extends ParenthesesTrackingExpression {
     @Override
-    ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
+    public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         return ParenthesesElisionTrackingInfo.generateAtomicExpressionInfo();
     }
 
     @Override
-    void resetCachedPriorityInfo() {}
+    public void resetCachedPriorityInfo() {}
 
     @Override
-    void toMiniStringBuilder(StringBuilder builder) {
+    public void toMiniStringBuilder(StringBuilder builder) {
         toStringBuilder(builder);
     }
 }

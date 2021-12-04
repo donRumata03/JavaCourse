@@ -1,9 +1,9 @@
-package expression;
+package expression.generic;
 
+import expression.Expression;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract int reductionOperation(int leftResult, int rightResult);
@@ -36,7 +36,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
 
     @Override
-    void resetCachedPriorityInfo() {
+    public void resetCachedPriorityInfo() {
         cachedPriorityInfo = Optional.empty();
     }
 
@@ -51,7 +51,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
      *  — So, for right with same priorities it is removed if: ……………
      */
     @Override
-    ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
+    public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         if (cachedPriorityInfo.isPresent()) {
             return cachedPriorityInfo.get();
         }
@@ -67,17 +67,21 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass;
 
         // When to ADD brackets:
-        if (this.operatorInfo.priority > leftInfo.lowestPriorityAfterParentheses) {
+        if (this.operatorInfo.priority() > leftInfo.lowestPriorityAfterParentheses) {
             leftInfo.performParenthesesApplicationDecision(true);
         } else {
             cachingInfo.includeInParenthesesLessGroup(leftInfo);
         }
 
         // When to ADD brackets:
-        if (this.operatorInfo.priority > rightInfo.lowestPriorityAfterParentheses
+        if (this.operatorInfo.priority() > rightInfo.lowestPriorityAfterParentheses
             || (
-                rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority
-                && (!this.operatorInfo.commutativityAmongPriorityClass || rightInfo.containsNonAssociativeLowestPriorityAfterParentheses)
+                rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority()
+                &&
+                    (
+                        !this.operatorInfo.commutativityAmongPriorityClass()
+                            || rightInfo.containsNonAssociativeLowestPriorityAfterParentheses
+                    )
             )
         ) {
             rightInfo.performParenthesesApplicationDecision(true);
@@ -100,7 +104,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
         builder
             .append(" ")
-            .append(operatorInfo.operatorSymbol)
+            .append(operatorInfo.operatorSymbol())
             .append(" ");
 
         buildCaller.accept(right, builder);

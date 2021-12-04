@@ -1,11 +1,13 @@
-package expression;
+package expression.generic;
+
+import expression.Expression;
 
 /**
  * We want to force implementors to be efficient :)
  */
 public abstract class StringBuildableExpression implements Expression {
-    abstract void toStringBuilder(StringBuilder builder);
-    abstract void toMiniStringBuilder(StringBuilder builder);
+    abstract public void toStringBuilder(StringBuilder builder);
+    abstract public void toMiniStringBuilder(StringBuilder builder);
 
     @Override
     public String toMiniString() {
