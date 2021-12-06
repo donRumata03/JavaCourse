@@ -139,11 +139,9 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
             return true;
         }
 
-        if (!(other instanceof TwoArgumentExpression)) {
+        if (!(other instanceof TwoArgumentExpression that)) {
             return false;
         }
-
-        TwoArgumentExpression that = (TwoArgumentExpression) other;
 
         return other.getClass() == this.getClass() &&
             operatorInfo.equals(that.operatorInfo) &&
