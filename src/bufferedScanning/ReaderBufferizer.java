@@ -41,7 +41,9 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
      * @return if this number of chars exist in the source
      */
     private boolean trySupplementBuffer(int requiredSupplement) throws IOException {
-        assert currentBufferSize + requiredSupplement <= charBuffer.length;
+        if (currentBufferSize + requiredSupplement > charBuffer.length) {
+            throw new AssertionError("Too big supplement");
+        }
 
         int readNow = 0;
         while (readNow < requiredSupplement) {
@@ -51,7 +53,9 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
                 return false;
             }
             readNow += readResult;
+            currentBufferSize += readResult;
         }
+
 
         return true;
     }
@@ -106,6 +110,8 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
     public boolean hasNCharacters(int n) throws IOException {
         if (readCharactersLeft() >= n) {
             return true;
+        } else if (n > charBuffer.length) {
+            return false;
         }
         compressBuffer();
 

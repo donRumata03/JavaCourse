@@ -23,16 +23,17 @@ public class ScanTester {
 //        String sampleFilename = "sample_test.txt";
 //        String sampleFilename = "sample_input_words.txt";
 //        String sampleFilename = "sample_ints.txt";
-        String sampleFilename = "sample_lines.txt";
+        String sampleFilename = "sample_characters.txt";
 
-        Path samplePath = rootPath.resolve("bufferedScanning").resolve("md2html/samples").resolve(Paths.get(sampleFilename));
+        Path samplePath = rootPath.resolve("src").resolve("bufferedScanning").resolve("samples").resolve(Paths.get(sampleFilename));
 
 //        Scanner s = new Scanner("");
 //        int i = s.nextInt();
 
 
 //        testScanner(samplePath);
-        testBufferizer(samplePath);
+//        testBufferizer(samplePath);
+        testBufferizerViewN(samplePath);
 //        compareLineReading(samplePath);
 
 
@@ -60,6 +61,32 @@ public class ScanTester {
             while (buff.hasNextChar()) {
                 char c = buff.nextChar();
                 System.out.println((int)c);
+//                System.out.println(" '" + c + "'");
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void testBufferizerViewN(Path path) {
+        int chunkSize = 3;
+        int bufferSize = 12;
+
+        try (ReaderBufferizer buff = new ReaderBufferizer(
+            new InputStreamReader(
+                new FileInputStream(path.toString()), StandardCharsets.UTF_8
+//                System.in
+            ), bufferSize
+        )) {
+
+            while (buff.hasNCharacters(chunkSize)) {
+                System.out.println(buff.viewNextN(chunkSize));
+                for (int i = 0; i < chunkSize; i++) {
+                    buff.nextChar();
+                }
 //                System.out.println(" '" + c + "'");
             }
 
