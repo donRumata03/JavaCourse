@@ -1,10 +1,10 @@
 package expression.generic;
 
 public class ParenthesesElisionTrackingInfo {
-    /* package-private */ public boolean parenthesesApplied;
+    public boolean parenthesesApplied;
 
-    /* package-private */ public int lowestPriorityAfterParentheses;
-    /* package-private */ boolean containsNonAssociativeLowestPriorityAfterParentheses;
+    public int lowestPriorityAfterParentheses;
+    public boolean containsNonAssociativeLowestPriorityAfterParentheses;
 
     public static ParenthesesElisionTrackingInfo generateAtomicExpressionInfo() {
         return new ParenthesesElisionTrackingInfo(

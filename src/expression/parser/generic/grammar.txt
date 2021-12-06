@@ -1,5 +1,5 @@
 expr        --> expr '+' term       |  expr '-' term      |  term
 term        --> term '*' factor     |  term '/' factor      |  factor
 factor      --> exponent '^' factor |  exponent
-exponent    --> MINUS exponent      |  atomic
+exponent    --> '-' exponent      |  atomic
 atomic      --> <integer>           |  '(' expr ')'
