@@ -1,8 +1,4 @@
-package HT_5;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.NoSuchElementException;
+package bufferedScanning;
 
 
 public class HexAbcParser {

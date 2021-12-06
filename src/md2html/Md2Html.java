@@ -1,6 +1,6 @@
 package md2html;
 
-import HT_5.BufferedScanner;
+import bufferedScanning.BufferedScanner;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import markup.SelfContainedMarkupElement;
 
 // TODO:
 // — At rendering markdown and html: use Dictionary (Map) inside getHtmlTag, getMarkdownOpener, …

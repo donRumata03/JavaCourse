@@ -1,11 +1,10 @@
 package md2html;
 
-import HT_5.BufferedScanner;
+import bufferedScanning.BufferedScanner;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class MarkdownBlockTokenizer implements Closeable, AutoCloseable {

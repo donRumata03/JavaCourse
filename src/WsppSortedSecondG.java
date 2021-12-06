@@ -1,5 +1,5 @@
-import HT_5.BufferedScanner;
-import HT_5.IntList;
+import bufferedScanning.BufferedScanner;
+import bufferedScanning.IntList;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

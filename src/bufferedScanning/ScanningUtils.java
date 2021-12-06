@@ -1,4 +1,4 @@
-package HT_5;
+package bufferedScanning;
 
 public class ScanningUtils {
     // Default delimiters:

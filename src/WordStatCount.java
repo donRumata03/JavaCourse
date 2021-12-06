@@ -1,4 +1,4 @@
-import HT_5.BufferedScanner;
+import bufferedScanning.BufferedScanner;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

@@ -1,6 +1,6 @@
 package expression.parser.generic;
 
-import HT_5.ReaderBufferizer;
+import bufferedScanning.ReaderBufferizer;
 import java.io.IOException;
 import java.util.function.IntPredicate;
 
