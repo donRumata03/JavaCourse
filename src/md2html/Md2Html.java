@@ -11,9 +11,6 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-// TODO:
-// — At rendering markdown and html: use Dictionary (Map) inside getHtmlTag, getMarkdownOpener, …
-
 /**
  * Converts MarkDown file with filename provided as the first argument to HTML file provided as the second argument
  *
