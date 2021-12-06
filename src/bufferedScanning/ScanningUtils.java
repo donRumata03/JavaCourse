@@ -18,4 +18,21 @@ public class ScanningUtils {
         }
         return false;
     }
+
+    static void copyForward(char[] array, int srcIndex, int dstIndex, int length) {
+        assert srcIndex + length <= array.length;
+
+        int srcPtr = srcIndex;
+        int dstPtr = dstIndex;
+
+        for (int i = 0; i < length; i++) {
+            array[dstPtr] = array[srcPtr];
+            srcPtr++;
+            dstPtr++;
+        }
+    }
+
+    static String bufferSubstring(char[] array, int startPos, int endPos) {
+        return String.valueOf(array, startPos, endPos - startPos);
+    }
 }

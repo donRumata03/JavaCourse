@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
 
 public class ReaderBufferizer implements Closeable, AutoCloseable {
-    private static final int defaultCharBufferSize = 1024;
+    private static final int defaultCharBufferSize = 4096;
 
     private final Reader in;
     private final char[] charBuffer;
@@ -36,6 +36,38 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         }
     }
 
+    /**
+     * @param requiredSupplement number of additional chars to add after current end
+     * @return if this number of chars exist in the source
+     */
+    private boolean trySupplementBuffer(int requiredSupplement) throws IOException {
+        assert currentBufferSize + requiredSupplement <= charBuffer.length;
+
+        int readNow = 0;
+        while (readNow < requiredSupplement) {
+            // Read blocks only if there are exactly 0 characters ready, so we just specify the number of characters left
+            int readResult = in.read(charBuffer, currentBufferSize, charBuffer.length - currentBufferSize);
+            if (readResult == -1) {
+                return false;
+            }
+            readNow += readResult;
+        }
+
+        return true;
+    }
+
+
+    private int readCharactersLeft() {
+        return currentBufferSize - charBufferPtr;
+    }
+
+    private void compressBuffer() {
+        int readCharactersLeft = readCharactersLeft();
+        ScanningUtils.copyForward(charBuffer, charBufferPtr, 0, readCharactersLeft);
+        charBufferPtr = 0;
+        currentBufferSize = readCharactersLeft;
+    }
+
     public boolean hasNextChar() throws IOException {
         // If already have some characters, result definitely exists:
         if (charBufferPtr < currentBufferSize) {
@@ -49,6 +81,7 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         // Current buffer size is either -1 (EOS => return false) or > 0 => return true
         return currentBufferSize != -1;
     }
+
 
     public char viewNext() throws IOException {
         if (!hasNextChar()) {
@@ -70,12 +103,27 @@ public class ReaderBufferizer implements Closeable, AutoCloseable {
         return false;
     }
 
-    public char[] viewNextN(int n) {
+    public boolean hasNCharacters(int n) throws IOException {
+        if (readCharactersLeft() >= n) {
+            return true;
+        }
+        compressBuffer();
+
+        return trySupplementBuffer(n - readCharactersLeft());
+    }
+
+    /**
+     * If necessary: shifts characters left and reads if possible
+     */
+    public String viewNextN(int n) throws IOException {
         if (n > charBuffer.length) {
             throw new IllegalArgumentException("for ReaderBufferizer::viewNextN(int n) «n» can't be greater than buffer size");
         }
-        // TODO!!!
-        return new char[0];
+        if (!hasNCharacters(n)) {
+            throw new IndexOutOfBoundsException("[ReaderBufferizer::viewNextN(int n)]: don't have n characters");
+        }
+
+        return String.valueOf(charBuffer, charBufferPtr, n);
     }
 
 
