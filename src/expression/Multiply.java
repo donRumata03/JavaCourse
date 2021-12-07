@@ -6,13 +6,16 @@ import expression.generic.TwoArgumentExpression;
 import java.math.BigDecimal;
 
 public class Multiply extends TwoArgumentExpression {
+
+    public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
+        2,
+        true,
+        true,
+        "*"
+    );
+
     public Multiply(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
-        super(left, right, new OperatorTraits(
-            2,
-            true,
-            true,
-            "*"
-        ));
+        super(left, right, OPERATOR_INFO);
     }
 
     @Override

@@ -6,13 +6,16 @@ import expression.generic.TwoArgumentExpression;
 import java.math.BigDecimal;
 
 public class Divide extends TwoArgumentExpression {
+
+    public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
+        2,
+        false,
+        false,
+        "/"
+    );
+
     public Divide(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
-        super(left, right, new OperatorTraits(
-            2,
-            false,
-            false,
-            "/"
-        ));
+        super(left, right, OPERATOR_INFO);
     }
 
     @Override

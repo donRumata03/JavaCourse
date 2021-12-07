@@ -6,13 +6,16 @@ import expression.generic.TwoArgumentExpression;
 import java.math.BigDecimal;
 
 public final class Subtract extends TwoArgumentExpression {
+
+    public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
+        1,
+        false,
+        true,
+        "-"
+    );
+
     public Subtract(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
-        super(left, right, new OperatorTraits(
-            1,
-            false,
-            true,
-            "-"
-        ));
+        super(left, right, OPERATOR_INFO);
     }
 
     @Override

@@ -24,6 +24,10 @@
   <component name="ChangeListManager">
     <list default="true" id="59322c37-3451-4c54-a077-c39427b699b4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Add.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Add.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Divide.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Divide.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Multiply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Multiply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Subtract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Subtract.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +199,7 @@
       <workItem from="1638722245472" duration="9331000" />
       <workItem from="1638793046160" duration="20604000" />
       <workItem from="1638870290659" duration="1272000" />
-      <workItem from="1638879721560" duration="5101000" />
+      <workItem from="1638879721560" duration="5382000" />
     </task>
     <task id="LOCAL-00001" summary="Stabilize new project structure">
       <created>1638295356798</created>
@@ -344,7 +348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638884307298</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Reduce code duplication &amp;&amp; enable multiple methods of patentheses tracking">
+      <created>1638884967086</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1638884967086</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,6 +395,7 @@
     <MESSAGE value="Perform BigDecimalExpression modification" />
     <MESSAGE value="Move game to src" />
     <MESSAGE value="Fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix" />
+    <MESSAGE value="Reduce code duplication &amp;&amp; enable multiple methods of patentheses tracking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reduce code duplication &amp;&amp; enable multiple methods of patentheses tracking" />
   </component>
 </project>
