@@ -129,7 +129,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         ) {
             rightInfo.parenthesesApplied = true;
         } else {
-            cachingInfo.includeInParenthesesLessGroup(leftInfo);
+            cachingInfo.includeInParenthesesLessGroup(rightInfo);
         }
 
 

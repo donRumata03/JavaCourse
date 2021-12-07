@@ -21,8 +21,12 @@ public class MyTests {
         final Const c3 = c(2);
 
 //        var expression = new Multiply(new Divide(new Add(c2, c1), c1), vx);
-        var expression = new Add(c1, new Add(c2, c2));
+//        var expression = new Add(c1, new Add(c2, c2));
 
+        var expression = new Add(
+            new Multiply(vx, vx),
+            new Divide(new Subtract(vx, c(1)), c(10))
+        );
 
 //        var expression = new Add(
 //            new Multiply(vx, vx),
