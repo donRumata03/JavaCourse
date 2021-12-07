@@ -1,6 +1,6 @@
 package expression.generic;
 
-public class DummyParenthesesElisionTrackingInfo {
+public class DummyParenthesesElisionTrackingInfo implements ParenthesesTrackingInfo {
     public boolean parenthesesApplied;
     public int lowestPriorityAfterParentheses;
     public boolean isAssociativeAmongPriorityClass;
@@ -16,11 +16,36 @@ public class DummyParenthesesElisionTrackingInfo {
         this(false, fromOperator.priority(), fromOperator.associativityAmongPriorityClass());
     }
 
-    void includeInParenthesesLessGroup(DummyParenthesesElisionTrackingInfo other) {
+    @Override
+    public void includeInParenthesesLessGroup(ParenthesesTrackingInfo o) {
+        if (!(o instanceof DummyParenthesesElisionTrackingInfo other)) {
+            return;
+        }
+
         this.lowestPriorityAfterParentheses = Integer.min(
             this.lowestPriorityAfterParentheses,
             other.lowestPriorityAfterParentheses
         );
+    }
+
+    @Override
+    public void performParenthesesApplicationDecision(boolean toApplyOrNotToApply) {
+        parenthesesApplied = toApplyOrNotToApply;
+    }
+
+    @Override
+    public boolean parenthesesApplied() {
+        return parenthesesApplied;
+    }
+
+    @Override
+    public int getConsideredPriority() {
+        return lowestPriorityAfterParentheses;
+    }
+
+    @Override
+    public boolean getConsideredNonAssociativity() {
+        return !isAssociativeAmongPriorityClass;
     }
 
 
@@ -43,5 +68,4 @@ public class DummyParenthesesElisionTrackingInfo {
             false
         );
     }
-
 }

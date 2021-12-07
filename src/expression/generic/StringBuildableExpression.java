@@ -1,12 +1,14 @@
 package expression.generic;
 
+import expression.BigDecimalExpression;
+import expression.BigIntegerExpression;
 import expression.Expression;
 import expression.TripleExpression;
 
 /**
  * We want to force implementors to be efficient :)
  */
-public abstract class StringBuildableExpression implements Expression, TripleExpression {
+public abstract class StringBuildableExpression implements Expression, TripleExpression, BigDecimalExpression {
     abstract public void toStringBuilder(StringBuilder builder);
 
     abstract public void toMiniStringBuilderCorrect(StringBuilder builder);

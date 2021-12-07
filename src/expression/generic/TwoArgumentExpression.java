@@ -1,20 +1,19 @@
 package expression.generic;
 
 import expression.Expression;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
-    abstract public int reductionOperation(int leftResult, int rightResult);
-
-    ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
     private final ParenthesesTrackingExpression right;
 
     private final OperatorTraits operatorInfo;
-    private Optional<ParenthesesElisionTrackingInfo> cachedPriorityInfo = Optional.empty();
-    private Optional<DummyParenthesesElisionTrackingInfo> cachedDummyPriorityInfo = Optional.empty();
+    private Optional<ParenthesesTrackingInfo> cachedPriorityInfo = Optional.empty();
 
     public TwoArgumentExpression(Expression left, Expression right, OperatorTraits operatorInfo) {
         this(new SafestParenthesesTrackingExpressionWrapper(left), new SafestParenthesesTrackingExpressionWrapper(right), operatorInfo);
@@ -27,8 +26,17 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         this.operatorInfo = operatorInfo;
     }
 
+    public abstract int reductionOperation(int leftResult, int rightResult);
+    public abstract BigDecimal reductionOperation(BigDecimal leftResult, BigDecimal rightResult);
+
+
     @Override
     public int evaluate(int x) {
+        return this.reductionOperation(left.evaluate(x), right.evaluate(x));
+    }
+
+    @Override
+    public BigDecimal evaluate(BigDecimal x) {
         return this.reductionOperation(left.evaluate(x), right.evaluate(x));
     }
 
@@ -44,7 +52,34 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     @Override
     public void resetCachedPriorityInfo() {
         cachedPriorityInfo = Optional.empty();
-        cachedDummyPriorityInfo = Optional.empty();
+    }
+
+
+    public void genericUpdatePriorityInfo(
+        ParenthesesTrackingInfo thisInfo, ParenthesesTrackingInfo leftInfo, ParenthesesTrackingInfo rightInfo
+    ) {
+        // When to ADD brackets:
+        if (this.operatorInfo.priority() > leftInfo.getConsideredPriority()) {
+            leftInfo.performParenthesesApplicationDecision(true);
+        } else {
+            thisInfo.includeInParenthesesLessGroup(leftInfo);
+        }
+
+        // When to ADD brackets:
+        if (this.operatorInfo.priority() > rightInfo.getConsideredPriority()
+            || (
+                rightInfo.getConsideredPriority() == this.operatorInfo.priority()
+                &&
+                    (
+                        !this.operatorInfo.commutativityAmongPriorityClass()
+                            || rightInfo.getConsideredNonAssociativity()
+                    )
+            )
+        ) {
+            rightInfo.performParenthesesApplicationDecision(true);
+        } else {
+            thisInfo.includeInParenthesesLessGroup(rightInfo);
+        }
     }
 
 
@@ -57,83 +92,39 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
      *  — If priority of smth is the same, for left don't have PS, but for right it becomes more interesting…
      *  — So, for right with same priorities it is removed if: ……………
      */
-    @Override
-    public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
+    public ParenthesesTrackingInfo getGenericCachedPriorityInfo(
+        Function<ParenthesesTrackingExpression, ParenthesesTrackingInfo> method,
+        Function<OperatorTraits, ParenthesesTrackingInfo> constructor
+    ) {
         if (cachedPriorityInfo.isPresent()) {
             return cachedPriorityInfo.get();
         }
 
-        ParenthesesElisionTrackingInfo leftInfo = left.getCachedPriorityInfo();
-        ParenthesesElisionTrackingInfo rightInfo = right.getCachedPriorityInfo();
+        ParenthesesTrackingInfo leftInfo = method.apply(left);
+        ParenthesesTrackingInfo rightInfo = method.apply(right);
 
-        cachedPriorityInfo = Optional.of(ParenthesesElisionTrackingInfo.neutralElement());
-        ParenthesesElisionTrackingInfo cachingInfo = cachedPriorityInfo.get();
+        cachedPriorityInfo = Optional.of(constructor.apply(operatorInfo));
+        ParenthesesTrackingInfo cachingInfo = cachedPriorityInfo.get();
 
-
-        cachingInfo.lowestPriorityAfterParentheses = this.operatorInfo.priority();
-        cachingInfo.containsNonAssociativeLowestPriorityAfterParentheses = !this.operatorInfo.associativityAmongPriorityClass();
-
-        // When to ADD brackets:
-        if (this.operatorInfo.priority() > leftInfo.lowestPriorityAfterParentheses) {
-            leftInfo.performParenthesesApplicationDecision(true);
-        } else {
-            cachingInfo.includeInParenthesesLessGroup(leftInfo);
-        }
-
-        // When to ADD brackets:
-        if (this.operatorInfo.priority() > rightInfo.lowestPriorityAfterParentheses
-            || (
-                rightInfo.lowestPriorityAfterParentheses == this.operatorInfo.priority()
-                &&
-                    (
-                        !this.operatorInfo.commutativityAmongPriorityClass()
-                            || rightInfo.containsNonAssociativeLowestPriorityAfterParentheses
-                    )
-            )
-        ) {
-            rightInfo.performParenthesesApplicationDecision(true);
-        } else {
-            cachingInfo.includeInParenthesesLessGroup(rightInfo);
-        }
+        genericUpdatePriorityInfo(cachingInfo, leftInfo, rightInfo);
 
         return cachingInfo;
     }
 
     @Override
     public DummyParenthesesElisionTrackingInfo getDummyCachedPriorityInfo() {
-        if (cachedDummyPriorityInfo.isPresent()) {
-            return cachedDummyPriorityInfo.get();
-        }
+        return (DummyParenthesesElisionTrackingInfo) getGenericCachedPriorityInfo(
+            ParenthesesTrackingExpression::getDummyCachedPriorityInfo,
+            DummyParenthesesElisionTrackingInfo::new
+        );
+    }
 
-        DummyParenthesesElisionTrackingInfo leftInfo = left.getDummyCachedPriorityInfo();
-        DummyParenthesesElisionTrackingInfo rightInfo = right.getDummyCachedPriorityInfo();
-
-        cachedDummyPriorityInfo = Optional.of(new DummyParenthesesElisionTrackingInfo(operatorInfo));
-        DummyParenthesesElisionTrackingInfo cachingInfo = cachedDummyPriorityInfo.get();
-
-        if (this.operatorInfo.priority() > leftInfo.lowestPriorityAfterParentheses) {
-            leftInfo.parenthesesApplied = true;
-        } else {
-            cachingInfo.includeInParenthesesLessGroup(leftInfo);
-        }
-
-        if (this.operatorInfo.priority() > rightInfo.lowestPriorityAfterParentheses
-            || (
-                this.operatorInfo.priority() == rightInfo.lowestPriorityAfterParentheses
-                &&
-                (
-                    !this.operatorInfo.commutativityAmongPriorityClass()
-                        || !rightInfo.isAssociativeAmongPriorityClass
-                )
-        )
-        ) {
-            rightInfo.parenthesesApplied = true;
-        } else {
-            cachingInfo.includeInParenthesesLessGroup(rightInfo);
-        }
-
-
-        return cachingInfo;
+    @Override
+    public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
+        return (ParenthesesElisionTrackingInfo) getGenericCachedPriorityInfo(
+            ParenthesesTrackingExpression::getCachedPriorityInfo,
+            DummyParenthesesElisionTrackingInfo::new
+        );
     }
 
     /////////////////////////////////////////////////////////

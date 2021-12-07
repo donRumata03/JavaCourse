@@ -1,6 +1,7 @@
 package expression;
 
 import expression.generic.AtomicParenthesesTrackingExpression;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public final class Variable extends AtomicParenthesesTrackingExpression {
@@ -13,7 +14,16 @@ public final class Variable extends AtomicParenthesesTrackingExpression {
     @Override
     public int evaluate(int x) {
         if (!varName.equals("x")) {
-            throw new AssertionError("Variable isn't ");
+            throw new AssertionError("Variable isn't X");
+        }
+
+        return x;
+    }
+
+    @Override
+    public BigDecimal evaluate(BigDecimal x) {
+        if (!varName.equals("x")) {
+            throw new AssertionError("Variable isn't X");
         }
 
         return x;
