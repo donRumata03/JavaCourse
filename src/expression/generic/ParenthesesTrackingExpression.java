@@ -5,5 +5,6 @@ package expression.generic;
  */
 public abstract class ParenthesesTrackingExpression extends StringBuildableExpression {
     abstract public ParenthesesElisionTrackingInfo getCachedPriorityInfo();
+    abstract public DummyParenthesesElisionTrackingInfo getDummyCachedPriorityInfo();
     abstract public void resetCachedPriorityInfo();
 }

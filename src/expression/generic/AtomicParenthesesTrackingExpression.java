@@ -5,12 +5,16 @@ public abstract class AtomicParenthesesTrackingExpression extends ParenthesesTra
     public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         return ParenthesesElisionTrackingInfo.generateAtomicExpressionInfo();
     }
+    @Override
+    public DummyParenthesesElisionTrackingInfo getDummyCachedPriorityInfo() {
+        return DummyParenthesesElisionTrackingInfo.generateAtomicExpressionInfo();
+    }
 
     @Override
     public void resetCachedPriorityInfo() {}
 
     @Override
-    public void toMiniStringBuilder(StringBuilder builder) {
+    public void toMiniStringBuilderCorrect(StringBuilder builder) {
         toStringBuilder(builder);
     }
 }

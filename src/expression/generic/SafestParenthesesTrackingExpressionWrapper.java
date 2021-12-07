@@ -20,6 +20,11 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
     public ParenthesesElisionTrackingInfo getCachedPriorityInfo() {
         return ParenthesesElisionTrackingInfo.generateSafestExpressionInfo();
     }
+    @Override
+    public DummyParenthesesElisionTrackingInfo getDummyCachedPriorityInfo() {
+        return DummyParenthesesElisionTrackingInfo.generateSafestExpressionInfo();
+    }
+
 
     @Override
     public void resetCachedPriorityInfo() {}
@@ -30,7 +35,7 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
     }
 
     @Override
-    public void toMiniStringBuilder(StringBuilder builder) {
+    public void toMiniStringBuilderCorrect(StringBuilder builder) {
         builder.append(inner.toMiniString());
     }
 

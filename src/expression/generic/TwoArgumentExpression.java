@@ -1,7 +1,6 @@
 package expression.generic;
 
 import expression.Expression;
-import expression.TripleExpression;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -15,6 +14,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     private final OperatorTraits operatorInfo;
     private Optional<ParenthesesElisionTrackingInfo> cachedPriorityInfo = Optional.empty();
+    private Optional<DummyParenthesesElisionTrackingInfo> cachedDummyPriorityInfo = Optional.empty();
 
     public TwoArgumentExpression(Expression left, Expression right, OperatorTraits operatorInfo) {
         this(new SafestParenthesesTrackingExpressionWrapper(left), new SafestParenthesesTrackingExpressionWrapper(right), operatorInfo);
@@ -44,6 +44,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     @Override
     public void resetCachedPriorityInfo() {
         cachedPriorityInfo = Optional.empty();
+        cachedDummyPriorityInfo = Optional.empty();
     }
 
 
@@ -98,6 +99,43 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         return cachingInfo;
     }
 
+    @Override
+    public DummyParenthesesElisionTrackingInfo getDummyCachedPriorityInfo() {
+        if (cachedDummyPriorityInfo.isPresent()) {
+            return cachedDummyPriorityInfo.get();
+        }
+
+        DummyParenthesesElisionTrackingInfo leftInfo = left.getDummyCachedPriorityInfo();
+        DummyParenthesesElisionTrackingInfo rightInfo = right.getDummyCachedPriorityInfo();
+
+        cachedDummyPriorityInfo = Optional.of(new DummyParenthesesElisionTrackingInfo(operatorInfo));
+        DummyParenthesesElisionTrackingInfo cachingInfo = cachedDummyPriorityInfo.get();
+
+        if (this.operatorInfo.priority() > leftInfo.lowestPriorityAfterParentheses) {
+            leftInfo.parenthesesApplied = true;
+        } else {
+            cachingInfo.includeInParenthesesLessGroup(leftInfo);
+        }
+
+        if (this.operatorInfo.priority() > rightInfo.lowestPriorityAfterParentheses
+            || (
+                this.operatorInfo.priority() == rightInfo.lowestPriorityAfterParentheses
+                &&
+                (
+                    !this.operatorInfo.commutativityAmongPriorityClass()
+                        || !rightInfo.isAssociativeAmongPriorityClass
+                )
+        )
+        ) {
+            rightInfo.parenthesesApplied = true;
+        } else {
+            cachingInfo.includeInParenthesesLessGroup(leftInfo);
+        }
+
+
+        return cachingInfo;
+    }
+
     /////////////////////////////////////////////////////////
 
     private void toBaseStringBuilder(StringBuilder builder, boolean addParentheses,
@@ -120,13 +158,23 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
     }
 
     @Override
-    public void toMiniStringBuilder(StringBuilder builder) {
+    public void toMiniStringBuilderCorrect(StringBuilder builder) {
         ParenthesesElisionTrackingInfo thisInfo = getCachedPriorityInfo();
 
-        toBaseStringBuilder(builder, thisInfo.parenthesesApplied, ParenthesesTrackingExpression::toMiniStringBuilder);
+        toBaseStringBuilder(builder, thisInfo.parenthesesApplied, ParenthesesTrackingExpression::toMiniStringBuilderCorrect);
 
         resetCachedPriorityInfo();
     }
+
+    @Override
+    public void toMiniStringBuilderDummy(StringBuilder builder) {
+        DummyParenthesesElisionTrackingInfo thisInfo = getDummyCachedPriorityInfo();
+
+        toBaseStringBuilder(builder, thisInfo.parenthesesApplied, ParenthesesTrackingExpression::toMiniStringBuilderDummy);
+
+        resetCachedPriorityInfo();
+    }
+
 
     @Override
     public void toStringBuilder(StringBuilder builder) {

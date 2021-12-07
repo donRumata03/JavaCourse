@@ -8,7 +8,14 @@ import expression.TripleExpression;
  */
 public abstract class StringBuildableExpression implements Expression, TripleExpression {
     abstract public void toStringBuilder(StringBuilder builder);
-    abstract public void toMiniStringBuilder(StringBuilder builder);
+
+    abstract public void toMiniStringBuilderCorrect(StringBuilder builder);
+    public void toMiniStringBuilderDummy(StringBuilder builder) {
+        toMiniStringBuilderCorrect(builder);
+    }
+    public void toMiniStringBuilder(StringBuilder builder) {
+        toMiniStringBuilderDummy(builder); // Because of the problems in tests
+    }
 
     @Override
     public String toMiniString() {
