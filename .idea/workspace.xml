@@ -107,7 +107,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="expression.ExpressionTest" />
       <module name="JavaCourse" />
-      <option name="PROGRAM_PARAMETERS" value="hard BigDecimal" />
+      <option name="PROGRAM_PARAMETERS" value="hard Base Triple BigDecimal" />
       <option name="VM_PARAMETERS" value="-ea" />
       <extension name="coverage">
         <pattern>
