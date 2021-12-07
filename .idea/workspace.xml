@@ -24,8 +24,15 @@
   <component name="ChangeListManager">
     <list default="true" id="59322c37-3451-4c54-a077-c39427b699b4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Add.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Add.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Const.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Divide.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Divide.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Multiply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Multiply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Subtract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Subtract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/Variable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/Variable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/generic/SafestParenthesesTrackingExpressionWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/generic/SafestParenthesesTrackingExpressionWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/expression/generic/StringBuildableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/generic/StringBuildableExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/expression/generic/TwoArgumentExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/generic/TwoArgumentExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/expression/myTests/MyTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/expression/myTests/MyTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,11 +56,6 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="jar://C:/Program Files/Java/jdk-16.0.2/lib/src.zip!/java.base/java/lang/String.java" root0="SKIP_INSPECTION" />
-    <setting file="jar://C:/Program Files/Java/jdk-16.0.2/lib/src.zip!/java.base/java/util/function/LongBinaryOperator.java" root0="SKIP_INSPECTION" />
-    <setting file="jar://C:/Program Files/Java/jdk-16.0.2/lib/src.zip!/java.base/java/util/Formatter.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="9ihxtr9q" />
@@ -88,6 +90,9 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
+  <component name="ReaderModeSettings">
+    <option name="showLigatures" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\Education\Programming\JavaCourse\src\md2html" />
@@ -102,7 +107,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="expression.ExpressionTest" />
       <module name="JavaCourse" />
-      <option name="PROGRAM_PARAMETERS" value="hard Triple" />
+      <option name="PROGRAM_PARAMETERS" value="hard BigDecimal" />
       <option name="VM_PARAMETERS" value="-ea" />
       <extension name="coverage">
         <pattern>
@@ -183,7 +188,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2363f46c-9a43-49f9-9ad3-8fcef2b38d3e" name="Default Changelist" comment="" />
+      <changelist id="59322c37-3451-4c54-a077-c39427b699b4" name="Changes" comment="" />
       <created>1638295280224</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -194,6 +199,7 @@
       <workItem from="1638722245472" duration="9331000" />
       <workItem from="1638793046160" duration="20604000" />
       <workItem from="1638870290659" duration="1272000" />
+      <workItem from="1638879721560" duration="1368000" />
     </task>
     <task id="LOCAL-00001" summary="Stabilize new project structure">
       <created>1638295356798</created>
@@ -365,7 +371,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/expression/generic/TwoArgumentExpression.java</url>
-          <line>110</line>
+          <line>117</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

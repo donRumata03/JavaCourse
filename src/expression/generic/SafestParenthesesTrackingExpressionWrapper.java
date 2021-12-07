@@ -1,8 +1,10 @@
 package expression.generic;
 
+import expression.BigDecimalExpression;
 import expression.Expression;
 import expression.ToMiniString;
 import expression.TripleExpression;
+import java.math.BigDecimal;
 
 public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrackingExpression {
 
@@ -53,5 +55,13 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
             throw new AssertionError("Single-argument expression is only supported by ");
         }
         return tripleExpression.evaluate(x, y, z);
+    }
+
+    @Override
+    public BigDecimal evaluate(BigDecimal x) {
+        if (!(inner instanceof BigDecimalExpression bigDecimalExpression)) {
+            throw new AssertionError("Single-argument expression is only supported by ");
+        }
+        return bigDecimalExpression.evaluate(x);
     }
 }

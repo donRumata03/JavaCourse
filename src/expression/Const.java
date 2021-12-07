@@ -1,28 +1,43 @@
 package expression;
 
 import expression.generic.AtomicParenthesesTrackingExpression;
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class Const extends AtomicParenthesesTrackingExpression {
-    private final int value;
+    private int intValue = 0;
+    private Optional<BigDecimal> bigDecimalValue = Optional.empty();
 
     public Const(int value) {
-        this.value = value;
+        this.intValue = value;
+    }
+    public Const(BigDecimal value) {
+        this.bigDecimalValue = Optional.of(value);
     }
 
     @Override
     public int evaluate(int x) {
-        return value;
+        return intValue;
     }
 
     @Override
     public int evaluate(int x, int y, int z) {
-        return value;
+        return intValue;
+    }
+
+    @Override
+    public BigDecimal evaluate(BigDecimal x) {
+        return bigDecimalValue.get();
     }
 
     @Override
     public void toStringBuilder(StringBuilder builder) {
-        builder.append(value);
+        if (bigDecimalValue.isPresent()) {
+            builder.append(bigDecimalValue.get());
+        } else {
+            builder.append(intValue);
+        }
     }
 
     @Override
@@ -30,15 +45,15 @@ public final class Const extends AtomicParenthesesTrackingExpression {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Const)) {
+        if (!(o instanceof Const aConst)) {
             return false;
         }
-        Const aConst = (Const) o;
-        return value == aConst.value;
+        return intValue == aConst.intValue
+            && bigDecimalValue.equals(aConst.bigDecimalValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(intValue, bigDecimalValue);
     }
 }

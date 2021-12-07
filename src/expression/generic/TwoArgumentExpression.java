@@ -1,12 +1,14 @@
 package expression.generic;
 
 import expression.Expression;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
     abstract public int reductionOperation(int leftResult, int rightResult);
+    abstract public BigDecimal reductionOperation(BigDecimal leftResult, BigDecimal rightResult);
 
     ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
@@ -29,6 +31,11 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
 
     @Override
     public int evaluate(int x) {
+        return this.reductionOperation(left.evaluate(x), right.evaluate(x));
+    }
+
+    @Override
+    public BigDecimal evaluate(BigDecimal x) {
         return this.reductionOperation(left.evaluate(x), right.evaluate(x));
     }
 
