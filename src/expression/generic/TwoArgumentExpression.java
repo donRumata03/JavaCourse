@@ -9,10 +9,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
-    abstract public int reductionOperation(int leftResult, int rightResult);
-    abstract public BigDecimal reductionOperation(BigDecimal leftResult, BigDecimal rightResult);
-
-    ////////////////////////////////////////////////////////////////////////////////////
     private final ParenthesesTrackingExpression left;
     private final ParenthesesTrackingExpression right;
 
@@ -29,6 +25,10 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
         this.right = right;
         this.operatorInfo = operatorInfo;
     }
+
+    public abstract int reductionOperation(int leftResult, int rightResult);
+    public abstract BigDecimal reductionOperation(BigDecimal leftResult, BigDecimal rightResult);
+
 
     @Override
     public int evaluate(int x) {
