@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f6188c8d-2af3-4ef0-9c29-8de8a126c9ac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/expression/parser/generic/ParsableSource.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="202mWXqUnaqQL8QZzq7E0OzR5Mk" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/expression" />
+      <recent name="$PROJECT_DIR$/out" />
+      <recent name="$PROJECT_DIR$/md2html/tests" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ExpressionTest">
+    <configuration name="ExpressionTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="expression.ExpressionTest" />
+      <module name="JavaCourse" />
+      <option name="PROGRAM_PARAMETERS" value="hard Base" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="expression.generic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HtmlListTest (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="markup.tests.HtmlListTest" />
+      <module name="JavaCourse" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="markup.tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="game.Main" />
+      <module name="JavaCourse" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Md2Html" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="md2html.Md2Html" />
+      <module name="JavaCourse" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;md2html/samples/simple_sample.md&quot; &quot;md2html/samples/sample_output.html&quot;" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="md2html.ParsedImds.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyTests" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="expression.myTests.MyTests" />
+      <module name="JavaCourse" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="expression.myTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.HtmlListTest (1)" />
+      <item itemvalue="Application.Md2Html" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.ExpressionTest" />
+      <item itemvalue="Application.MyTests" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ExpressionTest" />
+        <item itemvalue="Application.MyTests" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Md2Html" />
+        <item itemvalue="Application.HtmlListTest (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6188c8d-2af3-4ef0-9c29-8de8a126c9ac" name="Changes" comment="" />
+      <created>1635251088560</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1635251088560</updated>
+      <workItem from="1635251101436" duration="5145000" />
+      <workItem from="1636460447247" duration="5770000" />
+      <workItem from="1636793651924" duration="2827000" />
+      <workItem from="1637065739464" duration="5145000" />
+      <workItem from="1637397346066" duration="3199000" />
+      <workItem from="1637665218611" duration="4900000" />
+      <workItem from="1637670719612" duration="10917000" />
+      <workItem from="1638276141124" duration="15689000" />
+    </task>
+    <task id="LOCAL-00001" summary="Use nextChar() instead of in.nextChar()">
+      <created>1635251272643</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1635251272643</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fix IntList">
+      <created>1635251468410</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1635251468410</updated>
+    </task>
+    <task id="LOCAL-00003" summary="HexAbcParser">
+      <created>1635251698518</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635251698518</updated>
+    </task>
+    <task id="LOCAL-00004" summary="New input format (optimized)">
+      <created>1635252866219</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1635252866219</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Pass new marlup tests">
+      <created>1636462018856</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1636462018856</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Pre-ready impl of parsing to ParsedInlineMarkdown">
+      <created>1637068747261</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1637068747261</updated>
+    </task>
+    <task id="LOCAL-00007" summary="ParsedInlineMarkdown -&gt; Split Algebraic data type to class Hierarchy">
+      <created>1637399699769</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1637399699769</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add board to string">
+      <created>1637666868792</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1637666868792</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Implement MNK board and ist UMd view">
+      <created>1637668480614</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1637668480614</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Refactor TurnResult out of MNKBoard; introduce pretty formatter">
+      <created>1637671694105</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1637671694105</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Instantiate markup classes without reflection">
+      <created>1637763380129</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1637763380129</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Move &quot;game&quot; back">
+      <created>1637763632820</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1637763632820</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add check">
+      <created>1637764024502</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1637764024502</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Fix PrettyFormatter">
+      <created>1637764705558</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1637764705558</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Provide interface for UnmodifiableBoardView to get cols and rows">
+      <created>1637764836882</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1637764836882</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Adapt sequential player for new interface">
+      <created>1637765087424</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1637765087424</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Adapt RandomPlayer for new interface">
+      <created>1637765157683</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1637765157683</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add equals and hashCode &amp;&amp; fix toMiniString">
+      <created>1638279012309</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1638279012309</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Simplify false random test">
+      <created>1638609677641</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1638609677641</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Add updated tests">
+      <created>1638614939672</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1638614939672</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Move generic expressions to separate folder">
+      <created>1638616316526</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1638616316526</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Add triple expression support, make code compile with new structure">
+      <created>1638617528405</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1638617528405</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Use nextChar() instead of in.nextChar()" />
+    <MESSAGE value="Fix IntList" />
+    <MESSAGE value="HexAbcParser" />
+    <MESSAGE value="New input format (optimized)" />
+    <MESSAGE value="Pass new marlup tests" />
+    <MESSAGE value="Pre-ready impl of parsing to ParsedInlineMarkdown" />
+    <MESSAGE value="ParsedInlineMarkdown -&gt; Split Algebraic data type to class Hierarchy" />
+    <MESSAGE value="Add board to string" />
+    <MESSAGE value="Implement MNK board and ist UMd view" />
+    <MESSAGE value="Refactor TurnResult out of MNKBoard; introduce pretty formatter" />
+    <MESSAGE value="Instantiate markup classes without reflection" />
+    <MESSAGE value="Move &quot;game&quot; back" />
+    <MESSAGE value="Add check" />
+    <MESSAGE value="Fix PrettyFormatter" />
+    <MESSAGE value="Provide interface for UnmodifiableBoardView to get cols and rows" />
+    <MESSAGE value="Adapt sequential player for new interface" />
+    <MESSAGE value="Adapt RandomPlayer for new interface" />
+    <MESSAGE value="Add equals and hashCode &amp;&amp; fix toMiniString" />
+    <MESSAGE value="Simplify false random test" />
+    <MESSAGE value="Add updated tests" />
+    <MESSAGE value="Move generic expressions to separate folder" />
+    <MESSAGE value="Add triple expression support, make code compile with new structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add triple expression support, make code compile with new structure" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.AssertionError" package="java.lang" />
+          <option name="timeStamp" value="6" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
