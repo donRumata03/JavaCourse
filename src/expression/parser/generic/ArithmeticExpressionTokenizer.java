@@ -1,6 +1,13 @@
 package expression.parser.generic;
 
-import expression.parser.ArithmeticExpressionSyntaxError;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.IntPredicate;
 import expression.parser.TokenizationError;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.FunctionToken;
@@ -8,16 +15,7 @@ import expression.parser.generic.tokens.NumberToken;
 import expression.parser.generic.tokens.OperatorToken;
 import expression.parser.generic.tokens.ParenthesesToken;
 import expression.parser.generic.tokens.VariableToken;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.IntPredicate;
-import javax.swing.text.html.Option;
+
 
 public class ArithmeticExpressionTokenizer {
 

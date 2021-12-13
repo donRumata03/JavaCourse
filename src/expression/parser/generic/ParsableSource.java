@@ -50,7 +50,7 @@ public class ParsableSource {
 
     public boolean consumeWhitespace() throws IOException {
         boolean consumedSomething = false;
-        while (consumeIf(Character::isWhitespace)) { consumedSomething = true; }
+        while (!isEof() && consumeIf(Character::isWhitespace)) { consumedSomething = true; }
         return consumedSomething;
     }
 
