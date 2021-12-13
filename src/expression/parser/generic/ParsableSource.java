@@ -105,4 +105,12 @@ public class ParsableSource {
         }
         return false;
     }
+
+    public boolean hasNChars(int n) throws IOException {
+        return in.hasNCharacters(n);
+    }
+
+    public String viewNChars(int n) throws IOException {
+        return in.viewNextN(n);
+    }
 }
