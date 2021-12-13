@@ -188,8 +188,14 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
             right.equals(that.right);
     }
 
+    // Object's immutable
+    Optional<Integer> cachedHash = Optional.empty();
     @Override
     public int hashCode() {
-        return Objects.hash(left, right, operatorInfo);
+        if (cachedHash.isPresent()) {
+            return cachedHash.get();
+        }
+        cachedHash = Optional.of(Objects.hash(left, right, operatorInfo));
+        return cachedHash.get();
     }
 }
