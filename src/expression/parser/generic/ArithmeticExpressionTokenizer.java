@@ -1,6 +1,7 @@
 package expression.parser.generic;
 
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
+import java.io.IOException;
 import java.util.Optional;
 
 public class ArithmeticExpressionTokenizer {
@@ -11,7 +12,11 @@ public class ArithmeticExpressionTokenizer {
         this.source = source;
     }
 
-    Optional<ArithmeticExpressionToken> nextToken() {
+    Optional<ArithmeticExpressionToken> nextToken() throws IOException {
+        source.consumeWhitespace();
+
+
+
         return Optional.empty();
     }
 }

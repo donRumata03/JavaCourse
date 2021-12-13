@@ -48,6 +48,12 @@ public class ParsableSource {
         return consumeIf(ch -> ch == expected);
     }
 
+    public boolean consumeWhitespace() throws IOException {
+        boolean consumedSomething = false;
+        while (consumeIf(Character::isWhitespace)) { consumedSomething = true; }
+        return consumedSomething;
+    }
+
     public boolean nextIsBetweenInclusive(final char from, final char to) throws IOException {
         return testNextChar(ch -> from <= ch && ch <= to );
     }
