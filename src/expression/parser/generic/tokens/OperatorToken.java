@@ -5,5 +5,8 @@ public enum OperatorToken implements ArithmeticExpressionToken {
     MINUS,
     MULTIPLY,
     DIVIDE,
-    POW
+    POW,
+    SHIFT_LEFT,
+    LOGICAL_SHIFT_RIGHT,
+    ARITHMETICAL_SHIFT
 }
