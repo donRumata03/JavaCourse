@@ -1,0 +1,11 @@
+Shr   -> Exp Shr'
+Shr'  -> ([ '<<' | '>>' | '>>>' ] Exp)*
+
+Exp   -> Term Exp'
+Exp'  -> ([ '+' | '-' ] Term)*
+
+Term  -> Factor Term'
+Term' -> ([ '*' | '/' ] Factor)*
+
+Factor  ->
+	num | '(' Exp ')' | '-' Factor | 't0' Factor | 'l0' Factor

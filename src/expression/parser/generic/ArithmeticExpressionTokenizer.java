@@ -20,12 +20,34 @@ import expression.parser.generic.tokens.VariableToken;
 public class ArithmeticExpressionTokenizer {
 
     ParsableSource source;
+    Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty();
+
 
     public ArithmeticExpressionTokenizer(ParsableSource source) {
         this.source = source;
     }
 
+    public Optional<ArithmeticExpressionToken> viewNextToken() throws IOException {
+        if (cachedNextToken.isPresent()) {
+            return cachedNextToken;
+        }
+
+        // Compute. Cache. Return.
+        cachedNextToken = rawNextToken();
+        return cachedNextToken;
+    }
+
     public Optional<ArithmeticExpressionToken> nextToken() throws IOException {
+        if (cachedNextToken.isPresent()) {
+            var result = cachedNextToken.get();
+            cachedNextToken = Optional.empty();
+            return Optional.of(result);
+        }
+
+        return rawNextToken();
+    }
+
+    private Optional<ArithmeticExpressionToken> rawNextToken() throws IOException {
         source.consumeWhitespace();
         if (source.isEof()) {
             return Optional.empty();
@@ -47,8 +69,6 @@ public class ArithmeticExpressionTokenizer {
 
         throw new TokenizationError("Next token is not recognized");
     }
-
-
 
 
     private String consumeSequenceOf(IntPredicate ofWhat) throws IOException {
