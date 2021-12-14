@@ -10,7 +10,7 @@ public class Strikeout extends SymmetricWrappingMarkupElement implements InlineM
 
     @Override
     protected String getMarkdownDelimiter() {
-        return "--";
+        return "~";
     }
 
     @Override

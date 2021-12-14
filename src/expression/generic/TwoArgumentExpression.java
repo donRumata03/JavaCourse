@@ -188,7 +188,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
             right.equals(that.right);
     }
 
-    // Object's immutable
+    // TwoArgumentExpression object is immutable
     Optional<Integer> cachedHash = Optional.empty();
     @Override
     public int hashCode() {

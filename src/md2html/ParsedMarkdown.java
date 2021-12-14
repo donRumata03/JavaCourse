@@ -29,7 +29,7 @@ public class ParsedMarkdown {
             ));
         } else {
             // Paragraph:
-            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block).childrenAsImdElements()));
+            blockList.add(new Paragraph(ParsedInlineMarkdown.parseString(block).childrenAsImdElements(), true));
         }
     }
 
