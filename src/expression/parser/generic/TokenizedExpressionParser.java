@@ -37,15 +37,15 @@ public class TokenizedExpressionParser {
     }
 
     private ParenthesesTrackingExpression parseShiftResult() {
-        return null;
+        return parseExpression();
     }
 
     private ParenthesesTrackingExpression parseExpression() {
-        return null;
+        return parseTerm();
     }
 
     private ParenthesesTrackingExpression parseTerm() {
-        return null;
+        return parseFactor();
     }
 
     private ParenthesesTrackingExpression parseFactor() {

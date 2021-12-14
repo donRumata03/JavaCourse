@@ -2,7 +2,7 @@ package expression.parser.generic.tokens;
 
 import expression.generic.ParenthesesTrackingExpression;
 
-public interface AbstractOperationToken {
+public interface AbstractOperationToken extends ArithmeticExpressionToken {
     boolean canBeUnary();
     boolean canBeBinary();
 
