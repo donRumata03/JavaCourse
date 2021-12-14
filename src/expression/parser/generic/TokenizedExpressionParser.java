@@ -84,9 +84,15 @@ public class TokenizedExpressionParser {
     }
 
     private ParenthesesTrackingExpression parseFactor() {
-        return tryMatchToken(token -> token instanceof NumberToken).map(token -> (ParenthesesTrackingExpression)new Const(((NumberToken)token).value()))
-            .or(() -> tryMatchToken(token -> { if (!(token instanceof AbstractOperationToken operation)) { return false; } return operation.canBeUnary(); })
-                    .map(unaryOpToken -> ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor()))
+        return tryMatchToken(token -> token instanceof NumberToken).map(token -> (ParenthesesTrackingExpression)new Const((int)((NumberToken)token).value()))
+            .or(() -> tryMatchToken(token -> token instanceof AbstractOperationToken operation && operation.canBeUnary())
+                    .map(unaryOpToken -> {
+                        if (unaryOpToken == OperatorToken.MINUS) {
+                            var tryIntToken = tryMatchToken(t -> t instanceof NumberToken);
+                            if (tryIntToken.isPresent()) return new Const((int)(-((NumberToken)tryIntToken.get()).value()));
+                        }
+                        return ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor());
+                    })
             ).or(() -> tryMatchToken(token -> token instanceof VariableToken)
                     .map(varToken -> new Variable(((VariableToken)varToken).varName()))
             ).or(

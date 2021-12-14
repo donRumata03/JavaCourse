@@ -8,4 +8,9 @@ Term  -> Factor Term'
 Term' -> ([ '*' | '/' ] Factor)*
 
 Factor  ->
-	num | '(' Exp ')' | '-' Factor | 't0' Factor | 'l0' Factor
+	('-' num) -> -num
+	| num
+	| '(' Exp ')'
+	| '-' Factor
+	| 't0' Factor
+	| 'l0' Factor
