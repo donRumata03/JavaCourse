@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class Divide extends TwoArgumentExpression {
 
     public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
-        2,
+        3,
         false,
         false,
         "/"

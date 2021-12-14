@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public final class Subtract extends TwoArgumentExpression {
 
     public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
-        1,
+        2,
         false,
         true,
         "-"
