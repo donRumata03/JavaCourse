@@ -1,4 +1,4 @@
-package expression.parser;
+package expression.parser.tests;
 
 import bufferedScanning.ReaderBufferizer;
 import expression.parser.generic.ArithmeticExpressionTokenizer;
