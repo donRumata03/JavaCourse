@@ -1,9 +1,5 @@
 package expression.parser.generic.tokens;
 
-public class VariableToken implements ArithmeticExpressionToken {
-    String varName;
+public record VariableToken(String varName) implements ArithmeticExpressionToken {
 
-    public VariableToken(String varName) {
-        this.varName = varName;
-    }
 }

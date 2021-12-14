@@ -1,9 +1,7 @@
 package expression.parser.generic.tokens;
 
-public class ParenthesesToken implements ArithmeticExpressionToken {
-    public boolean openCloseness;
+public record ParenthesesToken(boolean openCloseness)
+    implements ArithmeticExpressionToken
+{
 
-    public ParenthesesToken(boolean openCloseness) {
-        this.openCloseness = openCloseness;
-    }
 }
