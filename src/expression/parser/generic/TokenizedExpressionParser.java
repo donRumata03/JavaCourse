@@ -2,6 +2,7 @@ package expression.parser.generic;
 
 import expression.Const;
 import expression.TripleExpression;
+import expression.Variable;
 import expression.generic.ParenthesesTrackingExpression;
 import expression.parser.ExpressionParser;
 import expression.parser.generic.tokens.AbstractOperationToken;
@@ -9,6 +10,7 @@ import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.NumberToken;
 import expression.parser.generic.tokens.OperatorToken;
 import expression.parser.generic.tokens.ParenthesesToken;
+import expression.parser.generic.tokens.VariableToken;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -55,29 +57,12 @@ public class TokenizedExpressionParser {
     }
 
     private ParenthesesTrackingExpression parseTerm() {
-//        ParenthesesTrackingExpression left = parseFactor();
-//
-//        while (true) {
-//            var mayBeOperator = tryMatchToken(token -> {
-//                if (!(token instanceof OperatorToken operator)) {
-//                    return false;
-//                }
-//                return operator == OperatorToken.MULTIPLY || operator == OperatorToken.DIVIDE;
-//            });
-//            if (mayBeOperator.isEmpty()) {
-//                break;
-//            }
-//
-//            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, parseFactor());
-//        }
-//
-//        return left;
-
         return parsePriorityLayer(TokenizedExpressionParser::parseFactor, List.of(OperatorToken.MULTIPLY, OperatorToken.DIVIDE));
     }
 
     private ParenthesesTrackingExpression parsePriorityLayer(
-        Function<TokenizedExpressionParser, ParenthesesTrackingExpression> prevLayer, List<OperatorToken> operators
+        Function<TokenizedExpressionParser, ParenthesesTrackingExpression> prevLayer,
+        List<OperatorToken> operators
     ) {
         ParenthesesTrackingExpression left = prevLayer.apply(this);
 
@@ -102,7 +87,9 @@ public class TokenizedExpressionParser {
         return tryMatchToken(token -> token instanceof NumberToken).map(token -> (ParenthesesTrackingExpression)new Const(((NumberToken)token).value()))
             .or(() -> tryMatchToken(token -> { if (!(token instanceof AbstractOperationToken operation)) { return false; } return operation.canBeUnary(); })
                     .map(unaryOpToken -> ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor()))
-            ).or (
+            ).or(() -> tryMatchToken(token -> token instanceof VariableToken)
+                    .map(varToken -> new Variable(((VariableToken)varToken).varName()))
+            ).or(
                 () -> tryMatchToken(token -> token instanceof ParenthesesToken && ((ParenthesesToken)token).openCloseness())
                     .map(p -> {
                         var res = parseShiftResult();
@@ -131,7 +118,7 @@ public class TokenizedExpressionParser {
 
     private void expectNext(Predicate<ArithmeticExpressionToken> predicate, String message) {
         try {
-            if (tokenizer.viewNextToken().isEmpty() || predicate.test(tokenizer.viewNextToken().get())) {
+            if (tokenizer.viewNextToken().isEmpty() || !predicate.test(tokenizer.viewNextToken().get())) {
                 throw new RuntimeException(message);
             }
             tokenizer.nextToken();
