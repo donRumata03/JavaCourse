@@ -2,10 +2,10 @@ package expression;
 
 import expression.generic.OperatorTraits;
 import expression.generic.ParenthesesTrackingExpression;
-import expression.generic.TwoArgumentExpression;
+import expression.generic.BinaryOperation;
 import java.math.BigDecimal;
 
-public class Divide extends TwoArgumentExpression {
+public class Divide extends BinaryOperation {
 
     public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
         3,

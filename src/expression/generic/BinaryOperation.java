@@ -5,22 +5,21 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class TwoArgumentExpression extends ParenthesesTrackingExpression {
+public abstract class BinaryOperation extends ParenthesesTrackingExpression {
     private final ParenthesesTrackingExpression left;
     private final ParenthesesTrackingExpression right;
 
     private final OperatorTraits operatorInfo;
     private Optional<ParenthesesTrackingInfo> cachedPriorityInfo = Optional.empty();
 
-    public TwoArgumentExpression(Expression left, Expression right, OperatorTraits operatorInfo) {
+    public BinaryOperation(Expression left, Expression right, OperatorTraits operatorInfo) {
         this(new SafestParenthesesTrackingExpressionWrapper(left), new SafestParenthesesTrackingExpressionWrapper(right), operatorInfo);
     }
 
 
-    public TwoArgumentExpression(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, OperatorTraits operatorInfo) {
+    public BinaryOperation(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, OperatorTraits operatorInfo) {
         this.left = left;
         this.right = right;
         this.operatorInfo = operatorInfo;
@@ -178,7 +177,7 @@ public abstract class TwoArgumentExpression extends ParenthesesTrackingExpressio
             return true;
         }
 
-        if (!(other instanceof TwoArgumentExpression that)) {
+        if (!(other instanceof BinaryOperation that)) {
             return false;
         }
 
