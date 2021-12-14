@@ -141,14 +141,6 @@ public class ArithmeticExpressionTokenizer {
             operatorStarts.add(d.stringRepr.charAt(0));
         }
     }
-//        = Set.of(
-//        '+',
-//        '-',
-//        '*',
-//        '/',
-//        '<',
-//        '>'
-//    );
 
     private boolean nextIsOperator() throws IOException {
         return !nextIsNumber() && source.testNextChar(ch -> operatorStarts.contains((char) ch));
@@ -175,18 +167,18 @@ public class ArithmeticExpressionTokenizer {
 
 
     private boolean nextIsNumber() throws IOException {
-        return source.testNextChar(Character::isDigit)
-            || (
-            source.testNextCharIs('-')
-                && source.hasNChars(2)
-                && Character.isDigit(source.viewNChars(2).charAt(1))
-        );
+        return source.testNextChar(Character::isDigit);
+//            || (
+//            source.testNextCharIs('-')
+//                && source.hasNChars(2)
+//                && Character.isDigit(source.viewNChars(2).charAt(1))
+//            );
     }
 
     private int parseNumber() throws IOException {
-        String sign = source.testNextCharIs('-') ? String.valueOf(source.consumeChar()) : "";
+        // String sign = source.testNextCharIs('-') ? String.valueOf(source.consumeChar()) : "";
 
         // After that — just a sequence of digits:
-        return Integer.parseInt(sign + consumeSequenceOf(Character::isDigit));
+        return Integer.parseInt(consumeSequenceOf(Character::isDigit));
     }
 }

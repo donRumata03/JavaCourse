@@ -1,11 +1,14 @@
 package expression.generic;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public abstract class UnaryOperation extends AtomicParenthesesTrackingExpression {
 
     ParenthesesTrackingExpression child;
     UnaryOperatorTraits operatorInfo;
+
+    private Optional<ParenthesesTrackingInfo> cachedPriorityInfo = Optional.empty();
 
     public UnaryOperation(ParenthesesTrackingExpression child, UnaryOperatorTraits operatorInfo) {
         this.child = child;
@@ -24,9 +27,15 @@ public abstract class UnaryOperation extends AtomicParenthesesTrackingExpression
 
     @Override
     public void toMiniStringBuilderCorrect(StringBuilder builder) {
-        builder
-            .append(operatorInfo.operatorSymbol())
-            .append(" ");
+        var childSPriorityInfo = child.getDummyCachedPriorityInfo();
+        childSPriorityInfo.parenthesesApplied =
+            childSPriorityInfo.getConsideredPriority() < Integer.MAX_VALUE;
+
+        builder.append(operatorInfo.operatorSymbol());
+
+        if (!childSPriorityInfo.parenthesesApplied) {
+            builder.append(" ");
+        }
 
         child.toMiniStringBuilder(builder);
     }

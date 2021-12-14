@@ -123,7 +123,7 @@ public class TokenizedExpressionParser {
             }
             tokenizer.nextToken();
         } catch (IOException e) {
-            throw new RuntimeException("IOException occured while parsing", e);
+            throw new RuntimeException("IOException occurred while parsing", e);
         }
     }
 

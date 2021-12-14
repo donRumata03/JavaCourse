@@ -5,6 +5,7 @@ import expression.parser.generic.ArithmeticExpressionTokenizer;
 import expression.parser.generic.ParsableSource;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.NumberToken;
+import expression.parser.generic.tokens.OperatorToken;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -48,20 +49,20 @@ public class TokenizerTests {
 
     }
 
-    void assertSingleTokenListsEqual(List<ArithmeticExpressionToken> l1, List<NumberToken> l2) {
+    void assertSingleTokenListsEqual(List<ArithmeticExpressionToken> l1, List<ArithmeticExpressionToken> l2) {
         Assert.assertEquals(l1.size(), l2.size());
 
         for (int i = 0; i < l1.size(); i++) {
-            Assert.assertEquals(((NumberToken)l1.get(i)).value(), l2.get(i).value());
+            Assert.assertEquals(l1, l2);
         }
     }
 
     @Test
     public void testOneNumber() throws IOException {
-        assertSingleTokenListsEqual(parseTokens("1"), List.of(new NumberToken(1)));
-        assertSingleTokenListsEqual(parseTokens("-1"), List.of(new NumberToken(-1)));
-        assertSingleTokenListsEqual(parseTokens("-0"), List.of(new NumberToken(0)));
-        assertSingleTokenListsEqual(parseTokens("0"), List.of(new NumberToken(0)));
+        assertSingleTokenListsEqual(List.of(new NumberToken(1)), parseTokens("1"));
+        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken(1)), parseTokens("-1"));
+        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken(0)), parseTokens("-0"));
+        assertSingleTokenListsEqual(List.of(new NumberToken(3324)), parseTokens("     3324     "));
 //        var tokens = parseTokens("-1");
 //        var tokens = parseTokens("-0");
 //        var tokens = parseTokens("0");
