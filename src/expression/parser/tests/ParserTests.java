@@ -19,6 +19,7 @@ public class ParserTests {
         var t2 = parseFrom("2342134");
         var t3 = parseFrom("    -   - -  - -2342134");
         var t4 = parseFrom("  t0  -   - -  - l0 -2342134");
+        var t5 = parseFrom("0 >> 0");
 //        ExpectException parseFactorFrom("*");
     }
 

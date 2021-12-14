@@ -43,7 +43,9 @@ public class TokenizerTests {
 
     @Test
     public void test() throws IOException {
-        String testCase = "   (       ---7 -xyj * l0 988 / t0 -14234 ) >>> 123134 x << 12 >> 9700000";
+//        String testCase = "   (       ---7 -xyj * l0 988 / t0 -14234 ) >>> 123134 x << 12 >> 9700000";
+        String testCase = "(0 >> 0)";
+
 
         var tokens = parseTokens(testCase);
 

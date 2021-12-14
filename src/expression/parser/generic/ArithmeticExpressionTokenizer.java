@@ -127,8 +127,8 @@ public class ArithmeticExpressionTokenizer {
         new OperatorTokenDescriptor("*", OperatorToken.MULTIPLY),
         new OperatorTokenDescriptor("/", OperatorToken.DIVIDE),
         new OperatorTokenDescriptor("<<", OperatorToken.SHIFT_LEFT),
-        new OperatorTokenDescriptor(">>", OperatorToken.LOGICAL_SHIFT_RIGHT),
-        new OperatorTokenDescriptor(">>>", OperatorToken.ARITHMETICAL_SHIFT)
+        new OperatorTokenDescriptor(">>", OperatorToken.ARITHMETICAL_SHIFT),
+        new OperatorTokenDescriptor(">>>", OperatorToken.LOGICAL_SHIFT_RIGHT)
     ));
 
     static Set<Character> operatorStarts;
