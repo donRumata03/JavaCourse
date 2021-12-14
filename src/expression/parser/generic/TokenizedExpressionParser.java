@@ -6,6 +6,7 @@ import expression.generic.ParenthesesTrackingExpression;
 import expression.parser.generic.tokens.AbstractOperationToken;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.NumberToken;
+import expression.parser.generic.tokens.OperatorToken;
 import expression.parser.generic.tokens.ParenthesesToken;
 import java.io.IOException;
 import java.util.Optional;
@@ -45,7 +46,23 @@ public class TokenizedExpressionParser {
     }
 
     private ParenthesesTrackingExpression parseTerm() {
-        return parseFactor();
+        ParenthesesTrackingExpression left = parseFactor();
+
+        while (true) {
+            var mayBeOperator = tryMatchToken(token -> {
+                if (!(token instanceof OperatorToken operator)) {
+                    return false;
+                }
+                return operator == OperatorToken.MULTIPLY || operator == OperatorToken.DIVIDE;
+            });
+            if (mayBeOperator.isEmpty()) {
+                break;
+            }
+
+            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, parseFactor());
+        }
+
+        return left;
     }
 
     private ParenthesesTrackingExpression parseFactor() {
