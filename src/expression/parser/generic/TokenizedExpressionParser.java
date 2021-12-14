@@ -3,13 +3,16 @@ package expression.parser.generic;
 import expression.Const;
 import expression.TripleExpression;
 import expression.generic.ParenthesesTrackingExpression;
+import expression.parser.ExpressionParser;
 import expression.parser.generic.tokens.AbstractOperationToken;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.NumberToken;
 import expression.parser.generic.tokens.OperatorToken;
 import expression.parser.generic.tokens.ParenthesesToken;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 
@@ -38,28 +41,58 @@ public class TokenizedExpressionParser {
     }
 
     private ParenthesesTrackingExpression parseShiftResult() {
-        return parseExpression();
+        return parsePriorityLayer(
+            TokenizedExpressionParser::parseExpression, List.of(
+                OperatorToken.SHIFT_LEFT,
+                OperatorToken.ARITHMETICAL_SHIFT,
+                OperatorToken.LOGICAL_SHIFT_RIGHT
+            )
+        );
     }
 
     private ParenthesesTrackingExpression parseExpression() {
-        return parseTerm();
+        return parsePriorityLayer(TokenizedExpressionParser::parseTerm, List.of(OperatorToken.PLUS, OperatorToken.MINUS));
     }
 
     private ParenthesesTrackingExpression parseTerm() {
-        ParenthesesTrackingExpression left = parseFactor();
+//        ParenthesesTrackingExpression left = parseFactor();
+//
+//        while (true) {
+//            var mayBeOperator = tryMatchToken(token -> {
+//                if (!(token instanceof OperatorToken operator)) {
+//                    return false;
+//                }
+//                return operator == OperatorToken.MULTIPLY || operator == OperatorToken.DIVIDE;
+//            });
+//            if (mayBeOperator.isEmpty()) {
+//                break;
+//            }
+//
+//            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, parseFactor());
+//        }
+//
+//        return left;
+
+        return parsePriorityLayer(TokenizedExpressionParser::parseFactor, List.of(OperatorToken.MULTIPLY, OperatorToken.DIVIDE));
+    }
+
+    private ParenthesesTrackingExpression parsePriorityLayer(
+        Function<TokenizedExpressionParser, ParenthesesTrackingExpression> prevLayer, List<OperatorToken> operators
+    ) {
+        ParenthesesTrackingExpression left = prevLayer.apply(this);
 
         while (true) {
             var mayBeOperator = tryMatchToken(token -> {
                 if (!(token instanceof OperatorToken operator)) {
                     return false;
                 }
-                return operator == OperatorToken.MULTIPLY || operator == OperatorToken.DIVIDE;
+                return operators.contains(operator);
             });
             if (mayBeOperator.isEmpty()) {
                 break;
             }
 
-            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, parseFactor());
+            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, prevLayer.apply(this));
         }
 
         return left;
