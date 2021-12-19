@@ -5,7 +5,7 @@ import expression.generic.ParenthesesTrackingExpression;
 import expression.generic.BinaryOperation;
 import java.math.BigDecimal;
 
-public final class Subtract extends BinaryOperation {
+public class Subtract extends BinaryOperation {
 
     public static final OperatorTraits OPERATOR_INFO = new OperatorTraits(
         2,
