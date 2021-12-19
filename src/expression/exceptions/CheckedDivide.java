@@ -7,8 +7,7 @@ import expression.generic.exceptions.IntegerOverflowException;
 
 public class CheckedDivide extends Divide {
 
-    public CheckedDivide(ParenthesesTrackingExpression left,
-        ParenthesesTrackingExpression right) {
+    public CheckedDivide(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
         super(left, right);
     }
 
