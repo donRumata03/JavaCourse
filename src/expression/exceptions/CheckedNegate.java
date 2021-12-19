@@ -2,9 +2,7 @@ package expression.exceptions;
 
 import expression.Negate;
 import expression.generic.ParenthesesTrackingExpression;
-import expression.generic.UnaryOperation;
-import expression.generic.UnaryOperatorTraits;
-import java.math.BigDecimal;
+import expression.generic.exceptions.IntegerArithmeticException;
 
 public class CheckedNegate extends Negate {
 

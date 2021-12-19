@@ -1,4 +1,4 @@
-package expression.exceptions;
+package expression.generic.exceptions;
 
 public class IntegerArithmeticException extends RuntimeException {
 

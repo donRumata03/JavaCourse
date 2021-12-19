@@ -1,6 +1,7 @@
 package expression.exceptions;
 
 import expression.TripleExpression;
+import expression.generic.exceptions.ParseException;
 
 public class ExpressionParser implements Parser {
 
