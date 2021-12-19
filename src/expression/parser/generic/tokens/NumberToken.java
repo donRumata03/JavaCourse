@@ -1,5 +1,5 @@
 package expression.parser.generic.tokens;
 
-public record NumberToken (long value) implements ArithmeticExpressionToken {
+public record NumberToken (String nonParsedValue) implements ArithmeticExpressionToken {
 
 }

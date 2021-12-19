@@ -175,10 +175,10 @@ public class ArithmeticExpressionTokenizer {
 //            );
     }
 
-    private long parseNumber() throws IOException {
+    private String parseNumber() throws IOException {
         // String sign = source.testNextCharIs('-') ? String.valueOf(source.consumeChar()) : "";
 
         // After that — just a sequence of digits:
-        return Long.parseLong(consumeSequenceOf(Character::isDigit));
+        return consumeSequenceOf(Character::isDigit);
     }
 }

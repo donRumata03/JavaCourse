@@ -61,10 +61,10 @@ public class TokenizerTests {
 
     @Test
     public void testOneNumber() throws IOException {
-        assertSingleTokenListsEqual(List.of(new NumberToken(1)), parseTokens("1"));
-        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken(1)), parseTokens("-1"));
-        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken(0)), parseTokens("-0"));
-        assertSingleTokenListsEqual(List.of(new NumberToken(3324)), parseTokens("     3324     "));
+        assertSingleTokenListsEqual(List.of(new NumberToken("1")), parseTokens("1"));
+        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("1")), parseTokens("-1"));
+        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("0")), parseTokens("-0"));
+        assertSingleTokenListsEqual(List.of(new NumberToken("3324")), parseTokens("     3324     "));
 //        var tokens = parseTokens("-1");
 //        var tokens = parseTokens("-0");
 //        var tokens = parseTokens("0");
