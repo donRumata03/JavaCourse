@@ -83,7 +83,6 @@ public class ExpressionTester<E extends ToMiniString, V, C> extends BaseTester {
         counter.scope("Random tests", generator::testRandom);
     }
 
-    @SuppressWarnings("MethodOnlyUsedFromInnerClass")
     private void checkEqualsAndToString(final String full, final String mini, final ToMiniString expression, final ToMiniString copy) {
         checkToString("toString", full, expression.toString());
         if (mode > 0) {
@@ -114,7 +113,6 @@ public class ExpressionTester<E extends ToMiniString, V, C> extends BaseTester {
         counter.test(() -> assertTrue(String.format("Invalid %s\n     expected: %s\n       actual: %s", method, expected, actual), expected.equals(actual)));
     }
 
-    @SuppressWarnings("MethodOnlyUsedFromInnerClass")
     private void check(final String full, final E expected, final E actual, final V v) {
         counter.test(() -> assertEquals(String.format("f(%s)\n%s", v, full), evaluate(expected, v), evaluate(actual, v)));
     }
@@ -198,7 +196,7 @@ public class ExpressionTester<E extends ToMiniString, V, C> extends BaseTester {
     private final class Generator {
         private final expression.common.Generator<C> generator;
         private final FullRenderer<C> full = new FullRenderer<>();
-        private final MiniRenderer<C> mini = new MiniRenderer<>();
+        private final MiniRenderer<C> mini = new MiniRenderer<>(false);
         private final Renderer<C, E> expected;
         private final Renderer<C, E> actual;
         private final Renderer<C, E> copy;
