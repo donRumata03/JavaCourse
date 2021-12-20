@@ -2,6 +2,7 @@ package expression.exceptions;
 
 import expression.Subtract;
 import expression.generic.ParenthesesTrackingExpression;
+import expression.generic.exceptions.IntegerOverflowException;
 
 public class CheckedSubtract extends Subtract {
 
@@ -12,7 +13,6 @@ public class CheckedSubtract extends Subtract {
 
     @Override
     public int reductionOperation(int leftResult, int rightResult) {
-        // TODO
-        return super.reductionOperation(leftResult, rightResult);
+       return CheckedIntMath.checkedSubtract(leftResult, rightResult);
     }
 }

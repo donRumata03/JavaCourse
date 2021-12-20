@@ -13,13 +13,6 @@ public class CheckedDivide extends Divide {
 
     @Override
     public int reductionOperation(int leftResult, int rightResult) {
-        if (rightResult == 0) {
-            throw new IntegerArithmeticException("Can't divide by zero");
-        }
-        if (leftResult == Integer.MIN_VALUE && rightResult == -1) {
-            throw new IntegerOverflowException("Overflow occurred when dividing Integer.MIN_VALUE by -1");
-        }
-
-        return super.reductionOperation(leftResult, rightResult);
+        return CheckedIntMath.checkedDivide(leftResult, rightResult);
     }
 }

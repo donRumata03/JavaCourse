@@ -13,9 +13,6 @@ public class CheckedNegate extends Negate {
 
     @Override
     public int reductionOperation(int childResult) {
-        if (childResult == Integer.MIN_VALUE) {
-            throw new IntegerOverflowException("Can't negate minimal value in two's complement");
-        }
-        return -childResult;
+        return CheckedIntMath.checkedNegate(childResult);
     }
 }

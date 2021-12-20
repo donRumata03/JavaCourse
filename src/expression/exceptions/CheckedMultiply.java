@@ -13,17 +13,6 @@ public class CheckedMultiply extends Multiply {
 
     @Override
     public int reductionOperation(int leftResult, int rightResult) {
-        int proposedResult = leftResult * rightResult;
-
-        if ((proposedResult / leftResult != rightResult)
-            || (rightResult == -1 && leftResult == Integer.MIN_VALUE)
-            || (rightResult == Integer.MIN_VALUE && leftResult == -1)
-        ) {
-            throw new IntegerOverflowException(
-                "Overflow occurred while multiplying integers: " + rightResult + " and " + leftResult
-            );
-        }
-
-        return super.reductionOperation(leftResult, rightResult);
+        return CheckedIntMath.checkedMultiply(leftResult, rightResult);
     }
 }
