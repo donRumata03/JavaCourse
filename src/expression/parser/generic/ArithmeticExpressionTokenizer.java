@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.IntPredicate;
-import expression.parser.TokenizationError;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.FunctionToken;
 import expression.parser.generic.tokens.NumberToken;
@@ -91,10 +90,13 @@ public class ArithmeticExpressionTokenizer {
             return Optional.of(parseOperator());
         } else if (nextIsWord()) {
             String nextWord = parseWord();
-            return tryGetFunctionToken(nextWord)
+            var  maybeResult = tryGetFunctionToken(nextWord)
                 .or(() -> Optional.of(new VariableToken(nextWord))
                         .filter(t -> List.of("x", "y", "z").contains(t.varName()))
                 );
+            if (maybeResult.isPresent()) {
+                return maybeResult;
+            }
         } else if (nextIsParentheses()) {
             return Optional.of(parseParentheses());
         }

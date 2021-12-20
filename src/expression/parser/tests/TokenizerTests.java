@@ -3,6 +3,7 @@ package expression.parser.tests;
 import bufferedScanning.ReaderBufferizer;
 import expression.parser.generic.ArithmeticExpressionTokenizer;
 import expression.parser.generic.ParsableSource;
+import expression.parser.generic.TokenizationError;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import expression.parser.generic.tokens.NumberToken;
 import expression.parser.generic.tokens.OperatorToken;
@@ -113,5 +114,11 @@ public class TokenizerTests {
 
 //        ArithmeticExpressionTokenizer tok = constructTokenizer(testWithSpaces);
 //        Assert.assertTrue(tok.viewNextToken(false).isEmpty());
+    }
+
+    @Test
+    public void testWithInsertion() throws IOException {
+        String testCase = "( ( ( ( 0 A ) ) ) + ( 0 ) )";
+        Assert.assertThrows(TokenizationError.class, () -> parseTokens(testCase));
     }
 }

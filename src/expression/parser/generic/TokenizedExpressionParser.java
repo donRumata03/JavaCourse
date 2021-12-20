@@ -3,7 +3,6 @@ package expression.parser.generic;
 import expression.Const;
 import expression.Variable;
 import expression.generic.ParenthesesTrackingExpression;
-import expression.generic.exceptions.ParseException;
 import expression.parser.generic.tokens.AbstractOperationToken;
 import expression.parser.generic.tokens.NumberToken;
 import expression.parser.generic.tokens.OperatorToken;

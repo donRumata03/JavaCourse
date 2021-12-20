@@ -1,6 +1,4 @@
-package expression.parser;
-
-import expression.generic.exceptions.ParseException;
+package expression.parser.generic;
 
 public class TokenizationError extends ParseException {
 

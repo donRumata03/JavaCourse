@@ -1,7 +1,7 @@
 package expression.exceptions;
 
 import expression.TripleExpression;
-import expression.generic.exceptions.ParseException;
+import expression.parser.generic.ParseException;
 
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)

@@ -1,10 +1,7 @@
 package expression.parser.generic;
 
-import expression.generic.exceptions.ParseException;
 import expression.parser.generic.tokens.ArithmeticExpressionToken;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 

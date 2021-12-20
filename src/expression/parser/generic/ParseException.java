@@ -1,4 +1,4 @@
-package expression.generic.exceptions;
+package expression.parser.generic;
 
 public class ParseException extends RuntimeException {
 
