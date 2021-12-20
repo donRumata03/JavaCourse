@@ -1,5 +1,6 @@
 package expression.parser.tests;
 
+import base.Asserts;
 import expression.TripleExpression;
 import expression.parser.ExpressionParser;
 import java.io.IOException;
@@ -28,6 +29,13 @@ public class ParserTests {
         var t1 = parseFrom("x*y+(z-1   )/10");
 //        Assert.assertEquals("-(x + y)", t1.toMiniString());
     }
+
+    @Test
+    public void testWithToMiniString() {
+        var z = parseFrom("- 0");
+        Assert.assertEquals("- 0", z.toMiniString());
+    }
+
 
 
 
