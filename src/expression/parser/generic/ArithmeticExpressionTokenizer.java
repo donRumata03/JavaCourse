@@ -20,7 +20,7 @@ import expression.parser.generic.tokens.VariableToken;
 public class ArithmeticExpressionTokenizer {
 
     ParsableSource source;
-    Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty();
+    Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty(); // To meet LL(1) conception requirements
 
 
     public ArithmeticExpressionTokenizer(ParsableSource source) {
