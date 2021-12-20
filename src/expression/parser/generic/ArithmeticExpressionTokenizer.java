@@ -60,8 +60,9 @@ public class ArithmeticExpressionTokenizer {
             return Optional.of(parseOperator());
         } else if (nextIsWord()) {
             String nextWord = parseWord();
-            return tryGetFunctionToken(nextWord).or(
-                    () -> Optional.of(new VariableToken(nextWord))
+            return tryGetFunctionToken(nextWord)
+                .or(() -> Optional.of(new VariableToken(nextWord))
+                        .filter(t -> List.of("x", "y", "z").contains(t.varName()))
                 );
         } else if (nextIsParentheses()) {
             return Optional.of(parseParentheses());

@@ -1,9 +1,8 @@
 package expression.parser;
 
-public class TokenizationError extends RuntimeException {
+import expression.generic.exceptions.ParseException;
 
-    public TokenizationError() {
-    }
+public class TokenizationError extends ParseException {
 
     public TokenizationError(String message) {
         super(message);
