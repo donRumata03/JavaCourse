@@ -10,6 +10,11 @@ public class CheckedIntMath {
         return Integer.min(left, right) == -Integer.max(left, right);
     }
 
+    static int sgn(int value) {
+        return Integer.signum(value);
+    }
+
+
     static int checkedNegate(int input) {
         if (input == Integer.MIN_VALUE) {
             throw new IntegerOverflowException("Can't negate minimal value in two's complement");
@@ -20,9 +25,9 @@ public class CheckedIntMath {
     static int checkedAdd(int left, int right) throws IntegerOverflowException {
         int uncheckedResult = left + right;
 
-        if (CheckingUtils.sgn(left) == CheckingUtils.sgn(right)) {
-            int bothResultsSign = CheckingUtils.sgn(left);
-            if (bothResultsSign != CheckingUtils.sgn(uncheckedResult)) {
+        if (sgn(left) == sgn(right)) {
+            int bothResultsSign = sgn(left);
+            if (bothResultsSign != sgn(uncheckedResult)) {
                 throw new IntegerOverflowException(
                     (bothResultsSign == 1 ? "Overflow" : "Underflow")
                         + " has occurred while adding integers: " + left + " and " + right);
@@ -35,9 +40,9 @@ public class CheckedIntMath {
     static int checkedSubtract(int left, int right) throws IntegerOverflowException {
         int uncheckedResult = left - right;
 
-        int sgnLeft = CheckingUtils.sgn(left);
-        int sgnRight = CheckingUtils.sgn(right);
-        int sgnSub = CheckingUtils.sgn(uncheckedResult);
+        int sgnLeft = sgn(left);
+        int sgnRight = sgn(right);
+        int sgnSub = sgn(uncheckedResult);
         if (sgnLeft != sgnRight && right != 0) {
             int signMustBe = -sgnRight;
             if (signMustBe != sgnSub) {
