@@ -101,7 +101,7 @@ public class TokenizedExpressionParser {
             .tryMatchToken(token -> token instanceof AbstractOperationToken operation && operation.canBeUnary())
             .map(unaryOpToken -> {
                 if (unaryOpToken == OperatorToken.MINUS) {
-                    var tryIntToken = tokenParser.tryMatchToken(t -> t instanceof NumberToken);
+                    var tryIntToken = tokenParser.tryMatchToken(t -> t instanceof NumberToken, false);
                     if (tryIntToken.isPresent()) {
                         return new Const(Integer.parseInt(
                             "-" + ((NumberToken)tryIntToken.get()).nonParsedValue()

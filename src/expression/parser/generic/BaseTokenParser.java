@@ -16,12 +16,19 @@ public class BaseTokenParser {
         this.tokenizer = tokenizer;
     }
 
-    public Optional<ArithmeticExpressionToken> tryMatchToken(Predicate<ArithmeticExpressionToken> predicate) {
-        if (viewRuntimeErrorizedNextToken().isPresent() && predicate.test(viewRuntimeErrorizedNextToken().get())) {
+    public Optional<ArithmeticExpressionToken> tryMatchToken(Predicate<ArithmeticExpressionToken> predicate, boolean allowSpaceSkipping) {
+        if (
+            viewRuntimeErrorizedNextToken(allowSpaceSkipping).isPresent() &&
+                predicate.test(viewRuntimeErrorizedNextToken(allowSpaceSkipping).get())
+        ) {
             return consumeRuntimeErrorizedNextToken();
         }
 
         return Optional.empty();
+    }
+
+    public Optional<ArithmeticExpressionToken> tryMatchToken(Predicate<ArithmeticExpressionToken> predicate) {
+        return tryMatchToken(predicate, true);
     }
 
 //    public Optional<List<ArithmeticExpressionToken>> tryMatchTokenSequence(List<Predicate<ArithmeticExpressionToken>> checkers) {
@@ -49,6 +56,14 @@ public class BaseTokenParser {
         consumeRuntimeErrorizedNextToken();
     }
 
+
+    public Optional<ArithmeticExpressionToken> consumeRuntimeErrorizedNextToken(boolean allowSpaceSkipping) {
+        return runtimeErrorizeIOException(() -> tokenizer.nextToken(allowSpaceSkipping));
+    }
+
+    public Optional<ArithmeticExpressionToken> viewRuntimeErrorizedNextToken(boolean allowSpaceSkipping) {
+        return runtimeErrorizeIOException(() -> tokenizer.viewNextToken(allowSpaceSkipping));
+    }
 
     public Optional<ArithmeticExpressionToken> consumeRuntimeErrorizedNextToken() {
         return runtimeErrorizeIOException(tokenizer::nextToken);

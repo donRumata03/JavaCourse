@@ -21,34 +21,65 @@ public class ArithmeticExpressionTokenizer {
 
     ParsableSource source;
     Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty(); // To meet LL(1) conception requirements
-
+    boolean hasConsumedSpacesAfterLastToken = false;
 
     public ArithmeticExpressionTokenizer(ParsableSource source) {
         this.source = source;
     }
 
-    public Optional<ArithmeticExpressionToken> viewNextToken() throws IOException {
+
+    /**
+     * @return None if for some reason can't get specified object (EOF or space skpping isn't allowed)
+     */
+    public Optional<ArithmeticExpressionToken> viewNextToken(boolean allowSpaceSkipping) throws IOException {
+        if (!allowSpaceSkipping && hasConsumedSpacesAfterLastToken) {
+            return Optional.empty();
+        }
         if (cachedNextToken.isPresent()) {
             return cachedNextToken;
         }
 
-        // Compute. Cache. Return.
-        cachedNextToken = rawNextToken();
-        return cachedNextToken;
-    }
-
-    public Optional<ArithmeticExpressionToken> nextToken() throws IOException {
-        if (cachedNextToken.isPresent()) {
-            var result = cachedNextToken.get();
-            cachedNextToken = Optional.empty();
-            return Optional.of(result);
+        if (source.isEof() || !allowSpaceSkipping && source.testNextChar(Character::isWhitespace)) {
+            return Optional.empty();
         }
 
-        return rawNextToken();
+        // Compute. Cache. Return.
+        hasConsumedSpacesAfterLastToken = source.consumeWhitespace();
+        cachedNextToken = rawNextToken(allowSpaceSkipping);
+        return cachedNextToken;
+    }
+    public Optional<ArithmeticExpressionToken> viewNextToken() throws IOException {
+        return viewNextToken(true);
     }
 
-    private Optional<ArithmeticExpressionToken> rawNextToken() throws IOException {
-        source.consumeWhitespace();
+
+
+    /**
+     * @return None only at end of stream
+     */
+    public Optional<ArithmeticExpressionToken> nextToken(boolean allowSpaceSkipping) throws IOException {
+        var result = cachedNextToken.isPresent() ?
+            cachedNextToken :
+            rawNextToken(allowSpaceSkipping);
+
+        cachedNextToken = Optional.empty();
+        hasConsumedSpacesAfterLastToken = false;
+        return result;
+    }
+    public Optional<ArithmeticExpressionToken> nextToken() throws IOException {
+        return nextToken(true);
+    }
+
+
+    private Optional<ArithmeticExpressionToken> rawNextToken(boolean allowSpaceSkipping) throws IOException {
+        if (allowSpaceSkipping) {
+            source.consumeWhitespace();
+        } else {
+            if (source.testNextChar(Character::isWhitespace)) {
+                throw new TokenizationError("Skipping spaces is chosen to be disallowed here, but next char is space");
+            }
+        }
+
         if (source.isEof()) {
             return Optional.empty();
         }
