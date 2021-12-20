@@ -37,9 +37,15 @@ public class TokenizerTests {
         return tokens;
     }
 
-    List<ArithmeticExpressionToken> parseTokens(String str) throws IOException {
-        return getTokensFomTokenizer(new ArithmeticExpressionTokenizer(new ParsableSource(new ReaderBufferizer(new StringReader(str)))));
+    ArithmeticExpressionTokenizer constructTokenizer(String str) {
+        return new ArithmeticExpressionTokenizer(new ParsableSource(new ReaderBufferizer(new StringReader(str))));
     }
+
+    List<ArithmeticExpressionToken> parseTokens(String str) throws IOException {
+        return getTokensFomTokenizer(constructTokenizer(str));
+    }
+
+
 
     @Test
     public void test() throws IOException {
@@ -51,7 +57,7 @@ public class TokenizerTests {
 
     }
 
-    void assertSingleTokenListsEqual(List<ArithmeticExpressionToken> l1, List<ArithmeticExpressionToken> l2) {
+    void assertTokenListsEqual(List<ArithmeticExpressionToken> l1, List<ArithmeticExpressionToken> l2) {
         Assert.assertEquals(l1.size(), l2.size());
 
         for (int i = 0; i < l1.size(); i++) {
@@ -61,12 +67,51 @@ public class TokenizerTests {
 
     @Test
     public void testOneNumber() throws IOException {
-        assertSingleTokenListsEqual(List.of(new NumberToken("1")), parseTokens("1"));
-        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("1")), parseTokens("-1"));
-        assertSingleTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("0")), parseTokens("-0"));
-        assertSingleTokenListsEqual(List.of(new NumberToken("3324")), parseTokens("     3324     "));
+        assertTokenListsEqual(List.of(new NumberToken("1")), parseTokens("1"));
+        assertTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("1")), parseTokens("-1"));
+        assertTokenListsEqual(List.of(OperatorToken.MINUS, new NumberToken("0")), parseTokens("-0"));
+        assertTokenListsEqual(List.of(new NumberToken("3324")), parseTokens("     3324     "));
 //        var tokens = parseTokens("-1");
 //        var tokens = parseTokens("-0");
 //        var tokens = parseTokens("0");
+    }
+
+
+    record ModeResults( boolean withNotAllowed, boolean withAllowed ) {}
+
+    public void testPreviewSequence(String s, List<ModeResults> results) throws IOException {
+        Random r = new Random(2342543);
+
+        for (int i = 0; i < 1000; i++) {
+            ArithmeticExpressionTokenizer tok = constructTokenizer(s);
+
+            for (int tokenIndex = 0; tokenIndex < results.size(); tokenIndex++) {
+                // Maybe: preview
+                if (r.nextBoolean()) {
+                    var previews = r.nextInt(Math.max(1, r.nextInt(20)));
+                    for (int previewIndex = 0; previewIndex < previews; previewIndex++) {
+                        if (r.nextBoolean()) {
+                            // Preview no spaces:
+                            Assert.assertEquals(tok.viewNextToken(false).isPresent(), results.get(tokenIndex).withNotAllowed());
+                        } else {
+                            // Preview spaces:
+                            Assert.assertEquals(tok.viewNextToken(true).isPresent(), results.get(tokenIndex).withAllowed());
+                        }
+                    }
+                }
+
+                tok.nextToken();
+            }
+        }
+    }
+
+    @Test
+    public void allowOrDisallowSpaceSkipping() throws IOException {
+        String testWithSpaces = "      -323";
+
+        testPreviewSequence(testWithSpaces, List.of(new ModeResults(false, true), new ModeResults(true, true)));
+
+//        ArithmeticExpressionTokenizer tok = constructTokenizer(testWithSpaces);
+//        Assert.assertTrue(tok.viewNextToken(false).isEmpty());
     }
 }
