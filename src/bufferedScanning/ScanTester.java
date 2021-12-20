@@ -23,7 +23,8 @@ public class ScanTester {
 //        String sampleFilename = "sample_test.txt";
 //        String sampleFilename = "sample_input_words.txt";
 //        String sampleFilename = "sample_ints.txt";
-        String sampleFilename = "sample_characters.txt";
+//        String sampleFilename = "sample_characters.txt";
+        String sampleFilename = "test_single_caret.txt";
 
         Path samplePath = rootPath.resolve("src").resolve("bufferedScanning").resolve("samples").resolve(Paths.get(sampleFilename));
 
@@ -31,9 +32,9 @@ public class ScanTester {
 //        int i = s.nextInt();
 
 
-//        testScanner(samplePath);
+        testScanner(samplePath);
 //        testBufferizer(samplePath);
-        testBufferizerViewN(samplePath);
+//        testBufferizerViewN(samplePath);
 //        compareLineReading(samplePath);
 
 

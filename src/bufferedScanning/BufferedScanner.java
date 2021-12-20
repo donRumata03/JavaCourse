@@ -48,7 +48,7 @@ public class BufferedScanner implements Closeable, AutoCloseable {
      * If previous read character was CR and the next character is LF, it reads the LF
      */
     private void tryConsumeNewlineSecondHalf() throws IOException {
-        if (read == ScanningUtils.CR || read == ScanningUtils.LF
+        if ((read == ScanningUtils.CR || read == ScanningUtils.LF)
             && in.hasNextChar() && in.testNext((int ch) -> (ch == ScanningUtils.LF || ch == ScanningUtils.CR) && ch != read)
         ) {
             nextChar();
