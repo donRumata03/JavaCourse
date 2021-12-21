@@ -32,7 +32,7 @@ public class TokenizedExpressionParser {
                     .formatted(
                         brokenIndex,
                         brokenIndex,
-                        brokenIndex + tokenParser.consumeCharsLeft()
+                        tokenParser.getFirstNonConsumedCharPosition() + tokenParser.consumeCharsLeft()
                     )
                     + tokenParser.viewRuntimeErrorizedNextToken().toString()
             );

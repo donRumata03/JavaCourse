@@ -74,6 +74,10 @@ public class ArithmeticExpressionTokenizer {
         return lastTouchedTokenStartIndex;
     }
 
+    public int getFirstNonConsumedCharPosition() {
+        return source.getNextPos();
+    }
+
     public int consumeCharsLeft() throws IOException {
         return source.consumeCharsLeft();
     }

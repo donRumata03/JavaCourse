@@ -36,6 +36,10 @@ public class BaseTokenParser {
         return runtimeErrorizeIOException(tokenizer::consumeCharsLeft);
     }
 
+    public int getFirstNonConsumedCharPosition() {
+        return runtimeErrorizeIOException(tokenizer::getFirstNonConsumedCharPosition);
+    }
+
 //    public Optional<List<ArithmeticExpressionToken>> tryMatchTokenSequence(List<Predicate<ArithmeticExpressionToken>> checkers) {
 //        List<ArithmeticExpressionToken> res = new ArrayList<>();
 //
