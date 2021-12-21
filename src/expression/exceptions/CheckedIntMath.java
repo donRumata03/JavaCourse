@@ -115,7 +115,7 @@ public class CheckedIntMath {
         }
 
         int divisions = 0;
-        while (left <= right) {
+        while (left >= right) {
             left /= right;
             divisions++;
         }
