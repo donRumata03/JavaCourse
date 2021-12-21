@@ -109,7 +109,7 @@ public class TokenizedExpressionParser {
                         ));
                     }
                 }
-                return ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor());
+                return ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor(), checked);
             });
     }
 

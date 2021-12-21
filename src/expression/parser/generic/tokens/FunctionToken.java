@@ -20,7 +20,7 @@ public enum FunctionToken implements AbstractOperationToken {
     }
 
     @Override
-    public ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child) {
+    public ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child, boolean checked) {
         return (this == l0) ?
             new LeadingZeroes(child) : new TrailingZeroes(child);
     }

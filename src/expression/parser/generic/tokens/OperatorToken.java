@@ -11,6 +11,7 @@ import expression.Subtract;
 import expression.exceptions.CheckedAdd;
 import expression.exceptions.CheckedDivide;
 import expression.exceptions.CheckedMultiply;
+import expression.exceptions.CheckedNegate;
 import expression.exceptions.CheckedSubtract;
 import expression.generic.ParenthesesTrackingExpression;
 
@@ -34,10 +35,10 @@ public enum OperatorToken implements AbstractOperationToken {
     }
 
     @Override
-    public ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child) {
+    public ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child, boolean checked) {
         assert canBeUnary();
 
-        return new Negate(child);
+        return checked ? new CheckedNegate(child) : new Negate(child);
     }
 
     @Override

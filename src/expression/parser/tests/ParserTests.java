@@ -2,7 +2,7 @@ package expression.parser.tests;
 
 import base.Asserts;
 import expression.TripleExpression;
-import expression.parser.ExpressionParser;
+import expression.generic.exceptions.IntegerOverflowException;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +10,11 @@ import org.junit.Test;
 public class ParserTests {
 
     public TripleExpression parseFrom(String testCase) {
-        return new ExpressionParser().parse(testCase);
+        return new expression.parser.ExpressionParser().parse(testCase);
+    }
 
+    public TripleExpression parseCheckedFrom(String testCase) {
+        return new expression.exceptions.ExpressionParser().parse(testCase);
     }
 
     @Test
@@ -34,6 +37,12 @@ public class ParserTests {
     public void testWithToMiniString() {
         var z = parseFrom("- 0");
         Assert.assertEquals("- 0", z.toMiniString());
+    }
+
+    @Test
+    public void testChecked() {
+        var e = parseCheckedFrom("-(-2147483648)");
+        Assert.assertThrows(IntegerOverflowException.class,  () -> e.evaluate(0, 0, 0));
     }
 
 
