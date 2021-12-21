@@ -1,5 +1,6 @@
 package expression;
 
+import expression.exceptions.CheckedIntMath;
 import expression.generic.BinaryOperation;
 import expression.generic.OperatorTraits;
 import java.math.BigDecimal;
@@ -19,8 +20,7 @@ public class Log extends BinaryOperation {
 
     @Override
     public int reductionOperation(int leftResult, int rightResult) {
-        // TODO
-        return 0;
+        return CheckedIntMath.checkedLog(leftResult, rightResult);
     }
 
     @Override

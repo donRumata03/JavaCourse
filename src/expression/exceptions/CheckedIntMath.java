@@ -104,4 +104,18 @@ public class CheckedIntMath {
             return checkedMultiply(left, checkedPow(left, right - 1));
         }
     }
+
+    public static int checkedLog(int left, int right) {
+        if (left <= 0 || right <= 1) {
+            throw new IntegerArithmeticException("Invalid log arguments");
+        }
+
+        int divisions = 0;
+        while (left <= right) {
+            left /= right;
+            divisions++;
+        }
+
+        return divisions;
+    }
 }
