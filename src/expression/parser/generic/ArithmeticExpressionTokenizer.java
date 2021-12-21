@@ -133,6 +133,8 @@ public class ArithmeticExpressionTokenizer {
             return Optional.of(FunctionToken.l0);
         } else if (word.equals("t0")) {
             return Optional.of(FunctionToken.t0);
+        } else if (word.equals("abs")) {
+            return Optional.of(FunctionToken.abs);
         }
 
         return Optional.empty();

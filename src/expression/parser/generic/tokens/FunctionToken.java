@@ -1,13 +1,15 @@
 package expression.parser.generic.tokens;
 
 
+import expression.Abs;
 import expression.LeadingZeroes;
 import expression.TrailingZeroes;
 import expression.generic.ParenthesesTrackingExpression;
 
 public enum FunctionToken implements AbstractOperationToken {
     l0,
-    t0;
+    t0,
+    abs;
 
     @Override
     public boolean canBeUnary() {
@@ -21,8 +23,18 @@ public enum FunctionToken implements AbstractOperationToken {
 
     @Override
     public ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child, boolean checked) {
-        return (this == l0) ?
-            new LeadingZeroes(child) : new TrailingZeroes(child);
+        switch (this) {
+            case l0 -> {
+                return new LeadingZeroes(child);
+            }
+            case t0 -> {
+                return new TrailingZeroes(child);
+            }
+            case abs -> {
+                return new Abs(child);
+            }
+            default -> throw new RuntimeException("Unknown token => Parser has an error…");
+        }
     }
 
     @Override
