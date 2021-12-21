@@ -52,4 +52,10 @@ public class ParserTests {
         Assert.assertEquals(0,  e.evaluate(0, 0, 0));
     }
 
+    @Test
+    public void powToMiniStingTest() {
+        var e = parseCheckedFrom("(y ** (x ** x))");
+        Assert.assertEquals("y ** (x ** x)",  e.toMiniString());
+    }
+
 }

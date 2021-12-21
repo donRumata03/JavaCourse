@@ -3,6 +3,7 @@ package expression;
 import expression.exceptions.CheckedIntMath;
 import expression.generic.BinaryOperation;
 import expression.generic.OperatorTraits;
+import expression.generic.ParenthesesTrackingExpression;
 import java.math.BigDecimal;
 
 public class Log extends BinaryOperation {
@@ -14,7 +15,7 @@ public class Log extends BinaryOperation {
         "//"
     );
 
-    public Log(Expression left, Expression right) {
+    public Log(ParenthesesTrackingExpression left, ParenthesesTrackingExpression right) {
         super(left, right, OPERATOR_INFO);
     }
 
