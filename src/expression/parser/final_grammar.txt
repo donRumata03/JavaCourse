@@ -7,10 +7,20 @@ Exp'  -> ([ '+' | '-' ] Term)*
 Term  -> Factor Term'
 Term' -> ([ '*' | '/' ] Factor)*
 
-Factor  ->
+// For right associativity:
+# Factor  ->
+#	Atomic ** Factor
+#	| Atomic // Factor
+
+Factor  -> Atomic Factor'
+Factor' -> ([ '//' | '**' ] Atomic)*
+
+
+Atomic  ->
 	('-' num) -> -num
 	| num
 	| '(' Exp ')'
 	| '-' Factor
-	| 't0' Factor
-	| 'l0' Factor
+	| FuncName Factor
+
+FuncName -> 't0' | 'l0' | 'abs'
