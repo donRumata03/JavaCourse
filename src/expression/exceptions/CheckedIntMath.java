@@ -6,23 +6,31 @@ import expression.generic.exceptions.IntegerOverflowException;
 
 public class CheckedIntMath {
 
-    static boolean areOpposite(int left, int right) {
+    public static boolean areOpposite(int left, int right) {
         return Integer.min(left, right) == -Integer.max(left, right);
     }
 
-    static int sgn(int value) {
+    public static int sgn(int value) {
         return Integer.signum(value);
     }
 
 
-    static int checkedNegate(int input) {
+    public static int checkedNegate(int input) {
         if (input == Integer.MIN_VALUE) {
             throw new IntegerOverflowException("Can't negate minimal value in two's complement");
         }
         return -input;
     }
 
-    static int checkedAdd(int left, int right) throws IntegerOverflowException {
+    public static int checkedAbs(int input) {
+        if (input == Integer.MIN_VALUE) {
+            throw new IntegerArithmeticException("Can't compute absolute value for Integer.MIN_VALUE");
+        }
+
+        return input < 0 ? -input : input;
+    }
+
+    public static int checkedAdd(int left, int right) throws IntegerOverflowException {
         int uncheckedResult = left + right;
 
         if (sgn(left) == sgn(right)) {
@@ -37,7 +45,7 @@ public class CheckedIntMath {
         return uncheckedResult;
     }
 
-    static int checkedSubtract(int left, int right) throws IntegerOverflowException {
+    public static int checkedSubtract(int left, int right) throws IntegerOverflowException {
         int uncheckedResult = left - right;
 
         int sgnLeft = sgn(left);
@@ -55,7 +63,7 @@ public class CheckedIntMath {
         return uncheckedResult;
     }
 
-    static int checkedMultiply(int left, int right) throws IntegerOverflowException {
+    public static int checkedMultiply(int left, int right) throws IntegerOverflowException {
         int proposedResult = left * right;
 
         if ((left != 0 && proposedResult / left != right)
@@ -70,7 +78,7 @@ public class CheckedIntMath {
         return proposedResult;
     }
 
-    static int checkedDivide(int left, int right) throws IntegerOverflowException, IntegerArithmeticException {
+    public static int checkedDivide(int left, int right) throws IntegerOverflowException, IntegerArithmeticException {
         if (right == 0) {
             throw new IntegerArithmeticException("Can't divide by zero");
         }
