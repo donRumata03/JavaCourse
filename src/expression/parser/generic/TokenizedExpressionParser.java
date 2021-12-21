@@ -94,8 +94,15 @@ public class TokenizedExpressionParser {
             .or(this::maybeParseExpressionInParentheses)
             .orElseThrow(() -> {
                 throw new ParseException(
-                    "Can't parse atomic expression part. " +
-                    "Should be one of { number, variable, unaryOp, '(' expr ')' }"
+                    """
+                        Atomic expression part is expected at position: %d.
+                        It should be one of { number, variable, unaryOp, '(' expr ')' }, but it's %s
+                    """.formatted(
+                        tokenParser.getLastTouchedTokenStartIndex(),
+                        tokenParser.viewRuntimeErrorizedNextToken().isPresent() ?
+                            tokenParser.viewRuntimeErrorizedNextToken().get().toString()
+                            : "<EOF>"
+                    )
                 );
             });
     }
