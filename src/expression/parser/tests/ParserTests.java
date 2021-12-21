@@ -46,6 +46,10 @@ public class ParserTests {
     }
 
 
-
+    @Test
+    public void testPow() {
+        var e = parseCheckedFrom("(0 ** 1)");
+        Assert.assertEquals(0,  e.evaluate(0, 0, 0));
+    }
 
 }

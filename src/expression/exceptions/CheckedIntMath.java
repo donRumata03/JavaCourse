@@ -97,6 +97,10 @@ public class CheckedIntMath {
         if (right == 0) {
             return 1;
         }
+        if (right == 1) {
+            return left;
+        }
+
         if (right % 2 == 0) {
             int root = checkedPow(left, right / 2);
             return checkedMultiply(root, root);

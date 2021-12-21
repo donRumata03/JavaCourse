@@ -53,6 +53,10 @@ public class TokenizedExpressionParser {
         return parseLeftAssociativePriorityLayer(TokenizedExpressionParser::parseFactor, List.of(OperatorToken.MULTIPLY, OperatorToken.DIVIDE));
     }
 
+    private ParenthesesTrackingExpression parseFactor() throws ParseException {
+        return parseLeftAssociativePriorityLayer(TokenizedExpressionParser::parseAtomic, List.of(OperatorToken.POW, OperatorToken.LOG));
+    }
+
     private ParenthesesTrackingExpression parseLeftAssociativePriorityLayer (
         Function<TokenizedExpressionParser, ParenthesesTrackingExpression> prevLayer,
         List<OperatorToken> operators
@@ -77,7 +81,7 @@ public class TokenizedExpressionParser {
         return left;
     }
 
-    private ParenthesesTrackingExpression parseFactor() {
+    private ParenthesesTrackingExpression parseAtomic() {
         return maybeParsePositiveNumber()
             .or(this::maybeParseVariable)
             .or(this::maybeParseUnaryOperation)
@@ -109,7 +113,7 @@ public class TokenizedExpressionParser {
                         ));
                     }
                 }
-                return ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseFactor(), checked);
+                return ((AbstractOperationToken)unaryOpToken).constructUnaryExpression(parseAtomic(), checked);
             });
     }
 
