@@ -88,4 +88,20 @@ public class CheckedIntMath {
 
         return left / right;
     }
+
+    public static int checkedPow(int left, int right) {
+        if (right < 0 || left == 0 && right == 0) {
+            throw new IntegerArithmeticException("Invalid pow arguments");
+        }
+
+        if (right == 0) {
+            return 1;
+        }
+        if (right % 2 == 0) {
+            int root = checkedPow(left, right / 2);
+            return checkedMultiply(root, root);
+        } else {
+            return checkedMultiply(left, checkedPow(left, right - 1));
+        }
+    }
 }
