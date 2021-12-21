@@ -10,7 +10,7 @@ import java.util.Random;
 public class ExceptionExpressionRunner {
 
     public static void main(String[] args) {
-        String sampleForParsing = "y - )";
+        String sampleForParsing = "y - (8 * y + x ((";
 
         String forParsing = args.length == 0 ? sampleForParsing : args[0];
         Random gen = new Random();

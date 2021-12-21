@@ -87,6 +87,12 @@ public class TokenizedExpressionParser {
         return left;
     }
 
+    private String prettyFormatNextToken() {
+        return tokenParser.viewRuntimeErrorizedNextToken().isPresent() ?
+            tokenParser.viewRuntimeErrorizedNextToken().get().toString()
+            : "<EOF>";
+    }
+
     private ParenthesesTrackingExpression parseAtomic() {
         return maybeParsePositiveNumber()
             .or(this::maybeParseVariable)
@@ -95,13 +101,11 @@ public class TokenizedExpressionParser {
             .orElseThrow(() -> {
                 throw new ParseException(
                     """
-                        Atomic expression part is expected at position: %d.
-                        It should be one of { number, variable, unaryOp, '(' expr ')' }, but it's %s
+                    Atomic expression part is expected at position: %d.
+                    It should be one of { number, variable, unaryOp, '(' expr ')' }, but it's %s
                     """.formatted(
                         tokenParser.getLastTouchedTokenStartIndex(),
-                        tokenParser.viewRuntimeErrorizedNextToken().isPresent() ?
-                            tokenParser.viewRuntimeErrorizedNextToken().get().toString()
-                            : "<EOF>"
+                        prettyFormatNextToken()
                     )
                 );
             });
@@ -142,7 +146,10 @@ public class TokenizedExpressionParser {
             .map(p -> {
                 var res = parseShiftResult();
                 tokenParser.expectNext(tk -> tk instanceof ParenthesesToken && !((ParenthesesToken)tk).openCloseness(),
-                    "„)” is expected after parentheses-surrounded expression part"
+                """
+                „)” is expected after parentheses-surrounded expression part
+                (at position %d), but it's %s
+                """.formatted(tokenParser.getLastTouchedTokenStartIndex(), prettyFormatNextToken())
                 );
                 return res;
             });
