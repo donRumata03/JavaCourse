@@ -9,6 +9,6 @@ public interface AbstractOperationToken extends ArithmeticExpressionToken {
     ParenthesesTrackingExpression constructUnaryExpression(ParenthesesTrackingExpression child);
 
     ParenthesesTrackingExpression constructBinaryExpression(
-        ParenthesesTrackingExpression left, ParenthesesTrackingExpression right
+        ParenthesesTrackingExpression left, ParenthesesTrackingExpression right, boolean checked
     );
 }

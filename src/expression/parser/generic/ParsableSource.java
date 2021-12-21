@@ -71,16 +71,6 @@ public class ParsableSource {
         );
     }
 
-
-    public IllegalArgumentException generateUnexpectedCharacters(char expected) throws IOException {
-        return new IllegalArgumentException(
-            String.format(
-                "Unexpected character at index %d: „%c” (expected: „%c”). Note that nobody expects Spanish Inquisition!",
-                nextPos, viewChar(), expected
-            )
-        );
-    }
-
     public void expectChar(char expected) throws IOException {
         if (!consumeIfExpected(expected)) {
             throw generateUnexpectedCharacterError(expected);

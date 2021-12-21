@@ -27,7 +27,7 @@ public enum FunctionToken implements AbstractOperationToken {
 
     @Override
     public ParenthesesTrackingExpression constructBinaryExpression(ParenthesesTrackingExpression left,
-        ParenthesesTrackingExpression right)
+        ParenthesesTrackingExpression right, boolean checked)
     {
         throw new RuntimeException();
     }

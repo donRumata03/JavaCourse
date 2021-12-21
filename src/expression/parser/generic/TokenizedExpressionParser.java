@@ -15,9 +15,11 @@ import java.util.function.Function;
 
 public class TokenizedExpressionParser {
     private final BaseTokenParser tokenParser;
+    private boolean checked;
 
-    public TokenizedExpressionParser(ArithmeticExpressionTokenizer tokenizer) {
+    public TokenizedExpressionParser(ArithmeticExpressionTokenizer tokenizer, boolean checked) {
         this.tokenParser = new BaseTokenParser(tokenizer);
+        this.checked = checked;
     }
 
     public ParenthesesTrackingExpression parseAll() throws ParseException {
@@ -69,7 +71,7 @@ public class TokenizedExpressionParser {
                 break;
             }
 
-            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, prevLayer.apply(this));
+            left = ((AbstractOperationToken)mayBeOperator.get()).constructBinaryExpression(left, prevLayer.apply(this), checked);
         }
 
         return left;
