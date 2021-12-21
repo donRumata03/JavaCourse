@@ -18,10 +18,10 @@ import expression.parser.generic.tokens.VariableToken;
 
 public class ArithmeticExpressionTokenizer {
 
-    ParsableSource source;
-    Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty(); // To meet LL(1) conception requirements
-    boolean hasConsumedSpacesAfterLastToken = false;
-    int lastTouchedTokenStartIndex = 0;
+    private ParsableSource source;
+    private Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty(); // To meet LL(1) conception requirements
+    private boolean hasConsumedSpacesAfterLastToken = false;
+    private int lastTouchedTokenStartIndex = 0;
 
     public ArithmeticExpressionTokenizer(ParsableSource source) {
         this.source = source;
@@ -72,6 +72,10 @@ public class ArithmeticExpressionTokenizer {
 
     public int getLastTouchedTokenStartIndex() {
         return lastTouchedTokenStartIndex;
+    }
+
+    public int consumeCharsLeft() throws IOException {
+        return source.consumeCharsLeft();
     }
 
     private Optional<ArithmeticExpressionToken> rawNextToken(boolean allowSpaceSkipping) throws IOException {

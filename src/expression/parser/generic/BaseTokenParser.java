@@ -28,6 +28,14 @@ public class BaseTokenParser {
         return tryMatchToken(predicate, true);
     }
 
+    public int getLastTouchedTokenStartIndex() {
+        return tokenizer.getLastTouchedTokenStartIndex();
+    }
+
+    public int consumeCharsLeft() {
+        return runtimeErrorizeIOException(tokenizer::consumeCharsLeft);
+    }
+
 //    public Optional<List<ArithmeticExpressionToken>> tryMatchTokenSequence(List<Predicate<ArithmeticExpressionToken>> checkers) {
 //        List<ArithmeticExpressionToken> res = new ArrayList<>();
 //

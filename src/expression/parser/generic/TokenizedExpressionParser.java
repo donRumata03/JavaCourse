@@ -26,8 +26,14 @@ public class TokenizedExpressionParser {
         var result = parseShiftResult();
 
         if (tokenParser.viewRuntimeErrorizedNextToken().isPresent()) {
+            int brokenIndex = tokenParser.getLastTouchedTokenStartIndex();
             throw new ParseException(
-                "Expression wasn't fully parsed: something's left starting with: "
+                "Can only parse expression[0..%d). There's expression[%d..%d) left starting from token: "
+                    .formatted(
+                        brokenIndex,
+                        brokenIndex,
+                        brokenIndex + tokenParser.consumeCharsLeft()
+                    )
                     + tokenParser.viewRuntimeErrorizedNextToken().toString()
             );
         }

@@ -109,4 +109,17 @@ public class ParsableSource {
     public String viewNChars(int n) throws IOException {
         return in.viewNextN(n);
     }
+
+    public int consumeCharsLeft() throws IOException {
+        int consumed = 0;
+        while (true) {
+            if (isEof()) {
+                break;
+            }
+            consumeChar();
+            consumed++;
+        }
+
+        return consumed;
+    }
 }
