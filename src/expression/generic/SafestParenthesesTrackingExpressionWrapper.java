@@ -44,7 +44,7 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
     @Override
     public int evaluate(int x) {
         if (!(inner instanceof Expression expression)) {
-            throw new AssertionError("Single-argument expression is only supported by ");
+            throw new AssertionError("Single-argument expression is only supported by Expression");
         }
         return expression.evaluate(x);
     }
@@ -52,7 +52,9 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
     @Override
     public int evaluate(int x, int y, int z) {
         if (!(inner instanceof TripleExpression tripleExpression)) {
-            throw new AssertionError("Single-argument expression is only supported by ");
+            throw new AssertionError(
+                "Three-argument expression is only supported by TripleExpression"
+            );
         }
         return tripleExpression.evaluate(x, y, z);
     }
@@ -60,7 +62,9 @@ public class SafestParenthesesTrackingExpressionWrapper extends ParenthesesTrack
     @Override
     public BigDecimal evaluate(BigDecimal x) {
         if (!(inner instanceof BigDecimalExpression bigDecimalExpression)) {
-            throw new AssertionError("Single-argument expression is only supported by ");
+            throw new AssertionError(
+                "BigDecimal-argument expression is only supported by BigDecimalExpression"
+            );
         }
         return bigDecimalExpression.evaluate(x);
     }
