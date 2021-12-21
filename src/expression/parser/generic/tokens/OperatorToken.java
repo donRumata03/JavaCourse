@@ -3,9 +3,11 @@ package expression.parser.generic.tokens;
 import expression.Add;
 import expression.ArithmeticShiftRight;
 import expression.Divide;
+import expression.Log;
 import expression.LogicalShiftRight;
 import expression.Multiply;
 import expression.Negate;
+import expression.Pow;
 import expression.ShiftLeft;
 import expression.Subtract;
 import expression.exceptions.CheckedAdd;
@@ -22,7 +24,9 @@ public enum OperatorToken implements AbstractOperationToken {
     DIVIDE,
     SHIFT_LEFT,
     LOGICAL_SHIFT_RIGHT,
-    ARITHMETICAL_SHIFT;
+    ARITHMETICAL_SHIFT,
+    POW,
+    LOG;
 
     @Override
     public boolean canBeUnary() {
@@ -53,6 +57,8 @@ public enum OperatorToken implements AbstractOperationToken {
             case SHIFT_LEFT -> new ShiftLeft(left, right);
             case LOGICAL_SHIFT_RIGHT -> new LogicalShiftRight(left, right);
             case ARITHMETICAL_SHIFT -> new ArithmeticShiftRight(left, right);
+            case POW -> new Pow(left, right);
+            case LOG -> new Log(left, right);
         };
     }
 

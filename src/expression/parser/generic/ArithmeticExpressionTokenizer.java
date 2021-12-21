@@ -164,7 +164,9 @@ public class ArithmeticExpressionTokenizer {
         new OperatorTokenDescriptor("/", OperatorToken.DIVIDE),
         new OperatorTokenDescriptor("<<", OperatorToken.SHIFT_LEFT),
         new OperatorTokenDescriptor(">>", OperatorToken.ARITHMETICAL_SHIFT),
-        new OperatorTokenDescriptor(">>>", OperatorToken.LOGICAL_SHIFT_RIGHT)
+        new OperatorTokenDescriptor(">>>", OperatorToken.LOGICAL_SHIFT_RIGHT),
+        new OperatorTokenDescriptor("**", OperatorToken.POW),
+        new OperatorTokenDescriptor("//", OperatorToken.LOG)
     ));
 
     static Set<Character> operatorStarts;
@@ -184,7 +186,7 @@ public class ArithmeticExpressionTokenizer {
 
 
     private OperatorToken parseOperator() throws IOException {
-        // Try all in order:
+        // Try all in order (sorted by length decrease):
         for (OperatorTokenDescriptor candidateOperator : operatorDecryption) {
             String stringRepr = candidateOperator.stringRepr;
             if (
