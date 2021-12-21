@@ -21,6 +21,7 @@ public class ArithmeticExpressionTokenizer {
     ParsableSource source;
     Optional<ArithmeticExpressionToken> cachedNextToken = Optional.empty(); // To meet LL(1) conception requirements
     boolean hasConsumedSpacesAfterLastToken = false;
+    int lastTouchedTokenStartIndex = 0;
 
     public ArithmeticExpressionTokenizer(ParsableSource source) {
         this.source = source;
@@ -69,6 +70,9 @@ public class ArithmeticExpressionTokenizer {
         return nextToken(true);
     }
 
+    public int getLastTouchedTokenStartIndex() {
+        return lastTouchedTokenStartIndex;
+    }
 
     private Optional<ArithmeticExpressionToken> rawNextToken(boolean allowSpaceSkipping) throws IOException {
         if (allowSpaceSkipping) {
@@ -83,6 +87,7 @@ public class ArithmeticExpressionTokenizer {
             return Optional.empty();
         }
         // Something is guaranteed to be in input:
+        lastTouchedTokenStartIndex = source.getNextPos();
 
         if (nextIsNumber()) {
             return Optional.of(new NumberToken(parseNumber()));
@@ -101,7 +106,10 @@ public class ArithmeticExpressionTokenizer {
             return Optional.of(parseParentheses());
         }
 
-        throw new TokenizationError("Next token is not recognized");
+        throw new TokenizationError(
+            "Next token is not recognized (starting at position: %s)"
+            .formatted(getLastTouchedTokenStartIndex())
+        );
     }
 
 
