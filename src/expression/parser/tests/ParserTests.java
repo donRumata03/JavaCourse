@@ -58,4 +58,9 @@ public class ParserTests {
         Assert.assertEquals("y ** (x ** x)",  e.toMiniString());
     }
 
+    @Test
+    public void macOSProblem() {
+        var e = parseCheckedFrom("    (2147483647 / 10)");
+    }
+
 }

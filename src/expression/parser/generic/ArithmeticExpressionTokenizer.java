@@ -173,7 +173,7 @@ public class ArithmeticExpressionTokenizer {
             this.token = operatorToken;
         }
     }
-    static List<OperatorTokenDescriptor> operatorDecryption = new ArrayList(List.of(
+    static List<OperatorTokenDescriptor> operatorDecryption = new ArrayList<>(List.of(
         new OperatorTokenDescriptor("+", OperatorToken.PLUS),
         new OperatorTokenDescriptor("-", OperatorToken.MINUS),
         new OperatorTokenDescriptor("*", OperatorToken.MULTIPLY),
